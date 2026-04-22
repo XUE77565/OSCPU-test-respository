@@ -98,7 +98,10 @@ static int cmd_x(char *args) {
 
   int n = atoi(num);
   paddr_t addr;
-  addr = sscanf(expr, FMT_PADDR, &addr);
+  if (sscanf(expr, "%x", &addr) != 1) {
+    printf("Invalid address format: %s\n", expr);
+    return 0;
+  }
   printf("n = %d, addr = " FMT_PADDR "\n", n, addr);
   return 0;
 }
