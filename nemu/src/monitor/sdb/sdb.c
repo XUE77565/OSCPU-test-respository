@@ -96,10 +96,10 @@ static int cmd_x(char *args) {
     return 0;
   }
 
-  //int n = atoi(num);
+  int n = atoi(num);
   paddr_t addr;
   addr = sscanf(expr, FMT_PADDR, &addr);
-  printf("addr = " FMT_PADDR "\n", addr);
+  printf("n = %d, addr = " FMT_PADDR "\n", n, addr);
   return 0;
 }
 
