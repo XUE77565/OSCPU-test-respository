@@ -81,9 +81,12 @@ static int cmd_info(char *args) {
 
 static int cmd_x(char *args) {
   printf("args = %s\n", args);
+  //The first argument is the number of 4-byte words to be scanned, 
+  //and the second argument is the expression to be evaluated.
+  char *arg_end = args + strlen(args);
   char *num = strtok(args, " ");
   char *expr = num + strlen(num) + 1;
-  if(expr >= args + strlen(args)) {
+  if(expr >= arg_end) {
     expr = NULL;
   }
   printf("num = %s, expr = %s\n", num, expr);
