@@ -61,6 +61,25 @@ static int cmd_si(char *args) {
   return 0;
 }
 
+static int cmd_info(char *args) {
+  if (args == NULL) {
+    printf("Usage: info [r|w]\n");
+    return 0;
+  }
+
+  if (strcmp(args, "r") == 0) {
+    isa_reg_display();
+  }
+  else if (strcmp(args, "w") == 0) {
+    //wp_display();
+  }
+  else {
+    printf("Unknown info command '%s'\n", args);
+  }
+  return 0;
+}
+
+
 static int cmd_help(char *args);
 
 //static int cmd_si
@@ -73,7 +92,8 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "execute N instructions, default steps = 1", cmd_si },
+  { "si", "Si N executes N instructions, default steps = 1", cmd_si },
+  { "info", "Print the register status or watchpoint information", cmd_info },
 
   /* TODO: Add more commands */
 
