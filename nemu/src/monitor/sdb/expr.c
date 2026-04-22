@@ -21,10 +21,11 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,
-
-  /* TODO: Add more token types */
-
+  TK_NOTYPE = 256, 
+  TK_EQ, 
+  TK_HEX, 
+  TK_DEC, 
+  TK_REG,
 };
 
 static struct rule {
@@ -37,8 +38,16 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
+  {"\\(", '('},         // left parentheses
+  {"\\)", ')'},         // right parentheses
+  {"\\*", '*'},         // multiply
+  {"/", '/'},            // divide
   {"\\+", '+'},         // plus
+  {"-", '-'},            // minus
   {"==", TK_EQ},        // equal
+  {"0[xX][0-9a-fA-F]+", TK_HEX},  // hexadecimal number
+  {"[0-9]+", TK_DEC},             // decimal number
+  {"\\$[a-zA-Z]+", TK_REG}        // register
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -94,8 +103,28 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
-        switch (rules[i].token_type) {
-          default: TODO();
+        // switch (rules[i].token_type) {
+        //   //General operations
+        //   default: {
+        //     memset(tokens[nr_token].str, 0, sizeof(tokens[nr_token].str));// Clear the string before copying
+        //     strncpy(tokens[nr_token].str, substr_start, substr_len);// Copy the matched substring to the token's str field
+        //     tokens[nr_token].type = rules[i].token_type;
+        //     nr_token++;
+        //     break;
+        //   }
+        //   case TK_NOTYPE: {
+        //     // Do nothing for spaces
+        //     break;
+        //   }
+        //   case 
+        // }
+
+        //temp test
+        if(rules[i].token_type != TK_NOTYPE) {
+          memset(tokens[nr_token].str, 0, sizeof(tokens[nr_token].str));// Clear the string before copying
+          strncpy(tokens[nr_token].str, substr_start, substr_len);// Copy the matched substring to the token's str field
+          tokens[nr_token].type = rules[i].token_type;
+          nr_token++;
         }
 
         break;
