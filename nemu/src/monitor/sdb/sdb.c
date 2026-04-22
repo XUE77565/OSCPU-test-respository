@@ -17,6 +17,7 @@
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <memory/paddr.h>
 #include "sdb.h"
 
 static int is_batch_mode = false;
@@ -102,7 +103,14 @@ static int cmd_x(char *args) {
     printf("Invalid address format: %s\n", expr);
     return 0;
   }
-  printf("n = %d, addr = " FMT_PADDR "\n", n, addr);
+
+  //scan the memory and print the content
+  for (int i = 0; i < n; i++) {
+    paddr_t current_addr = addr + i * 4;
+    word_t data = paddr_read(current_addr, 4);
+    printf(FMT_PADDR ": " FMT_WORD "\n", current_addr, data);
+  }
+
   return 0;
 }
 
