@@ -22,5 +22,5 @@ int is_exit_status_bad() {
     (nemu_state.state == NEMU_QUIT);
   //printf("[NEMU good] = %d\n", good);
   //The return value needs to be 0 to prevent the make command from reporting an error
-  return good;
+  return !good;
 }
