@@ -82,7 +82,7 @@ static int cmd_info(char *args) {
 static int cmd_x(char *args) {
   printf("args = %s\n", args);
   char *num = strtok(args, " ");
-  char *expr = args + strlen(num) + 1;
+  char *expr = num + strlen(num) + 1;
   if(expr >= args + strlen(args)) {
     expr = NULL;
   }
