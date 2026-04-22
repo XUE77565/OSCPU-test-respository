@@ -86,17 +86,24 @@ static int cmd_x(char *args) {
   char *arg_end = args + strlen(args);
   char *num = strtok(args, " ");
   char *expr = num + strlen(num) + 1;
+
   if(expr >= arg_end) {
     expr = NULL;
   }
-  printf("num = %s, expr = %s\n", num, expr);
 
   if (args == NULL || expr == NULL) {
     printf("Usage: x N EXPR\n");
     return 0;
   }
+
+  //int n = atoi(num);
+  paddr_t addr;
+  addr = sscanf(expr, FMT_PADDR, &addr);
+  printf("addr = " FMT_PADDR "\n", addr);
   return 0;
 }
+
+
 
 
 static int cmd_help(char *args);
