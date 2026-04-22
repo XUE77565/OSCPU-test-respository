@@ -80,13 +80,21 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
+  printf("args = %s\n", args);
+  char *addr = strtok(args, " ");
+  printf("args = %s\n", args);
+  printf("addr = %s\n", addr);
+
+  if (args == NULL) {
+    printf("Usage: x N EXPR\n");
+    return 0;
+  }
   return 0;
 }
 
 
 static int cmd_help(char *args);
 
-//static int cmd_si
 
 static struct {
   const char *name;
@@ -150,7 +158,7 @@ void sdb_mainloop() {
      * which may need further parsing
      */
     char *args = cmd + strlen(cmd) + 1;
-    printf("args = %s\n", args);
+    //printf("args = %s\n", args);
     if (args >= str_end) {
       args = NULL;
     }
