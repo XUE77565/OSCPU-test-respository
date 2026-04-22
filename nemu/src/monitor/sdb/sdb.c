@@ -79,6 +79,10 @@ static int cmd_info(char *args) {
   return 0;
 }
 
+static int cmd_x(char *args) {
+  return 0;
+}
+
 
 static int cmd_help(char *args);
 
@@ -94,6 +98,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Si N executes N instructions, default steps = 1", cmd_si },
   { "info", "Print the register status or watchpoint information", cmd_info },
+  { "x", "Scan the memory: x N EXPR, evaluate EXPR and scan N words in memory", cmd_x },
 
   /* TODO: Add more commands */
 
@@ -145,6 +150,7 @@ void sdb_mainloop() {
      * which may need further parsing
      */
     char *args = cmd + strlen(cmd) + 1;
+    printf("args = %s\n", args);
     if (args >= str_end) {
       args = NULL;
     }
