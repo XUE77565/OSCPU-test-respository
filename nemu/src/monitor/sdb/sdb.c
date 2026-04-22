@@ -81,11 +81,14 @@ static int cmd_info(char *args) {
 
 static int cmd_x(char *args) {
   printf("args = %s\n", args);
-  char *addr = strtok(args, " ");
-  printf("args = %s\n", args);
-  printf("addr = %s\n", addr);
+  char *num = strtok(args, " ");
+  char *expr = args + strlen(num) + 1;
+  if(expr >= args + strlen(args)) {
+    expr = NULL;
+  }
+  printf("num = %s, expr = %s\n", num, expr);
 
-  if (args == NULL) {
+  if (args == NULL || expr == NULL) {
     printf("Usage: x N EXPR\n");
     return 0;
   }
