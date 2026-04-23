@@ -118,7 +118,7 @@ static bool make_token(char *e) {
 
         //temp test
         if(rules[i].token_type != TK_NOTYPE) {
-          if(nr_token >= 32) {
+          if(nr_token >= 65536) {
             printf("Too many tokens, increase the size of tokens array.\n");
             //maybe we can use malloc to distribute the memory for tokens array dynamically
             return false;
