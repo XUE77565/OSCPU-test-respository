@@ -157,6 +157,7 @@ word_t expr(char *e, bool *success) {
     printf("Invalid parentheses in expression: %s\n", e);
     return 0;
   }
+  Log("PASSED parentheses check\n");
 
   uint32_t result = expreval(p, q, tokens, success);
 
