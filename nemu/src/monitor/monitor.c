@@ -143,7 +143,7 @@ void init_monitor(int argc, char *argv[]) {
   }
 
   if (checkeval) {
-    FILE *fp = fopen("input", "r");
+    FILE *fp = fopen("tools/gen-expr/input", "r");
     Assert(fp, "Failed to open input file for batch mode.");
 
     char line[65536];
