@@ -43,7 +43,7 @@ int expreval(int p, int q, Token *tokens, bool *success) {
     }
     //divide the expression into two parts by the main operator, and evaluate the two parts recursively
     else {
-        uint32_t val1, val2;
+        int val1, val2;
         int op = -1;
         op = find_main_operator(p, q, tokens);
         if(op == -1) {
