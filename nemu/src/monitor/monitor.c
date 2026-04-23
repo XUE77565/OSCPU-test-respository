@@ -162,8 +162,11 @@ void init_monitor(int argc, char *argv[]) {
       word_t eval_result = expr(expression, &success);
 
       if (success) {
+        if(line_num % 100 == 0) {
+          printf("Checked [%d/10000] expressions...\n", line_num);
+        }
         if (eval_result == file_result) {
-          printf("Expression test passed: %s == %u\n", expression, eval_result);
+          //printf("Expression test passed: %s == %u\n", expression, eval_result);
         } else {
           printf("Expression test FAILED on line %d:\n", line_num);
           printf("  Expression: %s\n", expression);
