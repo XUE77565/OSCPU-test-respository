@@ -53,7 +53,9 @@ uint32_t expreval(int p, int q, Token *tokens, bool *success) {
             return 0;
         }
         val1 = expreval(p, op - 1, tokens, success);
+        printf("val1 = %u\n", val1);
         val2 = expreval(op + 1, q, tokens, success);
+        printf("val2 = %u\n", val2);
 
         switch (tokens[op].type) {
             case '+': return val1 + val2;
