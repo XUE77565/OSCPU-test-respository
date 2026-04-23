@@ -4,7 +4,7 @@
 #include <isa.h>
 #include "sdb.h"
 
-uint32_t expreval(int p, int q, Token *tokens, bool *success);
+int expreval(int p, int q, Token *tokens, bool *success);
 
 bool check_parentheses(int p, int q, Token *tokens);
 

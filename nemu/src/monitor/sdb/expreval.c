@@ -12,7 +12,7 @@ enum {
   TK_REG,
 };
 
-uint32_t expreval(int p, int q, Token *tokens, bool *success) {
+int expreval(int p, int q, Token *tokens, bool *success) {
     if(p > q) {
         *success = false;
         printf("Bad expression\n");
