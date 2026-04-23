@@ -144,7 +144,7 @@ int find_main_operator(int p, int q, Token *tokens) {
             }
         }
     }
-    printf("____p = %d, q = %d, main operator: %c at position %d___\n", p, q, tokens[main_op].type, main_op);
+    //printf("____p = %d, q = %d, main operator: %c at position %d___\n", p, q, tokens[main_op].type, main_op);
     return main_op;
 }
 
