@@ -19,6 +19,7 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
+#include "expreval.h"
 
 enum {
   TK_NOTYPE = 256, 
@@ -71,10 +72,6 @@ void init_regex() {
   }
 }
 
-typedef struct token {
-  int type;
-  char str[32];
-} Token;
 
 static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
@@ -121,6 +118,11 @@ static bool make_token(char *e) {
 
         //temp test
         if(rules[i].token_type != TK_NOTYPE) {
+          if(nr_token >= 32) {
+            printf("Too many tokens, increase the size of tokens array.\n");
+            //maybe we can use malloc to distribute the memory for tokens array dynamically
+            return false;
+          }
           memset(tokens[nr_token].str, 0, sizeof(tokens[nr_token].str));// Clear the string before copying
           strncpy(tokens[nr_token].str, substr_start, substr_len);// Copy the matched substring to the token's str field
           tokens[nr_token].type = rules[i].token_type;
@@ -140,15 +142,22 @@ static bool make_token(char *e) {
   return true;
 }
 
-
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
+  int p = 0;
+  int q = nr_token - 1;
 
-  /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  uint32_t result = expreval(p, q, tokens, success);
 
-  return 0;
+  if(*success) {
+    return result;
+  }
+  else {
+    printf("Failed to evaluate expression: %s\n", e);
+    assert(0);
+    return 0;
+  }
 }
