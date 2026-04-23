@@ -72,8 +72,8 @@ void init_regex() {
   }
 }
 
-
-static Token tokens[32] __attribute__((used)) = {};
+//Enlarge the size of tokens to pass the test
+static Token tokens[65536] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {
