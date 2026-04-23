@@ -169,6 +169,7 @@ void init_monitor(int argc, char *argv[]) {
           printf("  Expression: %s\n", expression);
           printf("  Expected result: %u\n", file_result);
           printf("  Evaluated result: %u\n", (unsigned)eval_result);
+          assert(0);
           // Optionally, you can decide to halt NEMU on failure
           // nemu_state.state = NEMU_ABORT;
           // return;
