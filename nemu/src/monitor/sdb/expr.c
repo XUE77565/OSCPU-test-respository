@@ -150,6 +150,14 @@ word_t expr(char *e, bool *success) {
   int p = 0;
   int q = nr_token - 1;
 
+  //First check if the parentheses in the expression are valid,
+  bool check_parentheses = valid_parentheses(tokens, nr_token); 
+  if(!check_parentheses) {
+    *success = false;
+    printf("Invalid parentheses in expression: %s\n", e);
+    return 0;
+  }
+
   uint32_t result = expreval(p, q, tokens, success);
 
   if(*success) {

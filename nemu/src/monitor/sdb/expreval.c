@@ -89,12 +89,16 @@ bool check_parentheses(int p, int q, Token *tokens) {
         }
         else if(tokens[i].type == ')') {
             if(depth == 0) {
+                //p is matching with a ')' before q, so p and q are not a pair of parentheses
                 return false;
             }
             depth--;
         }
     }
-    return depth == 0;
+    //EVEN IF DEPTH IS 0, IT DOES NOT MEAN THAT THE PARENTHESES ARE A PAIR, 
+    //BECAUSE THERE MAY BE OTHER PARENTHESES INSIDE,
+    //LIKE (A+B)*(C+D), THE PARENTHESES AROUND A+B AND C+D ARE NOT A PAIR
+    return true;
 }
 
 int find_main_operator(int p, int q, Token *tokens) {
@@ -132,6 +136,23 @@ int find_main_operator(int p, int q, Token *tokens) {
     }
     printf("____p = %d, q = %d, main operator: %c at position %d___\n", p, q, tokens[main_op].type, main_op);
     return main_op;
+}
+
+bool valid_parentheses(Token *tokens, int nr_token) {
+    int depth = 0;
+    for(int i = 0; i < nr_token; i++) {
+        if(tokens[i].type == '(') {
+            depth++;
+        }
+        else if(tokens[i].type == ')') {
+            depth--;
+            if(depth < 0) {
+                printf("Invalid parentheses at token %d\n", i);
+                return false;
+            }
+        }
+    }
+    return depth == 0;
 }
 
 
