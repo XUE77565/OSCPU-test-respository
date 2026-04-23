@@ -159,7 +159,7 @@ word_t expr(char *e, bool *success) {
   }
   //Log("PASSED parentheses check\n");
 
-  int result = expreval(p, q, tokens, success);
+  uint32_t result = (uint32_t)expreval(p, q, tokens, success);
 
   if(*success) {
     return result;
