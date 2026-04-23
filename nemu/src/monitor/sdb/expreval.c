@@ -53,9 +53,17 @@ uint32_t expreval(int p, int q, Token *tokens, bool *success) {
             return 0;
         }
         val1 = expreval(p, op - 1, tokens, success);
-        printf("[%d, %d]val1 = %u\n", p, op - 1, val1);
+        printf("Strings of tokens from %d to %d: ", p, op - 1);
+        for(int i = p; i < op; i++) {
+            printf("%s ", tokens[i].str);
+        }
+        printf("\n[%d, %d]val1 = %u\n", p, op - 1, val1);
         val2 = expreval(op + 1, q, tokens, success);
-        printf("[%d, %d]val2 = %u\n", op + 1, q, val2);
+        printf("Strings of tokens from %d to %d: ", op + 1, q);
+        for(int i = op + 1; i <= q; i++) {
+            printf("%s ", tokens[i].str);
+        }
+        printf("\n[%d, %d]val2 = %u\n", op + 1, q, val2);
 
         switch (tokens[op].type) {
             case '+': return val1 + val2;
