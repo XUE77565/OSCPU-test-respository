@@ -22,6 +22,7 @@ CXX := g++
 endif
 LD := $(CXX)
 INCLUDES = $(addprefix -I, $(INC_PATH))
+#生成与处理文件，进行宏展开
 CFLAGS  := -O2 -save-temps=obj -MMD -Wall -Werror $(INCLUDES) $(CFLAGS)
 LDFLAGS := -O2 $(LDFLAGS)
 
