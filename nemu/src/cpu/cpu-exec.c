@@ -32,7 +32,7 @@ static bool g_print_step = false;
 
 extern const char *find_func_by_addr(uint32_t addr);
 
-#ifdef CONFIG_FTRACE_COND
+#ifdef CONFIG_FTRACE
 static int call_depth = 0;
 
 static void trace_ftrace(vaddr_t pc, vaddr_t dnpc, uint32_t inst) {

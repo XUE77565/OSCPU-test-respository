@@ -240,7 +240,7 @@ void init_monitor(int argc, char *argv[]) {
   /* Initialize the simple debugger. */
   init_sdb();
 
-  #ifdef CONFIG_MRACE_COND
+  #ifdef CONFIG_FTRACE_COND
     /* Initialize ftrace with ELF file */
     if(FTRACE_COND) {
       void init_ftrace(const char *elf_file);
