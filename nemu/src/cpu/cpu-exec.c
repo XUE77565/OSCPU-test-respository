@@ -32,7 +32,7 @@ static bool g_print_step = false;
 
 extern const char *find_func_by_addr(uint32_t addr);
 
-#if defined(CONFIG_ISA_riscv) || defined(CONFIG_ISA_riscv32) || defined(CONFIG_ISA_riscv64)
+#ifdef CONFIG_FTRACE_COND
 static int call_depth = 0;
 
 static void trace_ftrace(vaddr_t pc, vaddr_t dnpc, uint32_t inst) {
@@ -133,12 +133,12 @@ static void exec_once(Decode *s, vaddr_t pc) {
   iringbuf_ptr = (iringbuf_ptr + 1) % IRINGBUF_SIZE;
 #endif
 
+#ifdef CONFIG_FTRACE_COND
   extern int func_symbol_count;
   if (func_symbol_count > 0) {
-#if defined(CONFIG_ISA_riscv) || defined(CONFIG_ISA_riscv32) || defined(CONFIG_ISA_riscv64)
     trace_ftrace(s->pc, s->dnpc, s->isa.inst);
-#endif
   }
+#endif  
 }
 
 static void execute(uint64_t n) {
