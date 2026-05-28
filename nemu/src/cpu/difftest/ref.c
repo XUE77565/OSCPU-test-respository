@@ -21,17 +21,16 @@
 // 在DUT host memory的`buf`和REF guest memory的`addr`之间拷贝`n`字节,
 // `direction`指定拷贝的方向, `DIFFTEST_TO_DUT`表示往DUT拷贝, `DIFFTEST_TO_REF`表示往REF拷贝
 __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
-  //在nemu中，不能用本机的指针去写，所以不能用memcpy
+  //由于nemu中指针和主机的并不一直，所以不能用memcpy
   if(direction == DIFFTEST_TO_DUT) {
-    for(size_t i = 0; i < n; i++) {
-      uint8_t byte = ((uint8_t *)buf)[i];
-      paddr_write(addr + i, 1, byte);
+    for(int i = 0; i < n; i++) {
+      paddr_write(addr + i, 1, ((uint8_t *)buf)[i]);
     }
   }
   else {
-    for(size_t i = 0; i < n; i++) {
-      uint8_t byte = paddr_read(addr + i, 1);
-      ((uint8_t *)buf)[i] = byte;
+    // 从DUT host memory的`buf`拷贝到REF guest memory的`addr`
+    for(int i = 0; i < n; i++) {
+      ((uint8_t *)buf)[i] = paddr_read(addr + i, 1);
     }
   }
 }
