@@ -5,10 +5,11 @@
 void __am_timer_init() {
 }
 
+//由于在nemu中的timer是在offset=4的时候才获取真实事件，所以应该先访问高32
 void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
   //从RTC_ADDR处获取长度为8字节的MMIO空间，来获取64位当前的时间
-  uint32_t low = inl(RTC_ADDR);
   uint32_t high = inl(RTC_ADDR + 4);
+  uint32_t low = inl(RTC_ADDR);
   uptime->us = ((uint64_t)high << 32) | low;
 }
 
