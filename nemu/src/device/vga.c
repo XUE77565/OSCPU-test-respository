@@ -72,8 +72,8 @@ static inline void update_screen() {
 #endif
 
 void vga_update_screen() {
-  if(vgactl_port_base[0] == 1) {
-    vgactl_port_base[0] = 0;
+  if(vgactl_port_base[1]) {
+    vgactl_port_base[1] = 0;
     IFDEF(CONFIG_VGA_SHOW_SCREEN, update_screen());
   }
 }
