@@ -120,11 +120,11 @@ always @(*) begin
                         end
                 end
                 SL: begin
-                        //DPI-C: 读写立即完成, 无需等待外部握手
-                        if(load) begin
-                                MEM_next_state = SL_DONE;
+                        //Load会进入RDW阶段等待读出数据握手
+                        if(load && Mem_Req_Ready) begin
+                                MEM_next_state = RDW;
                         end
-                        else if(store) begin
+                        else if(store && Mem_Req_Ready) begin
                                 MEM_next_state = SL_DONE;
                         end
                         else begin
