@@ -75,7 +75,9 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
           for (int j = 0; j < pad_len; j++) PUTC(' ');
         }
 
-      } else if (*fmt == 'u') {
+      } 
+      
+      else if (*fmt == 'u') {
         unsigned int unum = va_arg(ap, unsigned int);
         char buf[20];
         int i = 0;
@@ -94,7 +96,9 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
           for (int j = 0; j < pad_len; j++) PUTC(' ');
         }
 
-      } else if (*fmt == 'x' || *fmt == 'X') {
+      } 
+      
+      else if (*fmt == 'x' || *fmt == 'X') {
         unsigned int unum = va_arg(ap, unsigned int);
         int upper = (*fmt == 'X');
         char buf[20];
