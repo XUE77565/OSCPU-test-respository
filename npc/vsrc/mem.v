@@ -120,11 +120,11 @@ always @(*) begin
                         end
                 end
                 SL: begin
-                        //Load会进入RDW阶段等待读出数据握手
-                        if(load && Mem_Req_Ready) begin
-                                MEM_next_state = RDW;
+                        //DPI-C: 读写立即完成, 无需等待外部握手
+                        if(load) begin
+                                MEM_next_state = SL_DONE;
                         end
-                        else if(store && Mem_Req_Ready) begin
+                        else if(store) begin
                                 MEM_next_state = SL_DONE;
                         end
                         else begin
@@ -178,14 +178,21 @@ assign  MEM_done    =   (MEM_current_state==SL_DONE);
 assign  MEM_ready   =   ~MEM_work || (MEM_done && WB_ready);
 assign  MEM_to_WB_valid  = MEM_done && MEM_work;
 
-//读数据
+//读数据: 通过DPI-C直接从内存读取
 reg [31:0]      Read_data_current;
 always @(posedge clk) begin
         if(rst) begin
                 Read_data_current  <=  32'b0;
         end
-        else if (Read_data_Ready && Read_data_Valid) begin
-                Read_data_current  <=  Read_data;
+        else if (MEM_current_state == SL && load) begin
+                Read_data_current  <=  pmem_read(Address);
+        end
+end
+
+//写数据: 通过DPI-C直接写入内存
+always @(posedge clk) begin
+        if (MEM_current_state == SL && store) begin
+                pmem_write(Address, Write_data, Write_strb);
         end
 end
 
