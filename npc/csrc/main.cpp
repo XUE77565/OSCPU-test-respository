@@ -57,9 +57,11 @@ extern "C" void set_ebreak() {
 // 总是读取地址为 raddr & ~0x3u 的4字节并返回
 extern "C" int pmem_read(int raddr) {
   uint32_t addr = (uint32_t)(raddr & ~0x3u);
+  printf("pmem_read: addr = 0x%08x\n", addr);
 
   // 时钟MMIO: 返回当前时间(微秒)
   if (addr == TIMER_MMIO || addr == TIMER_MMIO + 4) {
+    printf("Reading from timer MMIO at address: 0x%08x\n", addr);
     struct timeval tv;
     gettimeofday(&tv, NULL);
     uint64_t us = (uint64_t)tv.tv_sec * 1000000 + tv.tv_usec;
@@ -87,9 +89,11 @@ extern "C" int pmem_read(int raddr) {
 // wmask 中每比特表示 wdata 中1个字节的掩码
 extern "C" void pmem_write(int waddr, int wdata, char wmask) {
   uint32_t addr = (uint32_t)(waddr & ~0x3u);
+  printf("pmem_write: addr = 0x%08x, data = 0x%08x, mask = 0x%02x\n", addr, wdata, wmask);
 
   // 串口MMIO: 输出字符
   if (addr == SERIAL_MMIO) {
+    printf("Serial output: 0x%02x ('%c')\n", wdata & 0xFF, wdata & 0xFF);
     putchar(wdata);
     fflush(stdout);
     return;
@@ -97,6 +101,7 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
 
   // 普通内存写入, 按字节掩码写入
   if (in_pmem(addr)) {
+    printf("Writing to pmem at address: 0x%08x with data: 0x%08x and mask: 0x%02x\n", addr, wdata, wmask);
     uint8_t *p = guest_to_host(addr);
     uint8_t *data_bytes = (uint8_t *)&wdata;
     for (int i = 0; i < 4; i++) {
