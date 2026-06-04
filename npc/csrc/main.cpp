@@ -9,7 +9,7 @@
 #define PMEM_SIZE  (128 * 1024 * 1024)  // 128MB
 
 // MMIO地址
-#define SERIAL_MMIO 0xa00003f8u
+#define SERIAL_MMIO 0x10000000u
 #define TIMER_MMIO  0xa0000048u
 
 // 物理内存
