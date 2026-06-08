@@ -129,6 +129,8 @@ int main(int argc, char *argv[]) {
   // 加载二进制文件到物理内存
   load_binary(argv[1]);
 
+  printf("Beg")
+
   // 初始化 Verilator
   Verilated::commandArgs(argc, argv);
   auto *top = new Vcustom_cpu;
