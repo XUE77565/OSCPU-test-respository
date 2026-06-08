@@ -118,6 +118,8 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
   }
 }
 
+
+
 int main(int argc, char *argv[]) {
   if (argc < 2) {
     fprintf(stderr, "Usage: %s <binary>\n", argv[0]);
