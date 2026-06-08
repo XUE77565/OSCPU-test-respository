@@ -6,6 +6,7 @@
 
 // Verilator 头文件
 #include "Vcustom_cpu.h"
+#include "Vcustom_cpu___024root.h"
 #include "verilated.h"
 
 // SDB 调试器接口
@@ -202,7 +203,7 @@ uint32_t sim_get_pc() {
 uint32_t sim_get_reg(int idx) {
   if (idx < 0 || idx >= 32 || !g_top) return 0;
   if (idx == 0) return 0;  // x0 始终为 0
-  return g_top->custom_cpu__DOT__ID_EX__DOT__reg_file_ex__DOT__regfile[idx];
+  return g_top->rootp->custom_cpu__DOT__ID_EX__DOT__reg_file_ex__DOT__regfile[idx];
 }
 
 // 打印所有寄存器和 PC (仿照 NEMU isa_reg_display)
