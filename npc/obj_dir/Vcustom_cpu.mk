@@ -4,7 +4,7 @@
 # Execute this makefile from the object directory:
 #    make -f Vcustom_cpu.mk
 
-default: /home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/build/npc
+default: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/build/npc
 
 ### Constants...
 # Perl executable (from $PERL, defaults to 'perl' if not set)
@@ -37,7 +37,7 @@ VM_PREFIX = Vcustom_cpu
 VM_MODPREFIX = Vcustom_cpu
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-  -I/home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/include -g -O2 \
+  -I/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/include -g -O2 \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
@@ -63,13 +63,13 @@ include $(VERILATOR_ROOT)/include/verilated.mk
 ### Executable rules... (from --exe)
 VPATH += $(VM_USER_DIR)
 
-main.o: /home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/main.cpp 
+main.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/main.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
-sdb.o: /home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/sdb.cpp 
+sdb.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/sdb.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 
 ### Link rules... (from --exe)
-/home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/build/npc: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a
+/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/build/npc: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a
 	$(LINK) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) $(LIBS) $(SC_LIBS) -o $@
 
 # Verilated -*- Makefile -*-

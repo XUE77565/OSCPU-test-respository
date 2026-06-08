@@ -16,11 +16,11 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at /home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/mem.v:3:29
+    // DPI import at /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/mem.v:3:29
     extern int pmem_read(int raddr);
-    // DPI import at /home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/mem.v:4:30
+    // DPI import at /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/mem.v:4:30
     extern void pmem_write(int addr, int data, const svBitVecVal* mask);
-    // DPI import at /home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/wb.v:4:30
+    // DPI import at /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/wb.v:4:30
     extern void set_ebreak();
 
 #ifdef __cplusplus

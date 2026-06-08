@@ -57,7 +57,7 @@ VL_ATTR_COLD void Vcustom_cpu___024root___eval_settle(Vcustom_cpu___024root* vlS
 #ifdef VL_DEBUG
             Vcustom_cpu___024root___dump_triggers__stl(vlSelfRef.__VstlTriggered, "stl"s);
 #endif
-            VL_FATAL_MT("/home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/top.v", 4, "", "DIDNOTCONVERGE: Settle region did not converge after '--converge-limit' of 100 tries");
+            VL_FATAL_MT("/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/top.v", 4, "", "DIDNOTCONVERGE: Settle region did not converge after '--converge-limit' of 100 tries");
         }
         __VstlIterCount = ((IData)(1U) + __VstlIterCount);
         vlSelfRef.__VstlPhaseResult = Vcustom_cpu___024root___eval_phase__stl(vlSelf);
