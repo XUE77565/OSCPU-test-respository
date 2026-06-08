@@ -200,6 +200,11 @@ uint32_t sim_get_pc() {
   return g_top ? (uint32_t)g_top->PC : 0;
 }
 
+//获取当前指令
+uint32_t sim_get_inst() {
+  return g_top ? (uint32_t)g_top->Instruction : 0;
+}
+
 // 通过 Verilator 暴露的内部信号路径读取寄存器值
 // 等效于 DPI-C 方式: Verilator 将 regfile 数组编译为可直接访问的 C 数组
 uint32_t sim_get_reg(int idx) {
@@ -239,7 +244,8 @@ void sim_exec(uint64_t n) {
       inst_cnt++;
       npc_state.nr_inst++;
       if(ITRACE){
-        printf("0x%08x: Instruction retired, Instruction: %lu\n", sim_get_pc(), (unsigned long)npc_state.nr_inst);
+        printf("0x%08x: Instruction retired, \n
+              Instruction: %lu\n", sim_get_pc(), sim_get_inst());
       }
     }
 
