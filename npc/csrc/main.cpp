@@ -259,6 +259,7 @@ void sim_exec(uint64_t n) {
   fprintf(stderr, "Simulation exceeded maximum cycle count (%lu)\n",
           (unsigned long)MAX_CYCLES);
   npc_state.state = NPC_ABORT;
+  g_exit_code = 1;
 }
 
 // ==================== 主函数 ====================
