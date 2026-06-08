@@ -244,8 +244,7 @@ void sim_exec(uint64_t n) {
       inst_cnt++;
       npc_state.nr_inst++;
       if(ITRACE){
-        printf("0x%08x: Instruction retired, \
-              Instruction: %lu\n", sim_get_pc(), sim_get_inst());
+        printf("0x%08x: Instruction retired, Instruction: %08x\n", sim_get_pc(), sim_get_inst());
       }
     }
 
