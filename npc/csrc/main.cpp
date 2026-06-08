@@ -125,7 +125,6 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Usage: %s <binary>\n", argv[0]);
     return 1;
   }
-  printf("Starting simulation with binary: %s\n", argv[1]);
 
   // 加载二进制文件到物理内存
   load_binary(argv[1]);
