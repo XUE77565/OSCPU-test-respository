@@ -288,9 +288,10 @@ int main(int argc, char *argv[]) {
   }
   sdb_mainloop();
 
-  // 清理: 检查仿真是否正常结束
-  int ret = g_exit_code;
-  if (npc_state.state == NPC_ABORT) ret = 1;
+  // 清理: 根据仿真状态决定退出码
+  int ret = g_exit_code;   // ebreak 设置的退出码 (0=GOOD TRAP, 非0=BAD TRAP)
+  if (npc_state.state == NPC_ABORT) ret = 1;   // 超时等异常终止
+  if (npc_state.state == NPC_QUIT)  ret = 1;   // 用户主动退出, 程序尚未结束, 不算 PASS
   delete g_top;
   return ret;
 }
