@@ -37,8 +37,7 @@ VERILATOR_FLAGS := --cc \
 	-I$(VSRC_DIR) \
 	--trace \
 	-Wno-TIMESCALEMOD \
-	-Wno-fatal \
-	#-i
+	-Wno-fatal
 
 # 传递给 C++ 编译器的选项
 # -I: 让 C++ 能 include sdb.h; -g: 调试信息; -O2: 优化
