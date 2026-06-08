@@ -273,7 +273,7 @@ int main(int argc, char *argv[]) {
   // 解析参数: 默认 batch 模式, 加 -i 进入交互模式
   bool interactive = false;
   for (int i = 2; i < argc; i++) {
-    if (strcmp(argv[i], "-i") == 0) interactive = true;
+    if (strcmp(argv[i], "-i") == 0) interactive = false;
   }
 
   // 初始化 Verilator 命令行参数解析
@@ -288,8 +288,9 @@ int main(int argc, char *argv[]) {
   }
   sdb_mainloop();
 
-  // 清理
+  // 清理: 检查仿真是否正常结束
   int ret = g_exit_code;
+  if (npc_state.state == NPC_ABORT) ret = 1;
   delete g_top;
   return ret;
 }
