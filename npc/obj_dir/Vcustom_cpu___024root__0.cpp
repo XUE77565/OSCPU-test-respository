@@ -500,6 +500,17 @@ void Vcustom_cpu___024root___nba_sequent__TOP__0(Vcustom_cpu___024root* vlSelf) 
         = ((0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
                                    >> 0x0000000fU))) 
            == (0x0000001fU & vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[1U]));
+    vlSelfRef.custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__unsigend_sub 
+        = (0x00000001ffffffffULL & (1ULL + ((~ (QData)((IData)(
+                                                               ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
+                                                                 << 0x0000000bU) 
+                                                                | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[2U] 
+                                                                   >> 0x00000015U))))) 
+                                            + (QData)((IData)(
+                                                              ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
+                                                                << 0x0000000bU) 
+                                                               | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
+                                                                  >> 0x00000015U)))))));
     vlSelfRef.__VdfgRegularize_h6e95ff9d_0_2 = ((2U 
                                                  & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
                                                     >> 0x00000013U)) 
@@ -812,7 +823,7 @@ void Vcustom_cpu___024root___nba_sequent__TOP__0(Vcustom_cpu___024root* vlSelf) 
                                                                    >> 0x0000000cU))))
                                                        ? 0U
                                                        : 1U)))))))))));
-    vlSelfRef.__VdfgRegularize_h6e95ff9d_0_3 = (0x00000003ffffffffULL 
+    vlSelfRef.__VdfgRegularize_h6e95ff9d_0_3 = (0x00000001ffffffffULL 
                                                 & ((0U 
                                                     == 
                                                     (7U 
@@ -869,19 +880,16 @@ void Vcustom_cpu___024root___nba_sequent__TOP__0(Vcustom_cpu___024root* vlSelf) 
                                                        (7U 
                                                         & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
                                                            >> 0x00000015U)))
-                                                       ? 
-                                                      (0x00000001ffffffffULL 
-                                                       & (~ 
-                                                          ((QData)((IData)(
-                                                                           ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
+                                                       ? (QData)((IData)(
+                                                                         (~ 
+                                                                          (((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
                                                                              << 0x0000000bU) 
                                                                             | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
-                                                                               >> 0x00000015U)))) 
-                                                           | (QData)((IData)(
-                                                                             ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
+                                                                               >> 0x00000015U)) 
+                                                                           | ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
                                                                                << 0x0000000bU) 
                                                                               | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[2U] 
-                                                                                >> 0x00000015U)))))))
+                                                                                >> 0x00000015U))))))
                                                        : 
                                                       ((2U 
                                                         == 
@@ -905,19 +913,7 @@ void Vcustom_cpu___024root___nba_sequent__TOP__0(Vcustom_cpu___024root* vlSelf) 
                                                          (7U 
                                                           & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
                                                              >> 0x00000015U)))
-                                                         ? 
-                                                        (1ULL 
-                                                         + 
-                                                         ((~ (QData)((IData)(
-                                                                             ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
-                                                                               << 0x0000000bU) 
-                                                                              | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[2U] 
-                                                                                >> 0x00000015U))))) 
-                                                          + (QData)((IData)(
-                                                                            ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
-                                                                              << 0x0000000bU) 
-                                                                             | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
-                                                                                >> 0x00000015U))))))
+                                                         ? vlSelfRef.custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__unsigend_sub
                                                          : 
                                                         ((7U 
                                                           == 
@@ -954,23 +950,8 @@ void Vcustom_cpu___024root___nba_sequent__TOP__0(Vcustom_cpu___024root* vlSelf) 
                                                            (7U 
                                                             & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
                                                                >> 0x00000015U)))
-                                                           ? (QData)((IData)(
-                                                                             (1U 
-                                                                              & (IData)(
-                                                                                (1ULL 
-                                                                                & ((1ULL 
-                                                                                + 
-                                                                                ((~ (QData)((IData)(
-                                                                                ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
-                                                                                << 0x0000000bU) 
-                                                                                | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[2U] 
-                                                                                >> 0x00000015U))))) 
-                                                                                + (QData)((IData)(
-                                                                                ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
-                                                                                << 0x0000000bU) 
-                                                                                | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
-                                                                                >> 0x00000015U)))))) 
-                                                                                >> 0x00000020U))))))
+                                                           ? 
+                                                          VL_SHIFTR_QQI(33,33,32, vlSelfRef.custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__unsigend_sub, 0x00000020U)
                                                            : 0ULL)))))))));
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_yes 
         = ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__Jump) 

@@ -752,17 +752,7 @@ VL_ATTR_COLD void Vcustom_cpu___024root__trace_full_0_sub_0(Vcustom_cpu___024roo
                                                << 0x0000000bU) 
                                               | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[2U] 
                                                  >> 0x00000015U))))),33);
-    bufp->fullQData(oldp+89,((0x00000001ffffffffULL 
-                              & (1ULL + ((~ (QData)((IData)(
-                                                            ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
-                                                              << 0x0000000bU) 
-                                                             | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[2U] 
-                                                                >> 0x00000015U))))) 
-                                         + (QData)((IData)(
-                                                           ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
-                                                             << 0x0000000bU) 
-                                                            | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
-                                                               >> 0x00000015U)))))))),33);
+    bufp->fullQData(oldp+89,(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__unsigend_sub),33);
     bufp->fullIData(oldp+91,((((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[2U] 
                                 << 0x0000000dU) | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[1U] 
                                                    >> 0x00000013U)) 
