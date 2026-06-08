@@ -55,17 +55,21 @@ $(TARGET): $(VSRCS) $(CSRCS)
 	@mkdir -p $(BUILD_DIR)
 	verilator $(VERILATOR_FLAGS) $(VSRCS) $(CSRCS) -o $(TARGET)
 
+# 仿真模式: 默认 batch, 传 MODE=-i 切换到交互模式
+# 用法: make ARCH=minirv-npc ALL=add run MODE=-i
+MODE ?=
+
 # sim 目标：先通过 git_commit 记录 RTL 变更，再编译运行
 # IMG 变量由外部传入，指定要加载的二进制文件路径
 sim:
 	$(call git_commit, "sim RTL")  # DO NOT REMOVE THIS LINE!!!
 	@$(MAKE) all
 	@echo "Running simulation with image: $(IMG)"
-	$(TARGET) $(IMG)
+	$(TARGET) $(IMG) $(MODE)
 
 # run 目标：直接运行已编译的仿真（不重新编译）
 run:
-	$(TARGET) $(IMG)
+	$(TARGET) $(IMG) $(MODE)
 
 # clean 目标：清理所有构建产物
 clean:
