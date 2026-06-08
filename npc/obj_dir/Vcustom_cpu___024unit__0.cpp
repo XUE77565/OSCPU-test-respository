@@ -30,6 +30,16 @@ void Vcustom_cpu___024unit____Vdpiimwrap_pmem_write_TOP____024unit(IData/*31:0*/
     pmem_write(addr__Vcvt, data__Vcvt, mask__Vcvt);
 }
 
+extern "C" void set_gpr_ptr(const int* regs);
+
+void Vcustom_cpu___024unit____Vdpiimwrap_set_gpr_ptr_TOP____024unit(VlUnpacked<IData/*31:0*/, 32> regs) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+        Vcustom_cpu___024unit____Vdpiimwrap_set_gpr_ptr_TOP____024unit\n"); );
+    // Body
+    int regs__Vcvt[32];
+    for (size_t regs__Vidx = 0; regs__Vidx < 32; ++regs__Vidx) regs__Vcvt[regs__Vidx] = (&regs[0])[regs__Vidx];
+    set_gpr_ptr(regs__Vcvt);
+}
+
 extern "C" void set_ebreak();
 
 void Vcustom_cpu___024unit____Vdpiimwrap_set_ebreak_TOP____024unit() {

@@ -22,6 +22,8 @@ extern "C" {
     extern void pmem_write(int addr, int data, const svBitVecVal* mask);
     // DPI import at /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/wb.v:4:30
     extern void set_ebreak();
+    // DPI import at /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/regfile.v:4:30
+    extern void set_gpr_ptr(const int* regs);
 
 #ifdef __cplusplus
 }
