@@ -16,7 +16,7 @@ void sdb_set_batch_mode() {
 // ==================== 命令处理函数 ====================
 
 static int cmd_c(char *args) {
-  //sim_exec(-1);
+  sim_exec(-1);
   return 0;
 }
 
@@ -29,7 +29,7 @@ static int cmd_si(char *args) {
     printf("Invalid step count: %s\n", args);
     return 0;
   }
-  //sim_exec(n);
+  sim_exec(n);
   return 0;
 }
 
@@ -40,7 +40,7 @@ static int cmd_q(char *args) {
 
 static int cmd_info(char *args) {
   if (args == NULL || strcmp(args, "r") == 0) {
-    //sim_print_regs();
+    sim_print_regs();
   } else {
     printf("Unknown info subcommand: %s\n", args);
   }

@@ -33,9 +33,6 @@ static uint8_t pmem[PMEM_SIZE];
 // 全局仿真顶层指针, 供 DPI-C 回调函数访问 CPU 内部信号
 static Vcustom_cpu *g_top = nullptr;
 
-// DPI-C 传入的寄存器数组指针 (由 regfile.v 中的 set_gpr_ptr 设置)
-static uint32_t *cpu_regs = nullptr;
-
 // ebreak 标志, 由 DPI-C set_ebreak() 设置
 static bool g_ebreak = false;
 static int  g_exit_code = 0;
@@ -73,11 +70,6 @@ static void load_binary(const char *bin_path) {
 }
 
 // ==================== DPI-C 回调函数 ====================
-
-// 由 regfile.v 的 initial 块调用, 将寄存器数组指针传给 C++
-extern "C" void set_gpr_ptr(int *regs) {
-  cpu_regs = (uint32_t *)regs;
-}
 
 // ebreak 回调, 由 wb.v 通过 DPI-C 调用
 // 不再直接 exit(), 而是设置标志让 sim_exec 自行处理状态转换
@@ -205,12 +197,12 @@ uint32_t sim_get_pc() {
   return g_top ? (uint32_t)g_top->PC : 0;
 }
 
-// 通过 DPI-C 指针获取寄存器值
+// 通过 Verilator 暴露的内部信号路径读取寄存器值
+// 等效于 DPI-C 方式: Verilator 将 regfile 数组编译为可直接访问的 C 数组
 uint32_t sim_get_reg(int idx) {
-  if (idx < 0 || idx >= 32 || !cpu_regs) return 0;
-  // x0 始终为 0 (硬件中也是如此, 但 DPI-C 指针直接读取原始数组, 需显式处理)
-  if (idx == 0) return 0;
-  return cpu_regs[idx];
+  if (idx < 0 || idx >= 32 || !g_top) return 0;
+  if (idx == 0) return 0;  // x0 始终为 0
+  return g_top->custom_cpu__DOT__ID_EX__DOT__reg_file_ex__DOT__regfile[idx];
 }
 
 // 打印所有寄存器和 PC (仿照 NEMU isa_reg_display)
