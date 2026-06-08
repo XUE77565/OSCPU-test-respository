@@ -62,13 +62,14 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         CData/*0:0*/ custom_cpu__DOT__EX_EX__DOT__EX_work;
         CData/*3:0*/ custom_cpu__DOT__EX_EX__DOT__Write_strb;
         CData/*0:0*/ custom_cpu__DOT__EX_EX__DOT__EX_write;
+        CData/*0:0*/ custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__CarryOut;
+        CData/*1:0*/ custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT____VdfgRegularize_hd1e758aa_0_3;
         CData/*0:0*/ custom_cpu__DOT__MEM_EX__DOT__MEM_to_WB_valid;
         CData/*4:0*/ custom_cpu__DOT__MEM_EX__DOT__MEM_current_state;
         CData/*4:0*/ custom_cpu__DOT__MEM_EX__DOT__MEM_next_state;
         CData/*0:0*/ custom_cpu__DOT__MEM_EX__DOT__MEM_work;
         CData/*0:0*/ custom_cpu__DOT__WB_EX__DOT__WB_work;
         CData/*4:0*/ __Vtableidx4;
-        CData/*1:0*/ __VdfgRegularize_h6e95ff9d_0_2;
         CData/*0:0*/ __VstlFirstIteration;
         CData/*0:0*/ __VstlPhaseResult;
         CData/*0:0*/ __VicoFirstIteration;
@@ -82,9 +83,9 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         VL_OUT(PC,31,0);
         VL_IN(Instruction,31,0);
         VL_OUT(Address,31,0);
-        VL_OUT(Write_data,31,0);
     };
     struct {
+        VL_OUT(Write_data,31,0);
         VL_IN(Read_data,31,0);
         VL_OUT(cpu_perf_cnt_0,31,0);
         VL_OUT(cpu_perf_cnt_1,31,0);
@@ -117,13 +118,14 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         VlWide<6>/*182:0*/ custom_cpu__DOT__EX_EX__DOT__EX_to_MEM_data;
         VlWide<8>/*255:0*/ custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg;
         IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__Result;
+        IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__Result;
+        IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__temp_sub;
+        IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT____VdfgRegularize_hd1e758aa_0_0;
         VlWide<6>/*182:0*/ custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg;
         IData/*31:0*/ custom_cpu__DOT__MEM_EX__DOT__Read_data_current;
         VlWide<3>/*70:0*/ custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg;
         IData/*31:0*/ __VactIterCount;
         QData/*63:0*/ custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg;
-        QData/*32:0*/ custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__unsigend_sub;
-        QData/*32:0*/ __VdfgRegularize_h6e95ff9d_0_3;
         VlUnpacked<IData/*31:0*/, 32> custom_cpu__DOT__ID_EX__DOT__reg_file_ex__DOT__regfile;
         VlUnpacked<QData/*63:0*/, 1> __VstlTriggered;
         VlUnpacked<QData/*63:0*/, 1> __VicoTriggered;
