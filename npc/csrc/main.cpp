@@ -273,7 +273,7 @@ int main(int argc, char *argv[]) {
   // 解析参数: 默认 batch 模式, 加 -i 进入交互模式
   bool interactive = false;
   for (int i = 2; i < argc; i++) {
-    if (strcmp(argv[i], "-i") == 0) interactive = false;
+    if (strcmp(argv[i], "-i") == 0) interactive = true;
   }
 
   // 初始化 Verilator 命令行参数解析
