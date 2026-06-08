@@ -1,5 +1,8 @@
 `include "define.v"
 
+// DPI-C: 将寄存器数组指针传递给 C++ 环境, 用于 sim_get_reg / sim_print_regs
+import "DPI-C" function void set_gpr_ptr(input int regs[32]);
+
 module regfile(
     input clk,
     input rst,
