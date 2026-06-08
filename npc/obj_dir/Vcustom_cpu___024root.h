@@ -122,8 +122,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         VlWide<3>/*70:0*/ custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg;
         IData/*31:0*/ __VactIterCount;
         QData/*63:0*/ custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg;
-        QData/*32:0*/ custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__unsigend_sub;
-        QData/*32:0*/ __VdfgRegularize_h6e95ff9d_0_3;
+        QData/*33:0*/ __VdfgRegularize_h6e95ff9d_0_3;
         VlUnpacked<IData/*31:0*/, 32> custom_cpu__DOT__ID_EX__DOT__reg_file_ex__DOT__regfile;
         VlUnpacked<QData/*63:0*/, 1> __VstlTriggered;
         VlUnpacked<QData/*63:0*/, 1> __VicoTriggered;

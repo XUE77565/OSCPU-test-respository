@@ -32,10 +32,10 @@ module alu(
 	assign unsigned_B = 	{1'b0,B};
 	assign unsigend_sub   =	unsigned_A + ~unsigned_B + 1;
 
-	assign {CarryOut,Result} =  (ALUop == `AND)  ? unsigned_A & unsigned_B:
-                                (ALUop == `OR )  ? unsigned_A | unsigned_B:
-                                (ALUop == `XOR)  ? unsigned_A ^ unsigned_B:
-                                (ALUop == `NOR)  ? {1'b0,~(unsigned_A | unsigned_B)}:
+	assign {CarryOut,Result} =  (ALUop == `AND)  ? A & B:
+                                (ALUop == `OR )  ? A | B:
+                                (ALUop == `XOR)  ? A ^ B:
+                                (ALUop == `NOR)  ? {1'b0,~(A | B)}:
                                 (ALUop == `ADD)  ? A + B:
                                 (ALUop == `SUB)  ? A + ~B + 1:
                                 (ALUop == `SLT)  ? (({A[31],B[31]} == 2'b10) ? 1 : 

@@ -411,17 +411,6 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
         = ((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_work) 
            & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[1U] 
               >> 5U));
-    vlSelfRef.custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__unsigend_sub 
-        = (0x00000001ffffffffULL & (1ULL + ((~ (QData)((IData)(
-                                                               ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
-                                                                 << 0x0000000bU) 
-                                                                | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[2U] 
-                                                                   >> 0x00000015U))))) 
-                                            + (QData)((IData)(
-                                                              ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
-                                                                << 0x0000000bU) 
-                                                               | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
-                                                                  >> 0x00000015U)))))));
     vlSelfRef.__VdfgRegularize_h6e95ff9d_0_2 = ((2U 
                                                  & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
                                                     >> 0x00000013U)) 
@@ -519,7 +508,7 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
            | (IData)(((0x0000000000000060ULL == (0x000000000000007cULL 
                                                  & vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg)) 
                       & (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__prediction_out))));
-    vlSelfRef.__VdfgRegularize_h6e95ff9d_0_3 = (0x00000001ffffffffULL 
+    vlSelfRef.__VdfgRegularize_h6e95ff9d_0_3 = (0x00000003ffffffffULL 
                                                 & ((0U 
                                                     == 
                                                     (7U 
@@ -576,16 +565,19 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
                                                        (7U 
                                                         & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
                                                            >> 0x00000015U)))
-                                                       ? (QData)((IData)(
-                                                                         (~ 
-                                                                          (((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
+                                                       ? 
+                                                      (0x00000001ffffffffULL 
+                                                       & (~ 
+                                                          ((QData)((IData)(
+                                                                           ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
                                                                              << 0x0000000bU) 
                                                                             | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
-                                                                               >> 0x00000015U)) 
-                                                                           | ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
+                                                                               >> 0x00000015U)))) 
+                                                           | (QData)((IData)(
+                                                                             ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
                                                                                << 0x0000000bU) 
                                                                               | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[2U] 
-                                                                                >> 0x00000015U))))))
+                                                                                >> 0x00000015U)))))))
                                                        : 
                                                       ((2U 
                                                         == 
@@ -609,7 +601,19 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
                                                          (7U 
                                                           & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
                                                              >> 0x00000015U)))
-                                                         ? vlSelfRef.custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__unsigend_sub
+                                                         ? 
+                                                        (1ULL 
+                                                         + 
+                                                         ((~ (QData)((IData)(
+                                                                             ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
+                                                                               << 0x0000000bU) 
+                                                                              | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[2U] 
+                                                                                >> 0x00000015U))))) 
+                                                          + (QData)((IData)(
+                                                                            ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
+                                                                              << 0x0000000bU) 
+                                                                             | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
+                                                                                >> 0x00000015U))))))
                                                          : 
                                                         ((7U 
                                                           == 
@@ -646,8 +650,23 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
                                                            (7U 
                                                             & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
                                                                >> 0x00000015U)))
-                                                           ? 
-                                                          VL_SHIFTR_QQI(33,33,32, vlSelfRef.custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__unsigend_sub, 0x00000020U)
+                                                           ? (QData)((IData)(
+                                                                             (1U 
+                                                                              & (IData)(
+                                                                                (1ULL 
+                                                                                & ((1ULL 
+                                                                                + 
+                                                                                ((~ (QData)((IData)(
+                                                                                ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
+                                                                                << 0x0000000bU) 
+                                                                                | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[2U] 
+                                                                                >> 0x00000015U))))) 
+                                                                                + (QData)((IData)(
+                                                                                ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
+                                                                                << 0x0000000bU) 
+                                                                                | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
+                                                                                >> 0x00000015U)))))) 
+                                                                                >> 0x00000020U))))))
                                                            : 0ULL)))))))));
     vlSelfRef.custom_cpu__DOT__EX_EX__DOT__Branch_real 
         = (1U & (((0U == (7U & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[1U] 
@@ -1461,7 +1480,6 @@ VL_ATTR_COLD void Vcustom_cpu___024root___ctor_var_reset(Vcustom_cpu___024root* 
     vlSelf->custom_cpu__DOT__EX_EX__DOT__EX_work = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 6178133438959338381ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__Write_strb = VL_SCOPED_RAND_RESET_I(4, __VscopeHash, 8647725880325139619ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__EX_write = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 15530325126960028849ull);
-    vlSelf->custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__unsigend_sub = VL_SCOPED_RAND_RESET_Q(33, __VscopeHash, 3889031481152139094ull);
     vlSelf->custom_cpu__DOT__MEM_EX__DOT__MEM_to_WB_valid = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 6549950190953379427ull);
     VL_SCOPED_RAND_RESET_W(183, vlSelf->custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg, __VscopeHash, 11010710126216805396ull);
     vlSelf->custom_cpu__DOT__MEM_EX__DOT__MEM_current_state = VL_SCOPED_RAND_RESET_I(5, __VscopeHash, 14525218699955029314ull);
