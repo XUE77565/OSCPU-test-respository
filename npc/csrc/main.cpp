@@ -4,6 +4,8 @@
 #include <string.h>
 #include <sys/time.h>
 
+#define ITRACE 1
+
 // Verilator 头文件
 #include "Vcustom_cpu.h"
 #include "Vcustom_cpu___024root.h"
@@ -236,6 +238,9 @@ void sim_exec(uint64_t n) {
     if (retired) {
       inst_cnt++;
       npc_state.nr_inst++;
+      if(ITRACE){
+        printf("0x%08x: Instruction retired, Instruction: %lu\n", sim_get_pc(), (unsigned long)npc_state.nr_inst);
+      }
     }
 
     // 检测 ebreak
