@@ -283,7 +283,7 @@ int main(int argc, char *argv[]) {
   sim_init(argv[1]);
 
   // 启动 SDB
-  if (!interactive) {
+  if (interactive) {
     sdb_set_batch_mode();
   }
   sdb_mainloop();
