@@ -189,7 +189,7 @@ bool sim_clock_step() {
 
   // 通过 Verilator 暴露的内部信号 WB_work 判断本周期是否有指令退役
   // (比 inst_retired[69] 更准确, 后者仅在有寄存器写回时为 1)
-  return g_top->custom_cpu__DOT__WB_EX__DOT__WB_work;
+  return g_top->rootp->custom_cpu__DOT__WB_EX__DOT__WB_work;
 }
 
 // 获取当前 PC
