@@ -20,6 +20,11 @@ module regfile(
 
 reg [`DATA_WIDTH-1:0] regfile [2**`ADDR_WIDTH-1:0];
 
+// 在仿真开始时将寄存器数组指针传给 C++
+initial begin
+    set_gpr_ptr(regfile);
+end
+
 //同步写，异步读
 assign rdata1 = (raddr1 == 0) ? 0 : regfile[raddr1];
 assign rdata2 = (raddr2 == 0) ? 0 : regfile[raddr2];
