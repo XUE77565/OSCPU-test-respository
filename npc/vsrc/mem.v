@@ -217,8 +217,8 @@ assign  RF_wdata  =	(opcode==`JAL ||opcode==`JALR)?		PC_MEM + 4:
 						 (eff==2'b01)?  ((func[2]==0)?	{{24{read_byte_1[7]}},read_byte_1} :	{{24{1'b0}},read_byte_1}):
 						 (eff==2'b10)?  ((func[2]==0)?	{{24{read_byte_2[7]}},read_byte_2} :	{{24{1'b0}},read_byte_2}):
 						 		((func[2]==0)?	{{24{read_byte_3[7]}},read_byte_3} :	{{24{1'b0}},read_byte_3}) ):
-			 (func[1:0]==2'b01)?	((eff==2'b00)?  ((func[2]==0)?	{{24{read_byte_1[7]}},Read_data_current [15:0]} : {{24{1'b0}},Read_data_current [15:0]}):
-			 					((func[2]==0)?	{{24{read_byte_3[7]}},Read_data_current [31:16]} : {{24{1'b0}},Read_data_current [31:16]})):
+			 (func[1:0]==2'b01)?	((eff==2'b00)?  ((func[2]==0)?	{{16{read_byte_1[7]}},Read_data_current [15:0]} : {{16{1'b0}},Read_data_current [15:0]}):
+			 					((func[2]==0)?	{{16{read_byte_3[7]}},Read_data_current [31:16]} : {{16{1'b0}},Read_data_current [31:16]})):
 			 Read_data_current
 			):
 			Result;
