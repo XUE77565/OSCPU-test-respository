@@ -530,200 +530,109 @@ void Vcustom_cpu___024root___nba_sequent__TOP__0(Vcustom_cpu___024root* vlSelf) 
                                    >> 0x00000014U))) 
            == (0x0000001fU & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[0U]));
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT__MEM_data 
-        = (IData)((0x000000ffffffffffULL & (((0x1bU 
-                                              == (0x0000001fU 
-                                                  & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                     >> 0x0000000eU))) 
-                                             | (0x19U 
-                                                == 
-                                                (0x0000001fU 
-                                                 & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                    >> 0x0000000eU))))
-                                             ? (4ULL 
-                                                + (QData)((IData)(
-                                                                  ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                                    << 0x00000014U) 
-                                                                   | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[2U] 
-                                                                      >> 0x0000000cU)))))
-                                             : ((5U 
-                                                 == 
-                                                 (0x0000001fU 
-                                                  & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                     >> 0x0000000eU)))
-                                                 ? 
-                                                ((QData)((IData)(
-                                                                 ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                                   << 0x00000014U) 
-                                                                  | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[2U] 
-                                                                     >> 0x0000000cU)))) 
-                                                 + (QData)((IData)(
-                                                                   ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
-                                                                     << 0x0000000dU) 
-                                                                    | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                                       >> 0x00000013U)))))
-                                                 : 
-                                                ((0x0dU 
-                                                  == 
-                                                  (0x0000001fU 
-                                                   & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                      >> 0x0000000eU)))
-                                                  ? (QData)((IData)(
-                                                                    ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
-                                                                      << 0x0000000dU) 
-                                                                     | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                                        >> 0x00000013U))))
-                                                  : 
-                                                 ((0U 
-                                                   == 
-                                                   (0x0000001fU 
-                                                    & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                       >> 0x0000000eU)))
-                                                   ? 
-                                                  ((0U 
-                                                    == 
-                                                    (3U 
-                                                     & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
-                                                        >> 0x00000013U)))
-                                                    ? 
-                                                   ((0U 
-                                                     == 
-                                                     (3U 
-                                                      & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                         >> 0x0000000cU)))
-                                                     ? 
-                                                    ((0x00200000U 
-                                                      & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
-                                                      ? (QData)((IData)(
-                                                                        (0x000000ffU 
-                                                                         & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)))
-                                                      : 
-                                                     (((QData)((IData)(
-                                                                       (0x00ffffffU 
-                                                                        & (- (IData)(
-                                                                                (1U 
-                                                                                & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                                >> 7U))))))) 
-                                                       << 8U) 
-                                                      | (QData)((IData)(
-                                                                        (0x000000ffU 
-                                                                         & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)))))
-                                                     : 
-                                                    ((1U 
-                                                      == 
-                                                      (3U 
-                                                       & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                          >> 0x0000000cU)))
-                                                      ? 
-                                                     ((0x00200000U 
-                                                       & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
-                                                       ? (QData)((IData)(
-                                                                         (0x000000ffU 
-                                                                          & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                             >> 8U))))
-                                                       : 
-                                                      (((QData)((IData)(
-                                                                        (0x00ffffffU 
-                                                                         & (- (IData)(
-                                                                                (1U 
-                                                                                & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                                >> 0x0000000fU))))))) 
-                                                        << 8U) 
-                                                       | (QData)((IData)(
-                                                                         (0x000000ffU 
-                                                                          & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                             >> 8U))))))
-                                                      : 
-                                                     ((2U 
-                                                       == 
-                                                       (3U 
-                                                        & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                           >> 0x0000000cU)))
-                                                       ? 
-                                                      ((0x00200000U 
-                                                        & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
-                                                        ? (QData)((IData)(
-                                                                          (0x000000ffU 
-                                                                           & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                              >> 0x00000010U))))
-                                                        : 
-                                                       (((QData)((IData)(
-                                                                         (0x00ffffffU 
-                                                                          & (- (IData)(
-                                                                                (1U 
-                                                                                & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                                >> 0x00000017U))))))) 
-                                                         << 8U) 
-                                                        | (QData)((IData)(
-                                                                          (0x000000ffU 
-                                                                           & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                              >> 0x00000010U))))))
-                                                       : 
-                                                      ((0x00200000U 
-                                                        & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
-                                                        ? (QData)((IData)(
-                                                                          (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                           >> 0x00000018U)))
-                                                        : 
-                                                       (((QData)((IData)(
-                                                                         (0x00ffffffU 
-                                                                          & (- (IData)(
-                                                                                (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                                >> 0x0000001fU)))))) 
-                                                         << 8U) 
-                                                        | (QData)((IData)(
-                                                                          (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                           >> 0x00000018U))))))))
-                                                    : 
-                                                   ((1U 
-                                                     == 
-                                                     (3U 
-                                                      & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
-                                                         >> 0x00000013U)))
-                                                     ? 
-                                                    ((0U 
-                                                      == 
-                                                      (3U 
-                                                       & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                          >> 0x0000000cU)))
-                                                      ? 
-                                                     ((0x00200000U 
-                                                       & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
-                                                       ? (QData)((IData)(
-                                                                         (0x0000ffffU 
-                                                                          & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)))
-                                                       : 
-                                                      (((QData)((IData)(
-                                                                        (0x00ffffffU 
-                                                                         & (- (IData)(
-                                                                                (1U 
-                                                                                & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                                >> 0x0000000fU))))))) 
-                                                        << 0x00000010U) 
-                                                       | (QData)((IData)(
-                                                                         (0x0000ffffU 
-                                                                          & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)))))
-                                                      : 
-                                                     ((0x00200000U 
-                                                       & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
-                                                       ? (QData)((IData)(
-                                                                         (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                          >> 0x00000010U)))
-                                                       : 
-                                                      (((QData)((IData)(
-                                                                        (0x00ffffffU 
-                                                                         & (- (IData)(
-                                                                                (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                                >> 0x0000001fU)))))) 
-                                                        << 0x00000010U) 
-                                                       | (QData)((IData)(
-                                                                         (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                                          >> 0x00000010U))))))
-                                                     : (QData)((IData)(vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current))))
-                                                   : (QData)((IData)(
-                                                                     ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[5U] 
-                                                                       << 0x0000000aU) 
-                                                                      | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
-                                                                         >> 0x00000016U))))))))));
+        = (((0x1bU == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                      >> 0x0000000eU))) 
+            | (0x19U == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                        >> 0x0000000eU))))
+            ? ((IData)(4U) + ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                               << 0x00000014U) | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[2U] 
+                                                  >> 0x0000000cU)))
+            : ((5U == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                      >> 0x0000000eU)))
+                ? (((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                     << 0x00000014U) | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[2U] 
+                                        >> 0x0000000cU)) 
+                   + ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
+                       << 0x0000000dU) | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                          >> 0x00000013U)))
+                : ((0x0dU == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                             >> 0x0000000eU)))
+                    ? ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
+                        << 0x0000000dU) | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                           >> 0x00000013U))
+                    : ((0U == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                              >> 0x0000000eU)))
+                        ? ((0U == (3U & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
+                                         >> 0x00000013U)))
+                            ? ((0U == (3U & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                             >> 0x0000000cU)))
+                                ? ((0x00200000U & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
+                                    ? (0x000000ffU 
+                                       & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)
+                                    : (((- (IData)(
+                                                   (1U 
+                                                    & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                       >> 7U)))) 
+                                        << 8U) | (0x000000ffU 
+                                                  & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)))
+                                : ((1U == (3U & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                 >> 0x0000000cU)))
+                                    ? ((0x00200000U 
+                                        & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
+                                        ? (0x000000ffU 
+                                           & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                              >> 8U))
+                                        : (((- (IData)(
+                                                       (1U 
+                                                        & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                           >> 0x0000000fU)))) 
+                                            << 8U) 
+                                           | (0x000000ffU 
+                                              & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                 >> 8U))))
+                                    : ((2U == (3U & 
+                                               (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                >> 0x0000000cU)))
+                                        ? ((0x00200000U 
+                                            & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
+                                            ? (0x000000ffU 
+                                               & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                  >> 0x00000010U))
+                                            : (((- (IData)(
+                                                           (1U 
+                                                            & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                               >> 0x00000017U)))) 
+                                                << 8U) 
+                                               | (0x000000ffU 
+                                                  & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                     >> 0x00000010U))))
+                                        : ((0x00200000U 
+                                            & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
+                                            ? VL_SHIFTR_III(32,32,32, vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current, 0x00000018U)
+                                            : (((- (IData)(
+                                                           (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                            >> 0x0000001fU))) 
+                                                << 8U) 
+                                               | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                  >> 0x00000018U))))))
+                            : ((1U == (3U & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
+                                             >> 0x00000013U)))
+                                ? ((0U == (3U & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                 >> 0x0000000cU)))
+                                    ? ((0x00200000U 
+                                        & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
+                                        ? (0x0000ffffU 
+                                           & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)
+                                        : (((- (IData)(
+                                                       (1U 
+                                                        & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                           >> 0x0000000fU)))) 
+                                            << 0x00000010U) 
+                                           | (0x0000ffffU 
+                                              & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)))
+                                    : ((0x00200000U 
+                                        & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
+                                        ? VL_SHIFTR_III(32,32,32, vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current, 0x00000010U)
+                                        : (((- (IData)(
+                                                       (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                        >> 0x0000001fU))) 
+                                            << 0x00000010U) 
+                                           | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                              >> 0x00000010U))))
+                                : vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current))
+                        : ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[5U] 
+                            << 0x0000000aU) | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
+                                               >> 0x00000016U))))));
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_5 
         = ((0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
                                    >> 0x0000000fU))) 
