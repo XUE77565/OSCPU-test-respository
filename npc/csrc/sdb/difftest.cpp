@@ -93,6 +93,10 @@ static bool check_regs(CPU_state *ref, CPU_state *dut, uint32_t pc) {
 void init_difftest(const char *ref_so_file, long img_size) {
   assert(ref_so_file != NULL);
 
+  // uint32_t data;
+  // uint32_t current_addr = 0x80000000;
+  // data = sim_pmem_read(0x80000000, 4);
+
   // 加载动态库
   void *handle = dlopen(ref_so_file, RTLD_LAZY);
   if (!handle) {
@@ -109,6 +113,8 @@ void init_difftest(const char *ref_so_file, long img_size) {
 
   void (*ref_difftest_init)(int) = (void (*)(int))dlsym(handle, "difftest_init");
 
+
+
   if (!ref_difftest_memcpy || !ref_difftest_regcpy ||
       !ref_difftest_exec || !ref_difftest_init) {
     fprintf(stderr, "DiffTest: failed to load API from %s\n", ref_so_file);
@@ -119,17 +125,28 @@ void init_difftest(const char *ref_so_file, long img_size) {
   // 初始化 NEMU
   ref_difftest_init(0);
 
+
+
   // 将 NPC 的内存镜像拷贝到 NEMU
   extern uint8_t *sim_get_pmem_ptr();
+  printf("pmem = %p\n", sim_get_pmem_ptr());
   ref_difftest_memcpy(RESET_VECTOR, sim_get_pmem_ptr(), img_size, DIFFTEST_TO_REF);
+  
   //打印出拷贝的内存的地址
   printf("DiffTest: copied %ld bytes to reference memory at address 0x%08x\n",
          img_size, RESET_VECTOR);
+
+  // data = sim_pmem_read(0x80000000, 4);
+  // printf("==========================================\n");
+  // printf("[TESTING4] Read 0x%08x from address 0x%08x\n", data, current_addr);
+  // printf("==========================================\n");
 
   // 将 NPC 的寄存器状态同步到 NEMU
   CPU_state cpu = {};
   get_cpu_state(&cpu);
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
+
+
 
   g_difftest_enabled = true;
   printf("DiffTest: " ANSI_FMT("ON", ANSI_FG_GREEN) " (reference: %s)\n", ref_so_file);

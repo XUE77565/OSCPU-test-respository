@@ -187,7 +187,7 @@ void sim_init(const char *bin_path) {
 
   // 初始化 DiffTest (加载 NEMU 参考实现)
   // NPC_HOME 由 Makefile 传入绝对路径
-  init_difftest(NPC_HOME "/riscv32-nemu-interpreter-so", g_img_size);
+  init_difftest("/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/nemu/build/riscv32-nemu-interpreter-so", g_img_size);
 }
 
 // 推进一个时钟周期
@@ -284,7 +284,7 @@ void sim_exec(uint64_t n) {
         printf("0x%08x: Instruction retired, Instruction: %08x\n", sim_get_pc(), sim_get_inst());
       }
       // DiffTest: 与 NEMU 参考实现对比寄存器状态
-      //difftest_step(sim_get_pc());
+      difftest_step(sim_get_pc());
       // 检查 watchpoint
       if (check_watchpoints()) {
         npc_state.state = NPC_STOP;

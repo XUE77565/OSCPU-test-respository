@@ -22,7 +22,13 @@
 // `direction`指定拷贝的方向, `DIFFTEST_TO_DUT`表示往DUT拷贝, `DIFFTEST_TO_REF`表示往REF拷贝
 __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
   //由于nemu中指针和主机的并不一直，所以不能用memcpy
-  if(direction == DIFFTEST_TO_DUT) {
+  //打印buf内的内容
+  // for(int i = 0; i < n; i++) {
+  //   printf("%02x ", ((uint8_t *)buf)[i]);
+  // }
+  // printf("\n");
+  // printf("FUCKFUCK\n");
+  if(direction == DIFFTEST_TO_REF) {
     for(int i = 0; i < n; i++) {
       paddr_write(addr + i, 1, ((uint8_t *)buf)[i]);
     }
