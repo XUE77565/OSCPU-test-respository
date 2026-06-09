@@ -148,8 +148,6 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
 // 初始化仿真: 加载二进制, 初始化 Verilator, 复位 CPU
 void sim_init(const char *bin_path) {
   load_binary(bin_path);
-  //打印load_binary所在的地址
-  printf("Binary loaded at address: 0x%08x, size: %ld bytes\n", PMEM_START, g_img_size);
 
   g_top = new Vcustom_cpu;
 
@@ -219,6 +217,30 @@ uint32_t sim_get_inst() {
   return g_top ? (uint32_t)g_top->Instruction : 0;
 }
 
+// ===== WB 阶段信号访问 (从 inst_retired 输出中提取) =====
+// inst_retired[69:0] = {inst_wen, RF_waddr[4:0], RF_wdata[31:0], PC_WB[31:0]}
+// VlWide<3>: word[0]=PC_WB, word[1]=RF_wdata, word[2]={inst_wen(5), RF_waddr(4:0)}
+
+uint32_t sim_get_wb_pc() {
+  if (!g_top) return 0;
+  return g_top->inst_retire[0];
+}
+
+bool sim_get_wb_wen() {
+  if (!g_top) return false;
+  return (g_top->inst_retire[2] >> 5) & 1;
+}
+
+uint32_t sim_get_wb_waddr() {
+  if (!g_top) return 0;
+  return g_top->inst_retire[2] & 0x1F;
+}
+
+uint32_t sim_get_wb_wdata() {
+  if (!g_top) return 0;
+  return g_top->inst_retire[1];
+}
+
 // 通过 Verilator 暴露的内部信号路径读取寄存器值
 // 等效于 DPI-C 方式: Verilator 将 regfile 数组编译为可直接访问的 C 数组
 uint32_t sim_get_reg(int idx) {
@@ -238,7 +260,6 @@ void sim_print_regs() {
 
 // 供 SDB 调试器读取物理内存 (x 命令、表达式解引用)
 uint32_t sim_pmem_read(uint32_t addr, int len) {
-  printf("sim_pmem_read: addr=0x%08x, len=%d\n", addr, len);
   if (!in_pmem(addr)) {
     printf("Address " FMT_WORD " is out of pmem range\n", addr);
     return 0;

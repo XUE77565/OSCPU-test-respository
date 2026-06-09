@@ -31,6 +31,12 @@ uint32_t sim_get_pc();
 uint32_t sim_get_reg(int idx);
 void sim_print_regs();
 
+// ==================== WB 阶段信号 (main.cpp, 从 inst_retired 提取) ====================
+uint32_t sim_get_wb_pc();    // WB 阶段退役指令的 PC
+bool     sim_get_wb_wen();   // WB 是否写寄存器
+uint32_t sim_get_wb_waddr(); // WB 写回目标寄存器编号
+uint32_t sim_get_wb_wdata(); // WB 写回数据
+
 // ==================== 内存访问 (main.cpp) ====================
 uint32_t sim_pmem_read(uint32_t addr, int len);
 uint8_t* sim_get_pmem_ptr();  // 获取 pmem 基地址, 用于 DiffTest 内存拷贝
