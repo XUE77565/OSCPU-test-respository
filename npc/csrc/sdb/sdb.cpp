@@ -39,10 +39,109 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_info(char *args) {
-  if (args == NULL || strcmp(args, "r") == 0) {
+  if (args == NULL) {
+    printf("Usage: info [r|w]\n");
+    return 0;
+  }
+  if (strcmp(args, "r") == 0) {
     sim_print_regs();
+  } else if (strcmp(args, "w") == 0) {
+    wp_display();
   } else {
     printf("Unknown info subcommand: %s\n", args);
+  }
+  return 0;
+}
+
+// 扫描内存: x N EXPR
+// 求值 EXPR 得到起始地址, 打印从该地址开始的 N 个 4 字节
+static int cmd_x(char *args) {
+  if (args == NULL) {
+    printf("Usage: x N EXPR\n");
+    return 0;
+  }
+
+  char *arg_end = args + strlen(args);
+  char *num_str = strtok(args, " ");
+  //printf("cmd_x: num_str='%s'\n", num_str);
+  char *expr_str = num_str ? num_str + strlen(num_str) + 1 : NULL;
+  //printf("cmd_x: expr_str='%s'\n", expr_str);
+  if (expr_str >= arg_end) expr_str = NULL;
+
+  if (num_str == NULL || expr_str == NULL) {
+    printf("Usage: x N EXPR\n");
+    return 0;
+  }
+
+  int n = atoi(num_str);
+  bool success = false;
+  uint32_t addr = expr(expr_str, &success);
+  printf("cmd_x: n=%d, addr=0x%08x\n", n, addr);
+  if (!success) {
+    printf("Failed to evaluate expression: %s\n", expr_str);
+    return 0;
+  }
+
+  for (int i = 0; i < n; i++) {
+    uint32_t current_addr = addr + i * 4;
+    uint32_t data = sim_pmem_read(current_addr, 4);
+    printf("0x%08x: 0x%08x\n", current_addr, data);
+  }
+
+  return 0;
+}
+
+// 求值表达式并打印结果: p EXPR
+static int cmd_p(char *args) {
+  if (args == NULL) {
+    printf("Usage: p EXPR\n");
+    return 0;
+  }
+
+  bool success = false;
+  uint32_t result = expr(args, &success);
+  if (success) {
+    printf("= %u (0x%08x)\n", result, result);
+  } else {
+    printf("Failed to evaluate expression: %s\n", args);
+  }
+  return 0;
+}
+
+// 设置监视点: w EXPR
+static int cmd_w(char *args) {
+  if (args == NULL) {
+    printf("Usage: w EXPR\n");
+    return 0;
+  }
+
+  bool success = false;
+  uint32_t val = expr(args, &success);
+  if (!success) {
+    printf("Failed to evaluate expression: %s\n", args);
+    return 0;
+  }
+
+  WP *wp = new_wp();
+  strncpy(wp->expr, args, EXPR_LEN - 1);
+  wp->expr[EXPR_LEN - 1] = '\0';
+  wp->old_value = val;
+  printf("Watchpoint %d: %s = 0x%08x\n", wp->NO, wp->expr, wp->old_value);
+  return 0;
+}
+
+// 删除监视点: d N
+static int cmd_d(char *args) {
+  if (args == NULL) {
+    printf("Usage: d N\n");
+    return 0;
+  }
+
+  int no = atoi(args);
+  if (delete_wp_by_no(no)) {
+    printf("Deleted watchpoint %d\n", no);
+  } else {
+    printf("Watchpoint %d not found\n", no);
   }
   return 0;
 }
@@ -56,11 +155,15 @@ static struct {
   const char *description;
   int (*handler) (char *);
 } cmd_table [] = {
-  { "help", "Display information about all supported commands", cmd_help },
-  { "c",    "Continue the execution of the program",             cmd_c },
-  { "q",    "Exit NEMU",                                        cmd_q },
-  { "si",   "Execute N instructions (default 1): si [N]",       cmd_si },
-  { "info", "Print register status: info r",                    cmd_info },
+  { "help", "Display information about all supported commands",         cmd_help },
+  { "c",    "Continue the execution of the program",                    cmd_c },
+  { "q",    "Exit NPC",                                                 cmd_q },
+  { "si",   "Execute N instructions (default 1): si [N]",              cmd_si },
+  { "info", "Print register/watchpoint status: info [r|w]",            cmd_info },
+  { "x",    "Scan memory: x N EXPR",                                   cmd_x },
+  { "p",    "Evaluate expression: p EXPR",                             cmd_p },
+  { "w",    "Set watchpoint: w EXPR",                                  cmd_w },
+  { "d",    "Delete watchpoint: d N",                                  cmd_d },
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))

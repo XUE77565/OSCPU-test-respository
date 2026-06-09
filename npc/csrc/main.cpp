@@ -40,6 +40,9 @@ static Vcustom_cpu *g_top = nullptr;
 static bool g_ebreak = false;
 static int  g_exit_code = 0;
 
+// 最近加载的二进制文件大小 (供 DiffTest init 使用)
+static long g_img_size = 0;
+
 // ==================== 内存辅助函数 ====================
 
 static inline uint8_t* guest_to_host(uint32_t addr) {
@@ -69,6 +72,7 @@ static void load_binary(const char *bin_path) {
 
   fread(pmem, 1, size, fp);
   fclose(fp);
+  g_img_size = size;
   printf("Loaded %ld bytes from %s into pmem\n", size, bin_path);
 }
 
@@ -144,6 +148,8 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
 // 初始化仿真: 加载二进制, 初始化 Verilator, 复位 CPU
 void sim_init(const char *bin_path) {
   load_binary(bin_path);
+  //打印load_binary所在的地址
+  printf("Binary loaded at address: 0x%08x, size: %ld bytes\n", PMEM_START, g_img_size);
 
   g_top = new Vcustom_cpu;
 
@@ -174,6 +180,14 @@ void sim_init(const char *bin_path) {
   g_top->rst = 0;
 
   npc_state.state = NPC_STOP;
+
+  // 初始化 SDB 子系统
+  init_wp_pool();
+  init_regex();
+
+  // 初始化 DiffTest (加载 NEMU 参考实现)
+  // NPC_HOME 由 Makefile 传入绝对路径
+  init_difftest(NPC_HOME "/riscv32-nemu-interpreter-so", g_img_size);
 }
 
 // 推进一个时钟周期
@@ -222,6 +236,29 @@ void sim_print_regs() {
   printf("pc   = 0x%08x\n", sim_get_pc());
 }
 
+// 供 SDB 调试器读取物理内存 (x 命令、表达式解引用)
+uint32_t sim_pmem_read(uint32_t addr, int len) {
+  printf("sim_pmem_read: addr=0x%08x, len=%d\n", addr, len);
+  if (!in_pmem(addr)) {
+    printf("Address " FMT_WORD " is out of pmem range\n", addr);
+    return 0;
+  }
+  uint8_t *p = guest_to_host(addr);
+  switch (len) {
+    case 1: return *(uint8_t *)p;
+    case 2: return *(uint16_t *)p;
+    case 4: return *(uint32_t *)p;
+    default:
+      printf("Invalid read length: %d\n", len);
+      return 0;
+  }
+}
+
+// 获取 pmem 基地址, 用于 DiffTest 内存拷贝
+uint8_t* sim_get_pmem_ptr() {
+  return pmem;
+}
+
 // 仿照 NEMU cpu_exec: 执行 n 条指令
 // n = -1 (即 UINT64_MAX) 表示持续运行直到 ebreak
 void sim_exec(uint64_t n) {
@@ -245,6 +282,13 @@ void sim_exec(uint64_t n) {
       npc_state.nr_inst++;
       if(ITRACE){
         printf("0x%08x: Instruction retired, Instruction: %08x\n", sim_get_pc(), sim_get_inst());
+      }
+      // DiffTest: 与 NEMU 参考实现对比寄存器状态
+      //difftest_step(sim_get_pc());
+      // 检查 watchpoint
+      if (check_watchpoints()) {
+        npc_state.state = NPC_STOP;
+        return;
       }
     }
 

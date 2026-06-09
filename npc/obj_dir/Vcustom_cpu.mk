@@ -37,16 +37,20 @@ VM_PREFIX = Vcustom_cpu
 VM_MODPREFIX = Vcustom_cpu
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-  -I/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/include -g -O2 \
+  -I/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/include -g -O2 -DNPC_HOME=\"/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc\" \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
-  -lreadline \
+  -lreadline -ldl \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
   main \
+  difftest \
+  expr \
+  expreval \
   sdb \
+  watchpoint \
 
 # User .cpp directories (from .cpp's on Verilator command line)
 VM_USER_DIR = \
@@ -65,7 +69,15 @@ VPATH += $(VM_USER_DIR)
 
 main.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/main.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
+difftest.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/difftest.cpp 
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
+expr.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/expr.cpp 
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
+expreval.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/expreval.cpp 
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 sdb.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/sdb.cpp 
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
+watchpoint.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/watchpoint.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 
 ### Link rules... (from --exe)

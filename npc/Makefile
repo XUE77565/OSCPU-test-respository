@@ -42,8 +42,8 @@ VERILATOR_FLAGS := --cc \
 # 传递给 C++ 编译器的选项
 # -I: 让 C++ 能 include sdb.h; -g: 调试信息; -O2: 优化
 # -lreadline: 链接 readline 库（sdb 调试器需要）
-VERILATOR_FLAGS += -CFLAGS "-I$(CSRC_DIR)/include -g -O2" \
-	-LDFLAGS "-lreadline"
+VERILATOR_FLAGS += -CFLAGS "-I$(CSRC_DIR)/include -g -O2 -DNPC_HOME=\\\"$(NPC_HOME)\\\"" \
+	-LDFLAGS "-lreadline -ldl"
 
 # ============================== 构建目标 ==============================
 
@@ -65,11 +65,11 @@ sim:
 	$(call git_commit, "sim RTL")  # DO NOT REMOVE THIS LINE!!!
 	@$(MAKE) all
 	@echo "Running simulation with image: $(IMG)"
-	$(TARGET) $(IMG) $(MODE)
+	LD_PRELOAD=$$(gcc --print-file-name=libasan.so) $(TARGET) $(IMG) $(MODE)
 
 # run 目标：直接运行已编译的仿真（不重新编译）
 run:
-	$(TARGET) $(IMG) $(MODE)
+	LD_PRELOAD=$$(gcc --print-file-name=libasan.so) $(TARGET) $(IMG) $(MODE)
 
 # clean 目标：清理所有构建产物
 clean:
