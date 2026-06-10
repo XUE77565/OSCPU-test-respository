@@ -145,7 +145,7 @@ bool Vcustom_cpu___024root___trigger_anySet__act(const VlUnpacked<QData/*63:0*/,
 }
 
 void Vcustom_cpu___024unit____Vdpiimwrap_set_ebreak_TOP____024unit();
-void Vcustom_cpu___024unit____Vdpiimwrap_pmem_write_TOP____024unit(IData/*31:0*/ addr, IData/*31:0*/ data, CData/*3:0*/ mask);
+void Vcustom_cpu___024unit____Vdpiimwrap_pmem_write_TOP____024unit(IData/*31:0*/ addr, IData/*31:0*/ data, IData/*31:0*/ mask);
 void Vcustom_cpu___024unit____Vdpiimwrap_pmem_read_TOP____024unit(IData/*31:0*/ raddr, IData/*31:0*/ &pmem_read__Vfuncrtn);
 extern const VlUnpacked<CData/*3:0*/, 32> Vcustom_cpu__ConstPool__TABLE_h81236597_0;
 
@@ -776,22 +776,21 @@ void Vcustom_cpu___024root___nba_sequent__TOP__0(Vcustom_cpu___024root* vlSelf) 
                                                : 0U)))
                                  : ((3U == (7U & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
                                                   >> 0x00000015U)))
-                                     ? (- (IData)((1U 
-                                                   & (IData)(
-                                                             (1ULL 
-                                                              & ((1ULL 
-                                                                  + 
-                                                                  ((~ (QData)((IData)(
-                                                                                ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
+                                     ? (1U & (IData)(
+                                                     (1ULL 
+                                                      & ((1ULL 
+                                                          + 
+                                                          ((~ (QData)((IData)(
+                                                                              ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
                                                                                 << 0x0000000bU) 
-                                                                                | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[2U] 
+                                                                               | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[2U] 
                                                                                 >> 0x00000015U))))) 
-                                                                   + (QData)((IData)(
-                                                                                ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
-                                                                                << 0x0000000bU) 
-                                                                                | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
+                                                           + (QData)((IData)(
+                                                                             ((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[4U] 
+                                                                               << 0x0000000bU) 
+                                                                              | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[3U] 
                                                                                 >> 0x00000015U)))))) 
-                                                                 >> 0x00000020U))))))
+                                                         >> 0x00000020U))))
                                      : 0U))))))));
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_yes 
         = ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__Jump) 

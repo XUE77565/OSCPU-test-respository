@@ -92,6 +92,12 @@ extern "C" void set_ebreak() {
 extern "C" int pmem_read(int raddr) {
   uint32_t addr = (uint32_t)(raddr & ~0x3u);
 
+  // DEBUG: 追踪对栈区域的读取
+  if (addr >= 0x80008fd0 && addr <= 0x80009000) {
+    int val = in_pmem(addr) ? *(int32_t *)guest_to_host(addr) : 0;
+    printf("[LOAD ] addr=0x%08x val=0x%08x\n", addr, (uint32_t)val);
+  }
+
   // 时钟 MMIO: 返回当前时间(微秒)
   if (addr == TIMER_MMIO || addr == TIMER_MMIO + 4) {
     struct timeval tv;
@@ -118,8 +124,9 @@ extern "C" int pmem_read(int raddr) {
 // 向物理地址写入, 由 mem.v 通过 DPI-C 调用
 // 总是往地址为 waddr & ~0x3u 的 4 字节按掩码 wmask 写入 wdata
 // wmask 中每比特表示 wdata 中 1 个字节的掩码
-extern "C" void pmem_write(int waddr, int wdata, char wmask) {
+extern "C" void pmem_write(int waddr, int wdata, int wmask) {
   uint32_t addr = (uint32_t)(waddr & ~0x3u);
+  uint8_t mask = (uint8_t)(wmask & 0xF);
 
   // 串口 MMIO: 输出字符
   if (addr == SERIAL_MMIO) {
@@ -130,10 +137,14 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
 
   // 普通内存写入, 按字节掩码写入
   if (in_pmem(addr)) {
+    // DEBUG: 追踪对栈区域的写入 (sp 附近)
+    if (addr >= 0x80008fd0 && addr <= 0x80009000) {
+      printf("[STORE] addr=0x%08x data=0x%08x mask=0x%02x\n", addr, (uint32_t)wdata, (uint8_t)wmask);
+    }
     uint8_t *p = guest_to_host(addr);
     uint8_t *data_bytes = (uint8_t *)&wdata;
     for (int i = 0; i < 4; i++) {
-      if (wmask & (1 << i)) {
+      if (mask & (1 << i)) {
         p[i] = data_bytes[i];
       }
     }

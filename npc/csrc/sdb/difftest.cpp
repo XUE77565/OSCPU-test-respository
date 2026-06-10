@@ -61,6 +61,8 @@ static const char *reg_names[] = {
 // 非阻塞赋值使得当 WB_work=1 时, 寄存器文件还在用旧 MEM_to_WB_data_reg 写入。
 // 所以必须用 inst_retired 中的 WB 写信息来修正。
 
+static int dbg_inst_cnt = 0;
+
 static void get_cpu_state(CPU_state *s) {
   // 1. 读取寄存器文件 (比 WB 写回延迟一拍)
   for (int i = 0; i < 32; i++) {
@@ -69,10 +71,23 @@ static void get_cpu_state(CPU_state *s) {
   s->pc = sim_get_pc();
 
   // 2. 用 inst_retired 中的 WB 写信息修正当前指令的写回结果
-  if (sim_get_wb_wen()) {
-    uint32_t waddr = sim_get_wb_waddr();
-    if (waddr != 0) {
-      s->gpr[waddr] = sim_get_wb_wdata();
+  bool wb_wen = sim_get_wb_wen();
+  uint32_t wb_waddr = sim_get_wb_waddr();
+  uint32_t wb_wdata = sim_get_wb_wdata();
+  uint32_t wb_pc = sim_get_wb_pc();
+
+  // 调试: 打印最近几条指令的 WB 修正信息
+  // dbg_inst_cnt++;
+  // if (dbg_inst_cnt > 1) {
+  //   printf("[DBG #%d] wb_pc=0x%08x wen=%d waddr=%u(%s) wdata=0x%08x | regfile[a5]=0x%08x regfile[s0]=0x%08x\n",
+  //          dbg_inst_cnt, wb_pc, wb_wen, wb_waddr,
+  //          wb_waddr < 32 ? reg_names[wb_waddr] : "??",
+  //          wb_wdata, sim_get_reg(15), sim_get_reg(8));
+  // }
+
+  if (wb_wen) {
+    if (wb_waddr != 0) {
+      s->gpr[wb_waddr] = wb_wdata;
     }
   }
 }

@@ -41,7 +41,7 @@ module alu(
                                 (ALUop == `SLT)  ? (({A[31],B[31]} == 2'b10) ? 1 : 
                                                     ({A[31],B[31]} == 2'b01) ? 0 : 
                                                     (temp_sub[31]  == 1) ? 1: 0) :
-                                (ALUop == `SLTU) ? {32{unsigned_sub[32]}} : 0;
+                                (ALUop == `SLTU) ? {31'b0, unsigned_sub[32]} : 0;
 	
 	assign Overflow =   (ALUop == `ADD) ? ((A[31] && B[31] && ~Result[31]) || (~A[31] && ~B[31] && Result[31])) :
 			            (ALUop == `SUB) ? ((A[31] && ~B[31] && ~Result[31]) || (~A[31] && B[31] && Result[31])) : 
