@@ -37,6 +37,7 @@ static char* rl_gets() {
 
   line_read = readline("(nemu) ");
 
+  //非空行才加入历史
   if (line_read && *line_read) {
     add_history(line_read);
   }
@@ -45,13 +46,15 @@ static char* rl_gets() {
 }
 
 static int cmd_c(char *args) {
-  cpu_exec(-1);
+  cpu_exec(-1);//-1表示一直执行
   return 0;
 }
 
 
 static int cmd_q(char *args) {
+  //设置nemu状态，完成优雅的退出
   nemu_state.state = NEMU_QUIT;
+  //返回值为负，退出mainloop
   return -1;
 }
 
@@ -88,9 +91,7 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
-  printf("args = %s\n", args);
-  //The first argument is the number of 4-byte words to be scanned, 
-  //and the second argument is the expression to be evaluated.
+  //printf("args = %s\n", args);
   char *arg_end = args + strlen(args);
   char *num = strtok(args, " ");
   char *expr = num + strlen(num) + 1;
@@ -149,8 +150,9 @@ static int cmd_w(char *args) {
   if(wp == NULL) {
     return 0;
   }
+  //-1是为了给expr预留出空间
   strncpy(wp->expr, args, sizeof(wp->expr) - 1);
-  wp->expr[sizeof(wp->expr) - 1] = '\0'; // Ensure null-termination
+  wp->expr[sizeof(wp->expr) - 1] = '\0';
   bool success = false;
   wp->old_value = expr(args, &success);
   if(success == false) {
@@ -187,14 +189,14 @@ static struct {
   int (*handler) (char *);
 } cmd_table [] = {
   { "help", "Display information about all supported commands", cmd_help },
-  { "c", "Continue the execution of the program", cmd_c },
-  { "q", "Exit NEMU", cmd_q },
-  { "si", "Si N executes N instructions, default steps = 1", cmd_si },
+  { "c"   , "Continue the execution of the program", cmd_c },
+  { "q"   , "Exit NEMU", cmd_q },
+  { "si"  , "Si N executes N instructions, default steps = 1", cmd_si },
   { "info", "Print the register status or watchpoint information", cmd_info },
-  { "x", "Scan the memory: x N EXPR, evaluate EXPR and scan N words in memory", cmd_x },
-  { "p", "Evaluate the expression EXPR and print the result", cmd_p },
-  { "w", "Set a watchpoint for an expression EXPR", cmd_w },
-  { "d", "Delete the watchpoint with the given number N", cmd_d },
+  { "x"   , "Scan the memory: x N EXPR, evaluate EXPR and scan N words in memory", cmd_x },
+  { "p"   , "Evaluate the expression EXPR and print the result", cmd_p },
+  { "w"   , "Set a watchpoint for an expression EXPR", cmd_w },
+  { "d"   , "Delete the watchpoint with the given number N", cmd_d },
 
   /* TODO: Add more commands */
 
@@ -245,6 +247,7 @@ void sdb_mainloop() {
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
+    //解析命令参数
     char *args = cmd + strlen(cmd) + 1;
     //printf("args = %s\n", args);
     if (args >= str_end) {

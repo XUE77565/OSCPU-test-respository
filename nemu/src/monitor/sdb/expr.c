@@ -103,7 +103,7 @@ static bool make_token(char *e) {
   nr_token = 0;
 
   while (e[position] != '\0') {
-    /* Try all rules one by one. */
+    //逐一匹配正则规则
     for (i = 0; i < NR_REGEX; i ++) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
@@ -146,6 +146,7 @@ static bool make_token(char *e) {
 }
 
 word_t expr(char *e, bool *success) {
+  //解析token
   if (!make_token(e)) {
     *success = false;
     return 0;

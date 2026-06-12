@@ -57,11 +57,11 @@ int expreval(int p, int q, Token *tokens, bool *success) {
             return 0;
         }
     }
-    //when p and q are a pair of parentheses, we just evaluate the expression inside the parentheses
+    //如果p和q是一对括号，那么我们就只需要计算括号内的表达式即可
     else if (check_parentheses(p, q, tokens) == true) {
         return expreval(p + 1, q - 1, tokens, success);
     }
-    //divide the expression into two parts by the main operator, and evaluate the two parts recursively
+    //根据主运算符，递归运算
     else {
         int val1 = 0, val2 = 0;
         int op = -1;
@@ -124,33 +124,32 @@ int expreval(int p, int q, Token *tokens, bool *success) {
 }
 
 bool check_parentheses(int p, int q, Token *tokens) {
-    //use depth to check if the p and q are a pair of parentheses
     if(tokens[p].type != '(' || tokens[q].type != ')') {
         return false;
     }
     int depth = 0;
     for(int i = p + 1; i < q; i++) {
-        //if we encounter a '(', we increase the depth, if we encounter a ')', we decrease the depth
+        //如果在p和q之间遇到一个左括号，就把depth加1，如果遇到一个右括号，就把depth减
         if(tokens[i].type == '(') {
             depth++;
         }
         else if(tokens[i].type == ')') {
             if(depth == 0) {
-                //p is matching with a ')' before q, so p and q are not a pair of parentheses
+                //为了避免()()中最左和最后匹配的情况，如果遇到匹配的，就直接return false
                 return false;
             }
             depth--;
         }
     }
-    //EVEN IF DEPTH IS 0, IT DOES NOT MEAN THAT THE PARENTHESES ARE A PAIR, 
-    //BECAUSE THERE MAY BE OTHER PARENTHESES INSIDE,
-    //LIKE (A+B)*(C+D), THE PARENTHESES AROUND A+B AND C+D ARE NOT A PAIR
+    //即使depth为0，也不代表这对括号是匹配的，
+    //因为中间可能存在其他括号，
+    //例如(A+B)*(C+D)，A+B和C+D外面的括号并不是一对
     return true;
 }
 
 int find_main_operator(int p, int q, Token *tokens) {
     int main_op = -1;
-    int min_priority = 100; // a large number
+    int min_priority = 100;
     int depth = 0;
 
     for(int i = p; i <= q; i++) {
@@ -163,14 +162,14 @@ int find_main_operator(int p, int q, Token *tokens) {
         else if(tokens[i].type == ')') {
             depth--;
         }
-        // only consider operators at the top level,
-        // because we have already checked the parentheses in the previous step,
+        //只用考虑最外层，因为我们剥开了括号
         else if(depth == 0) { 
             int priority;
             switch (tokens[i].type) {
-                case TK_AND: priority = 0; break; // logical AND has the lowest priority
+                //按照优先级排列
+                case TK_AND: priority = 0; break; 
                 case TK_EQ:
-                case TK_NEQ: priority = 1; break; // equal and not equal
+                case TK_NEQ: priority = 1; break;
                 case '+':
                 case '-': priority = 2; break;
                 case '*':
@@ -178,8 +177,7 @@ int find_main_operator(int p, int q, Token *tokens) {
                 case TK_DEREF: priority = 4; break; //解引用优先级最高
                 default: priority = 100; // a large number for unknown operators
             }
-            //which is the rightmost operator with the lowest priority, because of the associativity of the operators
-            //考虑单目运算符左结合
+            //考虑解引用运算符右结合，如果优先级相同，选右边的，其他的选左边的
             if(priority < min_priority || (priority == min_priority && tokens[i].type != TK_DEREF)) { 
                 min_priority = priority;
                 main_op = i;

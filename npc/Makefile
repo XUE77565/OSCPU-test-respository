@@ -1,8 +1,4 @@
-# ***************************************************************************************
-# NPC Makefile - 使用 Verilator 将 Verilog 编译为 C++ 仿真可执行文件
-# ***************************************************************************************
-
-# ============================== 路径变量 ==============================
+# 使用 Verilator 将 Verilog 编译为 C++ 仿真可执行文件
 
 # NPC 项目的根目录，通过 realpath 获取绝对路径
 NPC_HOME := $(shell pwd)
@@ -56,7 +52,6 @@ $(TARGET): $(VSRCS) $(CSRCS)
 	verilator $(VERILATOR_FLAGS) $(VSRCS) $(CSRCS) -o $(TARGET)
 
 # 仿真模式: 默认 batch, 传 MODE=-i 切换到交互模式
-# 用法: make ARCH=minirv-npc ALL=add run MODE=-i
 MODE ?=
 
 # sim 目标：先通过 git_commit 记录 RTL 变更，再编译运行
