@@ -19,8 +19,13 @@ void hello_intr() {
   printf("  t = timer, d = device, y = yield\n");
   io_read(AM_INPUT_CONFIG);
   iset(1);
-  while (1) {
-    for (volatile int i = 0; i < 10000000; i++) ;
+  int j = 0;
+  //while (1) {
+    for (volatile int i = 0; i < 10; i++){
+    printf("ENTERING YIELD No. %d...\n", j);
     yield();
-  }
+    printf("BACK FROM YIELD No. %d...\n",j);
+    j++;
+    }
+  //}
 }

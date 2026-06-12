@@ -5,13 +5,18 @@
 static Context* (*user_handler)(Event, Context*) = NULL;
 
 Context* __am_irq_handle(Context *c) {
+  uint32_t cause = c->mcause;
   if (user_handler) {
     Event ev = {0};
-    switch (c->mcause) {
+    switch (cause) {
+      case 11: 
+        if((int)c->GPR1 == -1) {ev.event = EVENT_YIELD;}
+        else {ev.event = EVENT_SYSCALL;} break;
       default: ev.event = EVENT_ERROR; break;
     }
 
     c = user_handler(ev, c);
+    c->mepc += 4;  // ecall保存的是自身PC，需要跳到下一条指令
     assert(c != NULL);
   }
 

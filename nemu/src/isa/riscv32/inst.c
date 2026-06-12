@@ -55,6 +55,35 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
   }
 }
 
+//添加csr相关的到做
+//定义csr寄存器地址
+enum {
+  CSR_MSTATUS = 0x300,
+  CSR_MTVEC   = 0x305,
+  CSR_MEPC    = 0x341,
+  CSR_MCAUSE  = 0x342,
+};
+
+static word_t csr_read(int addr) {
+  switch (addr) {
+    case CSR_MSTATUS: return cpu.mstatus;
+    case CSR_MTVEC:   return cpu.mtvec;
+    case CSR_MEPC:    return cpu.mepc;
+    case CSR_MCAUSE:  return cpu.mcause;
+    default: panic("unsupported csr address = 0x%03x", addr); return 0;
+  }
+}
+
+static void csr_write(int addr, word_t data) {
+  switch (addr) {
+    case CSR_MSTATUS: cpu.mstatus = data; break;
+    case CSR_MTVEC:   cpu.mtvec   = data; break;
+    case CSR_MEPC:    cpu.mepc    = data; break;
+    case CSR_MCAUSE:  cpu.mcause  = data; break;
+    default: panic("unsupported csr address = 0x%03x", addr); break;
+  }
+}
+
 static int decode_exec(Decode *s) {
   s->dnpc = s->snpc;
 
@@ -126,7 +155,11 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 110 ????? 11000 11", bltu   , B, s->dnpc = (src1 < src2) ? s->pc + imm : s->snpc);
   INSTPAT("??????? ????? ????? 111 ????? 11000 11", bgeu   , B, s->dnpc = (src1 >= src2) ? s->pc + imm : s->snpc);
 
-
+  //中断处理
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, uint32_t t = csr_read(imm); csr_write(imm, src1); R(rd) = t);
+  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, uint32_t t = csr_read(imm); csr_write(imm, t | src1); R(rd) = t);
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, s->dnpc = isa_raise_intr(11, s->pc));//ecall的异常号是11
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , N, s->dnpc = cpu.mepc);//从mret返回
   
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));

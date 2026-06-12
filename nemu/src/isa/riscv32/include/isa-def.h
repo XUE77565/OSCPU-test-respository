@@ -18,9 +18,14 @@
 
 #include <common.h>
 
+//添加CSR寄存器
 typedef struct {
   word_t gpr[MUXDEF(CONFIG_RVE, 16, 32)];
   vaddr_t pc;
+  word_t mepc;//异常返回地址
+  word_t mcause;//异常原因
+  word_t mstatus;//处理器状态
+  word_t mtvec;//异常入口地址
 } MUXDEF(CONFIG_RV64, riscv64_CPU_state, riscv32_CPU_state);
 
 // decode
