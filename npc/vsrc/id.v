@@ -121,6 +121,10 @@ wire [11:0] csr_addr = Instruction_current[31:20];
 wire csr_write_enable = csr_inst && (func[2:0] == 3'b001 || func[2:0] == 3'b010); // CSRRW 和 CSRRS 指令需要写 CSR
 wire csr_write_sel = (func[2:0] == 3'b001) ? 1'b0 : 1'b1; // CSRRW 写入寄存器值, CSRRS 写入按位或
 
+//ecall和mret
+wire inst_ecall = (Instruction_current == 32'h00000073);
+wire inst_mret  = (Instruction_current == 32'h30200073);
+
 //运算器功能选择信号, RISC-V的简便之处在于所有的弄能选择都在指令之中体现
 assign ALUop =  (opcode==`I_type_l || opcode==`S_type)?		`ADD:		//取数指令和存数指令用add
 		(opcode==`B_type && func[2:1]==2'b00)?		`SUB:		//对分支指令进行处理, 这样之后的处理都可以直接利用func来判断

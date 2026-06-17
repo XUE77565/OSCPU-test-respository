@@ -155,7 +155,7 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
                                  | (1U == (IData)(vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__MEM_current_state)));
     vlSelfRef.Inst_Ready = ((4U == (IData)(vlSelfRef.custom_cpu__DOT__IF_EX__DOT__IF_current_state)) 
                             | (1U == (IData)(vlSelfRef.custom_cpu__DOT__IF_EX__DOT__IF_current_state)));
-    vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_10 
+    vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_11 
         = ((4U == (0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
                                           >> 2U)))) 
            | (0x0cU == (0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
@@ -192,126 +192,214 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
                                                        & (IData)(
                                                                  (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
                                                                   >> 2U)))));
-    vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_4 
+    vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_6 
         = ((0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
                                    >> 0x00000014U))) 
            == (0x0000001fU & vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[1U]));
-    vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_6 
+    vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_8 
         = ((0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
                                    >> 0x00000014U))) 
            == (0x0000001fU & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[0U]));
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT__MEM_data 
-        = (((0x1bU == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                      >> 0x0000000eU))) 
-            | (0x19U == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                        >> 0x0000000eU))))
-            ? ((IData)(4U) + ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                               << 0x00000014U) | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[2U] 
-                                                  >> 0x0000000cU)))
-            : ((5U == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                      >> 0x0000000eU)))
-                ? (((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                     << 0x00000014U) | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[2U] 
-                                        >> 0x0000000cU)) 
-                   + ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
-                       << 0x0000000dU) | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                          >> 0x00000013U)))
-                : ((0x0dU == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                             >> 0x0000000eU)))
-                    ? ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
-                        << 0x0000000dU) | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                           >> 0x00000013U))
-                    : ((0U == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                              >> 0x0000000eU)))
-                        ? ((0U == (3U & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
-                                         >> 0x00000013U)))
-                            ? ((0U == (3U & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                             >> 0x0000000cU)))
-                                ? ((0x00200000U & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
-                                    ? (0x000000ffU 
-                                       & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)
-                                    : (((- (IData)(
-                                                   (1U 
-                                                    & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                       >> 7U)))) 
-                                        << 8U) | (0x000000ffU 
-                                                  & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)))
-                                : ((1U == (3U & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                 >> 0x0000000cU)))
-                                    ? ((0x00200000U 
-                                        & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
-                                        ? (0x000000ffU 
-                                           & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                              >> 8U))
-                                        : (((- (IData)(
-                                                       (1U 
-                                                        & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                           >> 0x0000000fU)))) 
-                                            << 8U) 
-                                           | (0x000000ffU 
-                                              & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                 >> 8U))))
-                                    : ((2U == (3U & 
-                                               (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                >> 0x0000000cU)))
-                                        ? ((0x00200000U 
-                                            & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
-                                            ? (0x000000ffU 
-                                               & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                  >> 0x00000010U))
-                                            : (((- (IData)(
-                                                           (1U 
+        = ((0x1cU == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                     >> 0x0000000eU)))
+            ? ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[6U] 
+                << 9U) | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[5U] 
+                          >> 0x00000017U)) : (((0x1bU 
+                                                == 
+                                                (0x0000001fU 
+                                                 & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                    >> 0x0000000eU))) 
+                                               | (0x19U 
+                                                  == 
+                                                  (0x0000001fU 
+                                                   & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                      >> 0x0000000eU))))
+                                               ? ((IData)(4U) 
+                                                  + 
+                                                  ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                    << 0x00000014U) 
+                                                   | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[2U] 
+                                                      >> 0x0000000cU)))
+                                               : ((5U 
+                                                   == 
+                                                   (0x0000001fU 
+                                                    & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                       >> 0x0000000eU)))
+                                                   ? 
+                                                  (((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                     << 0x00000014U) 
+                                                    | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[2U] 
+                                                       >> 0x0000000cU)) 
+                                                   + 
+                                                   ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
+                                                     << 0x0000000dU) 
+                                                    | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                       >> 0x00000013U)))
+                                                   : 
+                                                  ((0x0dU 
+                                                    == 
+                                                    (0x0000001fU 
+                                                     & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                        >> 0x0000000eU)))
+                                                    ? 
+                                                   ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
+                                                     << 0x0000000dU) 
+                                                    | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                       >> 0x00000013U))
+                                                    : 
+                                                   ((0U 
+                                                     == 
+                                                     (0x0000001fU 
+                                                      & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                         >> 0x0000000eU)))
+                                                     ? 
+                                                    ((0U 
+                                                      == 
+                                                      (3U 
+                                                       & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
+                                                          >> 0x00000013U)))
+                                                      ? 
+                                                     ((0U 
+                                                       == 
+                                                       (3U 
+                                                        & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                           >> 0x0000000cU)))
+                                                       ? 
+                                                      ((0x00200000U 
+                                                        & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
+                                                        ? 
+                                                       (0x000000ffU 
+                                                        & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)
+                                                        : 
+                                                       (((- (IData)(
+                                                                    (1U 
+                                                                     & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                                        >> 7U)))) 
+                                                         << 8U) 
+                                                        | (0x000000ffU 
+                                                           & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)))
+                                                       : 
+                                                      ((1U 
+                                                        == 
+                                                        (3U 
+                                                         & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                            >> 0x0000000cU)))
+                                                        ? 
+                                                       ((0x00200000U 
+                                                         & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
+                                                         ? 
+                                                        (0x000000ffU 
+                                                         & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                            >> 8U))
+                                                         : 
+                                                        (((- (IData)(
+                                                                     (1U 
+                                                                      & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                                         >> 0x0000000fU)))) 
+                                                          << 8U) 
+                                                         | (0x000000ffU 
                                                             & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                               >> 0x00000017U)))) 
-                                                << 8U) 
-                                               | (0x000000ffU 
-                                                  & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                     >> 0x00000010U))))
-                                        : ((0x00200000U 
-                                            & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
-                                            ? VL_SHIFTR_III(32,32,32, vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current, 0x00000018U)
-                                            : (((- (IData)(
-                                                           (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                            >> 0x0000001fU))) 
-                                                << 8U) 
-                                               | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                  >> 0x00000018U))))))
-                            : ((1U == (3U & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
-                                             >> 0x00000013U)))
-                                ? ((0U == (3U & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
-                                                 >> 0x0000000cU)))
-                                    ? ((0x00200000U 
-                                        & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
-                                        ? (0x0000ffffU 
-                                           & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)
-                                        : (((- (IData)(
-                                                       (1U 
-                                                        & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                           >> 0x0000000fU)))) 
-                                            << 0x00000010U) 
-                                           | (0x0000ffffU 
-                                              & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)))
-                                    : ((0x00200000U 
-                                        & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
-                                        ? VL_SHIFTR_III(32,32,32, vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current, 0x00000010U)
-                                        : (((- (IData)(
-                                                       (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                                        >> 0x0000001fU))) 
-                                            << 0x00000010U) 
-                                           | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
-                                              >> 0x00000010U))))
-                                : vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current))
-                        : ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[5U] 
-                            << 0x0000000aU) | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
-                                               >> 0x00000016U))))));
-    vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_3 
-        = ((0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
-                                   >> 0x0000000fU))) 
-           == (0x0000001fU & vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[1U]));
+                                                               >> 8U))))
+                                                        : 
+                                                       ((2U 
+                                                         == 
+                                                         (3U 
+                                                          & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                             >> 0x0000000cU)))
+                                                         ? 
+                                                        ((0x00200000U 
+                                                          & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
+                                                          ? 
+                                                         (0x000000ffU 
+                                                          & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                             >> 0x00000010U))
+                                                          : 
+                                                         (((- (IData)(
+                                                                      (1U 
+                                                                       & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                                          >> 0x00000017U)))) 
+                                                           << 8U) 
+                                                          | (0x000000ffU 
+                                                             & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                                >> 0x00000010U))))
+                                                         : 
+                                                        ((0x00200000U 
+                                                          & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
+                                                          ? 
+                                                         VL_SHIFTR_III(32,32,32, vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current, 0x00000018U)
+                                                          : 
+                                                         (((- (IData)(
+                                                                      (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                                       >> 0x0000001fU))) 
+                                                           << 8U) 
+                                                          | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                             >> 0x00000018U))))))
+                                                      : 
+                                                     ((1U 
+                                                       == 
+                                                       (3U 
+                                                        & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
+                                                           >> 0x00000013U)))
+                                                       ? 
+                                                      ((0U 
+                                                        == 
+                                                        (3U 
+                                                         & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[3U] 
+                                                            >> 0x0000000cU)))
+                                                        ? 
+                                                       ((0x00200000U 
+                                                         & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
+                                                         ? 
+                                                        (0x0000ffffU 
+                                                         & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)
+                                                         : 
+                                                        (((- (IData)(
+                                                                     (1U 
+                                                                      & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                                         >> 0x0000000fU)))) 
+                                                          << 0x00000010U) 
+                                                         | (0x0000ffffU 
+                                                            & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current)))
+                                                        : 
+                                                       ((0x00200000U 
+                                                         & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U])
+                                                         ? 
+                                                        VL_SHIFTR_III(32,32,32, vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current, 0x00000010U)
+                                                         : 
+                                                        (((- (IData)(
+                                                                     (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                                      >> 0x0000001fU))) 
+                                                          << 0x00000010U) 
+                                                         | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current 
+                                                            >> 0x00000010U))))
+                                                       : vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__Read_data_current))
+                                                     : 
+                                                    ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[5U] 
+                                                      << 0x0000000aU) 
+                                                     | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[4U] 
+                                                        >> 0x00000016U)))))));
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_5 
         = ((0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
                                    >> 0x0000000fU))) 
+           == (0x0000001fU & vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[1U]));
+    vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_7 
+        = ((0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                   >> 0x0000000fU))) 
            == (0x0000001fU & vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[0U]));
+    vlSelfRef.custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__csr_read_data 
+        = ((0x0b00U == (0x00000fffU & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[8U] 
+                                       >> 1U))) ? vlSelfRef.custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__mcycle
+            : ((0x0b80U == (0x00000fffU & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[8U] 
+                                           >> 1U)))
+                ? vlSelfRef.custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__mcycleh
+                : ((0x0f11U == (0x00000fffU & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[8U] 
+                                               >> 1U)))
+                    ? vlSelfRef.custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__mvendorid
+                    : ((0x0f12U == (0x00000fffU & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[8U] 
+                                                   >> 1U)))
+                        ? vlSelfRef.custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__marchid
+                        : 0U))));
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT__MEM_write 
         = ((IData)(vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__MEM_work) 
            & (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[0U] 
@@ -596,52 +684,11 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
     vlSelfRef.custom_cpu__DOT__EX_EX__DOT__Write_strb 
         = Vcustom_cpu__ConstPool__TABLE_h81236597_0
         [vlSelfRef.__Vtableidx4];
-    vlSelfRef.custom_cpu__DOT__ID_EX__DOT__rdata2_true 
-        = ((0U == (0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
-                                          >> 0x00000014U))))
-            ? 0U : (((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_write) 
-                     & (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_4))
-                     ? vlSelfRef.custom_cpu__DOT__EX_EX__DOT__Result
-                     : (((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__MEM_write) 
-                         & (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_6))
-                         ? vlSelfRef.custom_cpu__DOT__ID_EX__DOT__MEM_data
-                         : ((vlSelfRef.custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg[1U] 
-                             & ((0x0000001fU & (IData)(
-                                                       (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
-                                                        >> 0x00000014U))) 
-                                == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg[1U] 
-                                                   >> 1U))))
-                             ? vlSelfRef.custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg[0U]
-                             : ((0U == (0x0000001fU 
-                                        & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
-                                                   >> 0x00000014U))))
-                                 ? 0U : vlSelfRef.custom_cpu__DOT__ID_EX__DOT__reg_file_ex__DOT__regfile
-                                [(0x0000001fU & (IData)(
-                                                        (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
-                                                         >> 0x00000014U)))])))));
-    vlSelfRef.custom_cpu__DOT__ID_EX__DOT__rdata1_true 
-        = ((0U == (0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
-                                          >> 0x0000000fU))))
-            ? 0U : (((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_write) 
-                     & (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_3))
-                     ? vlSelfRef.custom_cpu__DOT__EX_EX__DOT__Result
-                     : (((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__MEM_write) 
-                         & (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_5))
-                         ? vlSelfRef.custom_cpu__DOT__ID_EX__DOT__MEM_data
-                         : ((vlSelfRef.custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg[1U] 
-                             & ((0x0000001fU & (IData)(
-                                                       (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
-                                                        >> 0x0000000fU))) 
-                                == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg[1U] 
-                                                   >> 1U))))
-                             ? vlSelfRef.custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg[0U]
-                             : ((0U == (0x0000001fU 
-                                        & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
-                                                   >> 0x0000000fU))))
-                                 ? 0U : vlSelfRef.custom_cpu__DOT__ID_EX__DOT__reg_file_ex__DOT__regfile
-                                [(0x0000001fU & (IData)(
-                                                        (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
-                                                         >> 0x0000000fU)))])))));
+    vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_bypath_data 
+        = ((0x1cU == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[6U] 
+                                     >> 0x00000019U)))
+            ? vlSelfRef.custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__csr_read_data
+            : vlSelfRef.custom_cpu__DOT__EX_EX__DOT__Result);
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_valid 
         = ((~ (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__prediction_incorrect)) 
            & (8U == (IData)(vlSelfRef.custom_cpu__DOT__IF_EX__DOT__IF_current_state)));
@@ -663,14 +710,14 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
                                    & (~ (IData)(vlSelfRef.MemRead))));
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_done 
         = (1U & (~ (((((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_write) 
-                       & ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_3) 
-                          | (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_4))) 
+                       & ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_5) 
+                          | (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_6))) 
                       & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[1U] 
                          >> 7U)) | ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[1U] 
                                      >> 0x0000000bU) 
                                     & ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__MEM_write) 
-                                       & ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_5) 
-                                          | (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_6))))) 
+                                       & ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_7) 
+                                          | (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_8))))) 
                     | (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__prediction_incorrect))));
     vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_to_MEM_data[0U] 
         = ((0xffffffc0U & vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_to_MEM_data[0U]) 
@@ -839,28 +886,88 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
                                                                  >> 8U))))))) 
               << 0x00000013U));
     vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_to_MEM_data[5U] 
-        = (0x007fffffU & (((IData)((((QData)((IData)(
-                                                     (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[7U] 
-                                                      >> 0x0000001fU))) 
-                                     << 0x00000023U) 
-                                    | (((QData)((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__Result)) 
-                                        << 3U) | (QData)((IData)(
+        = ((0xff800000U & vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_to_MEM_data[5U]) 
+           | (((IData)((((QData)((IData)((vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[7U] 
+                                          >> 0x0000001fU))) 
+                         << 0x00000023U) | (((QData)((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__Result)) 
+                                             << 3U) 
+                                            | (QData)((IData)(
+                                                              (7U 
+                                                               & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[1U] 
+                                                                  >> 8U))))))) 
+               >> 0x0000000dU) | ((IData)(((((QData)((IData)(
+                                                             (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[7U] 
+                                                              >> 0x0000001fU))) 
+                                             << 0x00000023U) 
+                                            | (((QData)((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__Result)) 
+                                                << 3U) 
+                                               | (QData)((IData)(
                                                                  (7U 
                                                                   & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[1U] 
-                                                                     >> 8U))))))) 
-                           >> 0x0000000dU) | ((IData)(
-                                                      ((((QData)((IData)(
-                                                                         (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[7U] 
-                                                                          >> 0x0000001fU))) 
-                                                         << 0x00000023U) 
-                                                        | (((QData)((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__Result)) 
-                                                            << 3U) 
-                                                           | (QData)((IData)(
-                                                                             (7U 
-                                                                              & (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg[1U] 
-                                                                                >> 8U)))))) 
-                                                       >> 0x00000020U)) 
-                                              << 0x00000013U)));
+                                                                     >> 8U)))))) 
+                                           >> 0x00000020U)) 
+                                  << 0x00000013U)));
+    vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_to_MEM_data[5U] 
+        = ((0x007fffffU & vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_to_MEM_data[5U]) 
+           | (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__csr_read_data 
+              << 0x00000017U));
+    vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_to_MEM_data[6U] 
+        = (vlSelfRef.custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__csr_read_data 
+           >> 9U);
+    vlSelfRef.custom_cpu__DOT__ID_EX__DOT__rdata2_true 
+        = ((0U == (0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                          >> 0x00000014U))))
+            ? 0U : (((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_write) 
+                     & (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_6))
+                     ? vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_bypath_data
+                     : (((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__MEM_write) 
+                         & (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_8))
+                         ? vlSelfRef.custom_cpu__DOT__ID_EX__DOT__MEM_data
+                         : ((vlSelfRef.custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg[1U] 
+                             & ((0x0000001fU & (IData)(
+                                                       (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                                        >> 0x00000014U))) 
+                                == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg[1U] 
+                                                   >> 1U))))
+                             ? vlSelfRef.custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg[0U]
+                             : ((0U == (0x0000001fU 
+                                        & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                                   >> 0x00000014U))))
+                                 ? 0U : vlSelfRef.custom_cpu__DOT__ID_EX__DOT__reg_file_ex__DOT__regfile
+                                [(0x0000001fU & (IData)(
+                                                        (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                                         >> 0x00000014U)))])))));
+    vlSelfRef.custom_cpu__DOT__ID_EX__DOT__rdata1_true 
+        = ((0U == (0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                          >> 0x0000000fU))))
+            ? 0U : (((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_write) 
+                     & (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_5))
+                     ? vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_bypath_data
+                     : (((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__MEM_write) 
+                         & (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_7))
+                         ? vlSelfRef.custom_cpu__DOT__ID_EX__DOT__MEM_data
+                         : ((vlSelfRef.custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg[1U] 
+                             & ((0x0000001fU & (IData)(
+                                                       (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                                        >> 0x0000000fU))) 
+                                == (0x0000001fU & (vlSelfRef.custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg[1U] 
+                                                   >> 1U))))
+                             ? vlSelfRef.custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg[0U]
+                             : ((0U == (0x0000001fU 
+                                        & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                                   >> 0x0000000fU))))
+                                 ? 0U : vlSelfRef.custom_cpu__DOT__ID_EX__DOT__reg_file_ex__DOT__regfile
+                                [(0x0000001fU & (IData)(
+                                                        (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                                         >> 0x0000000fU)))])))));
+    vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_valid 
+        = ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_done) 
+           & ((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_ready) 
+              & (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_work)));
+    vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_ready 
+        = (1U & ((~ (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_work)) 
+                 | ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_done) 
+                    & (IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_ready))));
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_addr 
         = ((0x18U == (0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
                                              >> 2U))))
@@ -912,14 +1019,21 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
                     : (0xfffffffeU & (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__rdata1_true 
                                       + vlSelfRef.custom_cpu__DOT__ID_EX__DOT__I_imm)))
                 : 0U));
-    vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_valid 
-        = ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_done) 
-           & ((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_ready) 
-              & (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_work)));
-    vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_ready 
-        = (1U & ((~ (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_work)) 
-                 | ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_done) 
-                    & (IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_ready))));
+    vlSelfRef.__Vtableidx1 = ((((IData)(vlSelfRef.Inst_Req_Valid) 
+                                << 0x0000000aU) | (
+                                                   ((IData)(vlSelfRef.Inst_Req_Ready) 
+                                                    << 9U) 
+                                                   | ((IData)(vlSelfRef.Inst_Valid) 
+                                                      << 8U))) 
+                              | (((IData)(vlSelfRef.Inst_Ready) 
+                                  << 7U) | (((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__prediction_incorrect) 
+                                             << 6U) 
+                                            | (((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_ready) 
+                                                << 5U) 
+                                               | (IData)(vlSelfRef.custom_cpu__DOT__IF_EX__DOT__IF_current_state)))));
+    vlSelfRef.custom_cpu__DOT__IF_EX__DOT__IF_next_state 
+        = Vcustom_cpu__ConstPool__TABLE_h9fae46a8_0
+        [vlSelfRef.__Vtableidx1];
     vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data[0U] 
         = vlSelfRef.custom_cpu__DOT__ID_EX__DOT__rdata2_true;
     vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data[1U] 
@@ -931,7 +1045,7 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
                                   ? (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
                                              >> 0x00000014U))
                                   : vlSelfRef.custom_cpu__DOT__ID_EX__DOT__rdata2_true) 
-                                << 3U)) | ((((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_10) 
+                                << 3U)) | ((((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_11) 
                                              & ((5U 
                                                  == 
                                                  (7U 
@@ -987,7 +1101,13 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
                                                                 & (IData)(
                                                                           (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
                                                                            >> 2U)))) 
-                                                              | (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_10))))) 
+                                                              | ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_11) 
+                                                                 | (0x1cU 
+                                                                    == 
+                                                                    (0x0000001fU 
+                                                                     & (IData)(
+                                                                               (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                                                                >> 2U))))))))) 
                                                     << 5U) 
                                                    | (0x0000001fU 
                                                       & (IData)(
@@ -1129,21 +1249,28 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
                                                           (0x00000000fe00707cULL 
                                                            & vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg))) 
                                                  << 0x0000001eU))));
-    vlSelfRef.__Vtableidx1 = ((((IData)(vlSelfRef.Inst_Req_Valid) 
-                                << 0x0000000aU) | (
-                                                   ((IData)(vlSelfRef.Inst_Req_Ready) 
-                                                    << 9U) 
-                                                   | ((IData)(vlSelfRef.Inst_Valid) 
-                                                      << 8U))) 
-                              | (((IData)(vlSelfRef.Inst_Ready) 
-                                  << 7U) | (((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__prediction_incorrect) 
-                                             << 6U) 
-                                            | (((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_ready) 
-                                                << 5U) 
-                                               | (IData)(vlSelfRef.custom_cpu__DOT__IF_EX__DOT__IF_current_state)))));
-    vlSelfRef.custom_cpu__DOT__IF_EX__DOT__IF_next_state 
-        = Vcustom_cpu__ConstPool__TABLE_h9fae46a8_0
-        [vlSelfRef.__Vtableidx1];
+    vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data[8U] 
+        = (0x00003fffU & (((IData)(((0x0000000000000070ULL 
+                                     == (0x000000000000007cULL 
+                                         & vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg)) 
+                                    & ((1U == (7U & (IData)(
+                                                            (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                                             >> 0x0000000cU)))) 
+                                       | (2U == (7U 
+                                                 & (IData)(
+                                                           (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                                            >> 0x0000000cU))))))) 
+                           << 0x0000000dU) | ((0x00001ffeU 
+                                               & ((IData)(
+                                                          (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                                           >> 0x00000014U)) 
+                                                  << 1U)) 
+                                              | (1U 
+                                                 != 
+                                                 (7U 
+                                                  & (IData)(
+                                                            (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
+                                                             >> 0x0000000cU)))))));
 }
 
 VL_ATTR_COLD void Vcustom_cpu___024root___eval_stl(Vcustom_cpu___024root* vlSelf) {
@@ -1280,11 +1407,11 @@ VL_ATTR_COLD void Vcustom_cpu___024root___ctor_var_reset(Vcustom_cpu___024root* 
     vlSelf->custom_cpu__DOT__ID_EX__DOT__prediction_addr = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 10086056308947665920ull);
     vlSelf->custom_cpu__DOT__ID_EX__DOT__predictor_update = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 10580882261364502749ull);
     vlSelf->custom_cpu__DOT__ID_EX__DOT__prediction_yes = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 580735587659137913ull);
-    vlSelf->custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_3 = 0;
-    vlSelf->custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_4 = 0;
     vlSelf->custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_5 = 0;
     vlSelf->custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_6 = 0;
-    vlSelf->custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_10 = 0;
+    vlSelf->custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_7 = 0;
+    vlSelf->custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_8 = 0;
+    vlSelf->custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_11 = 0;
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->custom_cpu__DOT__ID_EX__DOT__reg_file_ex__DOT__regfile[__Vi0] = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 17688318835497277149ull);
     }
@@ -1292,30 +1419,36 @@ VL_ATTR_COLD void Vcustom_cpu___024root___ctor_var_reset(Vcustom_cpu___024root* 
     vlSelf->custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__prediction_out = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 14760784557447953351ull);
     vlSelf->custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__predictor_current_state = VL_SCOPED_RAND_RESET_I(5, __VscopeHash, 14041920745961213335ull);
     vlSelf->custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__predictor_next_state = VL_SCOPED_RAND_RESET_I(5, __VscopeHash, 1680519647607280467ull);
-    VL_SCOPED_RAND_RESET_W(256, vlSelf->custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data, __VscopeHash, 2084467956435603514ull);
-    VL_SCOPED_RAND_RESET_W(183, vlSelf->custom_cpu__DOT__EX_EX__DOT__EX_to_MEM_data, __VscopeHash, 7978946387972507071ull);
+    VL_SCOPED_RAND_RESET_W(270, vlSelf->custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data, __VscopeHash, 2084467956435603514ull);
+    VL_SCOPED_RAND_RESET_W(215, vlSelf->custom_cpu__DOT__EX_EX__DOT__EX_to_MEM_data, __VscopeHash, 7978946387972507071ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__EX_ready = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 15524945895525110708ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__ID_to_EX_valid = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 14822199651726482650ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__MEM_ready = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 15182200628199828525ull);
-    VL_SCOPED_RAND_RESET_W(256, vlSelf->custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg, __VscopeHash, 7950096884356183224ull);
+    VL_SCOPED_RAND_RESET_W(270, vlSelf->custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg, __VscopeHash, 7950096884356183224ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__Branch_real = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 16540108936778042649ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__Result = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 14370850290891913506ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__block_cancel = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 17530663178244166137ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__EX_work = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 6178133438959338381ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__Write_strb = VL_SCOPED_RAND_RESET_I(4, __VscopeHash, 8647725880325139619ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__EX_write = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 15530325126960028849ull);
+    vlSelf->custom_cpu__DOT__EX_EX__DOT__EX_bypath_data = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 9877768185059082360ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__CarryOut = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 15519420039330271729ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__Result = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 2304682063625019435ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__temp_sub = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 5057420748301499049ull);
     vlSelf->custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT____VdfgRegularize_hd1e758aa_0_0 = 0;
     vlSelf->custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT____VdfgRegularize_hd1e758aa_0_3 = 0;
+    vlSelf->custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__csr_read_data = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 6280013882397765844ull);
+    vlSelf->custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__mcycle = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 13436174527258765648ull);
+    vlSelf->custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__mcycleh = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 13187189935870327963ull);
+    vlSelf->custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__mvendorid = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 8628775439696206955ull);
+    vlSelf->custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__marchid = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 14191938244380712231ull);
     vlSelf->custom_cpu__DOT__MEM_EX__DOT__MEM_to_WB_valid = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 6549950190953379427ull);
-    VL_SCOPED_RAND_RESET_W(183, vlSelf->custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg, __VscopeHash, 11010710126216805396ull);
+    VL_SCOPED_RAND_RESET_W(215, vlSelf->custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg, __VscopeHash, 11010710126216805396ull);
     vlSelf->custom_cpu__DOT__MEM_EX__DOT__MEM_current_state = VL_SCOPED_RAND_RESET_I(5, __VscopeHash, 14525218699955029314ull);
     vlSelf->custom_cpu__DOT__MEM_EX__DOT__MEM_next_state = VL_SCOPED_RAND_RESET_I(5, __VscopeHash, 17842790471042632838ull);
     vlSelf->custom_cpu__DOT__MEM_EX__DOT__MEM_work = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 2060505050383781527ull);
     vlSelf->custom_cpu__DOT__MEM_EX__DOT__Read_data_current = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 6747098544885040339ull);
-    VL_SCOPED_RAND_RESET_W(71, vlSelf->custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg, __VscopeHash, 5167041459146098685ull);
+    VL_SCOPED_RAND_RESET_W(103, vlSelf->custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg, __VscopeHash, 5167041459146098685ull);
     vlSelf->custom_cpu__DOT__WB_EX__DOT__WB_work = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 10117514283106953993ull);
     vlSelf->__Vtableidx1 = 0;
     vlSelf->__Vtableidx2 = 0;

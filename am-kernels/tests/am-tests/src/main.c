@@ -12,6 +12,7 @@ static const char *tests[256] = {
   ['k'] = "readkey test",
   ['v'] = "display test",
   ['a'] = "audio test",
+  ['c'] = "CSR test (mcycle / mvendorid / marchid)",
   ['p'] = "x86 virtual memory test",
 };
 
@@ -25,6 +26,7 @@ int main(const char *args) {
     CASE('k', keyboard_test, IOE);
     CASE('v', video_test, IOE);
     CASE('a', audio_test, IOE);
+    CASE('c', csr_test);
     CASE('p', vm_test, CTE(vm_handler), VME(simple_pgalloc, simple_pgfree));
     case 'H':
     default:
