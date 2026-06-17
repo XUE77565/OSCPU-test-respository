@@ -1,7 +1,7 @@
 #include <am.h>
 #include <klib-macros.h>
 
-#define STACK_SIZE (4096 * 8)
+#define STACK_SIZE (4096 * 8)//32K
 typedef union {
   uint8_t stack[STACK_SIZE];
   struct { Context *cp; };
@@ -18,6 +18,7 @@ static void f(void *arg) {
 
 static Context *schedule(Event ev, Context *prev) {
   current->cp = prev;
+  //两个进程0,1,每次schedule都切换
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   return current->cp;
 }

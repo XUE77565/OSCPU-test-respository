@@ -17,6 +17,9 @@ Context* __am_irq_handle(Context *c) {
 
     c = user_handler(ev, c);
     c->mepc += 4;  // ecall保存的是自身PC，需要跳到下一条指令
+    if(c->mepc < 0x80000000 || c->mepc > 0x800572d7) {
+      printf("[WARN] mepc out of .text: 0x%08x (cause=%d)\n", c->mepc, cause);
+    }
     assert(c != NULL);
   }
 
@@ -36,7 +39,16 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 }
 
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
-  return NULL;
+  //在栈底构造一个Context结构体
+  Context *cp = (Context *)(kstack.end - sizeof(Context));
+  //清零所有字段
+  memset(cp, 0, sizeof(Context));
+  //设置初始值
+  cp->mstatus = 0x1800;
+  cp->mepc = (uintptr_t)entry - 4; // 因为__am_irq_handle中会对mepc += 4，这里先减去4以抵消
+  //printf("[INFO]kcontext: entry = 0x%08x\n", cp->mepc);
+  cp->gpr[10] = (uintptr_t)arg;
+  return cp;
 }
 
 void yield() {

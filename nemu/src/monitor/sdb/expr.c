@@ -89,7 +89,7 @@ static bool check_deref(Token *tokens, int nr_token) {
     }
   }
   else if(nr_token == 1) {
-    //if the '*' is the first token in the expression, it must be a dereference operator
+    //如果*是表达式的第一个token，那么它也是解引用
     return true;
   }
   return false;

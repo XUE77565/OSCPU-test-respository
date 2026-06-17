@@ -46,7 +46,7 @@ static char* rl_gets() {
 }
 
 static int cmd_c(char *args) {
-  cpu_exec(-1);//-1表示一直执行
+  cpu_exec(-1);//0xFFFFFFFF
   return 0;
 }
 
@@ -150,7 +150,7 @@ static int cmd_w(char *args) {
   if(wp == NULL) {
     return 0;
   }
-  //-1是为了给expr预留出空间
+  //-1是为了给expr预留出'\0'空间
   strncpy(wp->expr, args, sizeof(wp->expr) - 1);
   wp->expr[sizeof(wp->expr) - 1] = '\0';
   bool success = false;

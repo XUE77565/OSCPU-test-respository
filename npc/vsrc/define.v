@@ -10,6 +10,8 @@
 `define SLT  3'b111
 `define SLTU 3'b011
 
+`define S_type        5'b11100        //CSR指令
+
 //规定指令类型
 `define R_type          5'b01100        //R型的计算指令
 `define I_type_c        5'b00100        //I型的运算指令
@@ -68,9 +70,9 @@
 `define PREDICTION_WIDTH 33
 `define IF_TO_ID_WIDTH   64
 //`define ID_TO_EX_WIDTH   254    //无mul
-`define ID_TO_EX_WIDTH   256    //有mul + ebreak
+`define ID_TO_EX_WIDTH   270    //有mul + ebreak + csr
 `define EX_ID_BYPATH_WIDTH 39
 `define MEM_ID_BYPATH_WIDTH 39
 `define WB_ID_BYPATH_WIDTH 38
-`define EX_TO_MEM_WIDTH 183
-`define MEM_TO_WB_WIDTH 71
+`define EX_TO_MEM_WIDTH 215
+`define MEM_TO_WB_WIDTH 103

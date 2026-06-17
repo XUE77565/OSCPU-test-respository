@@ -71,6 +71,9 @@ end
 
 //将数据导入EX模块
 assign  {
+         csr_write_enable,      //csr写使能
+         csr_addr,              //csr地址
+         csr_write_sel,         //csr写入数据选择        
          ebreak_inst,
          mul,
          U_imm,
@@ -136,9 +139,9 @@ wire [63:0] mul_result;
 
 assign mul_result = {64{mul}} & (ALUop_A * ALUop_B);
 
-assign  Result     =    (opcode==`JAL ||opcode==`JALR)?		PC_EX + 4:
-			            (opcode==`AUIPC)?			        PC_EX + U_imm:
-			            (opcode==`LUI)?				        U_imm:
+assign  Result     =    (opcode==`JAL ||opcode==`JALR)?     PC_EX + 4:
+			(opcode==`AUIPC)?	            PC_EX + U_imm:
+			(opcode==`LUI)?		            U_imm:
                         (mul)?                              mul_result[31:0]:
                         (AluShi_sel)?                       Shifter_result: 
                                                             ALU_result;
@@ -234,6 +237,7 @@ assign  EX_to_ID_bypath_data =  {
 
 //向后传入MEM的数据
 assign  EX_to_MEM_data    =     {
+                                 csr_read_data,
                                  ebreak_inst,
                                  Result,
                                  func,          //149:147
@@ -249,4 +253,22 @@ assign  EX_to_MEM_data    =     {
                                  RF_wen,        //5:5
                                  RF_waddr       //4:0
                                 };
+
+//访问CSR寄存器的相关信号
+wire csr_write_enable =ID_to_EX_data_reg[268];
+wire [11:0] csr_addr = ID_to_EX_data_reg[267:256];
+wire [31:0] csr_write_data = ALUop_A; //这里暂时让ALUop_A作为写入CSR的数据, 正好是rs1
+wire csr_write_sel = ID_to_EX_data_reg[255]; //csr写入数据选择
+wire [31:0] csr_read_data;
+
+//连接csr模块
+CSR_INST csr(
+        .clk(clk),
+        .rst(rst),
+        .csr_write_enable(csr_write_enable),
+        .csr_write_sel(csr_write_sel),
+        .csr_addr(csr_addr),
+        .csr_write_data(csr_write_data),
+        .csr_read_data(csr_read_data)
+)
 endmodule

@@ -72,7 +72,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   bool changed = false;
   changed = check_watchpoints();
   if(changed) {
-    printf("Watchpoint triggered. Current instruction: %s\n", _this->logbuf);
+    printf("Watchpoint triggered. Current pc: %s\n", _this->logbuf);
     //nemu_state.state = NEMU_STOP;
   }
 #endif
@@ -107,6 +107,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
   //prints the s-pc which is the pc after executing the instruction.
+  //printf("exec_once: pc = 0x%08x, inst = 0x%08x\n", s->pc, s->isa.inst);
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
   int ilen = s->snpc - s->pc;
   int i;
@@ -114,7 +115,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #ifdef CONFIG_ISA_x86
   //for (i = 0; i < ilen; i ++) {
 #else
-  for (i = ilen - 1; i >= 0; i --) {
+   for (i = ilen - 1; i >= 0; i --) {
 #endif
     p += snprintf(p, 4, " %02x", inst[i]);
   }

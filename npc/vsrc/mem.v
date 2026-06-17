@@ -50,6 +50,7 @@ always @(posedge clk) begin
 end
 
 //首先将EX传输进来的数据解码
+wire [31:0]     csr_read_data;
 wire [31:0]     Result;
 wire [31:0]     U_imm;
 wire [4:0]      opcode;
@@ -64,6 +65,7 @@ wire [4:0]      RF_waddr;
 wire            ebreak_inst;
 
 assign  {
+         csr_read_data,
          ebreak_inst,
          Result,
          func,
@@ -209,7 +211,8 @@ assign read_byte_0 = Read_data_current [ 7: 0];
 
 wire [31:0]     RF_wdata;
 
-assign  RF_wdata  =	(opcode==`JAL ||opcode==`JALR)?		PC_MEM + 4:
+assign  RF_wdata  =	(opcode==`S_type)?                      csr_read_data:
+                        (opcode==`JAL ||opcode==`JALR)?		PC_MEM + 4:
 			(opcode==`AUIPC)?			PC_MEM + U_imm:
 			(opcode==`LUI)?				U_imm:
 			(opcode==`I_type_l)?	
