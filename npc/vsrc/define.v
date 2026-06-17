@@ -10,7 +10,7 @@
 `define SLT  3'b111
 `define SLTU 3'b011
 
-`define S_type        5'b11100        //CSR指令
+`define CSR_type        5'b11100        //CSR指令
 
 //规定指令类型
 `define R_type          5'b01100        //R型的计算指令

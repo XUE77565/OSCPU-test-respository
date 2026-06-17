@@ -211,7 +211,7 @@ assign read_byte_0 = Read_data_current [ 7: 0];
 
 wire [31:0]     RF_wdata;
 
-assign  RF_wdata  =	(opcode==`S_type)?                      csr_read_data:
+assign  RF_wdata  =	(opcode==`CSR_type)?                      csr_read_data:
                         (opcode==`JAL ||opcode==`JALR)?		PC_MEM + 4:
 			(opcode==`AUIPC)?			PC_MEM + U_imm:
 			(opcode==`LUI)?				U_imm:

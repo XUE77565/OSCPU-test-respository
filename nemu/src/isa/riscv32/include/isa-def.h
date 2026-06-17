@@ -26,6 +26,8 @@ typedef struct {
   word_t mcause;//异常原因
   word_t mstatus;//处理器状态
   word_t mtvec;//异常入口地址
+  word_t mcycle;//周期计数器低32位
+  word_t mcycleh;//周期计数器高32位
 } MUXDEF(CONFIG_RV64, riscv64_CPU_state, riscv32_CPU_state);
 
 // decode

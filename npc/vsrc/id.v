@@ -82,8 +82,8 @@ wire [31:0]		rdata2_true;
 wire 		    Branch;
 wire   [2:0]    ALUop;
 wire   [1:0]	Shiftop;
-wire		    Jump;
-wire		    AluShi_sel;
+wire		Jump;
+wire		AluShi_sel;
 wire            load;
 wire            store;
 
@@ -116,10 +116,10 @@ wire mul = (opcode==`R_type && func7==7'b0000001 && func==3'b000);
 //ebreak指令检测
 wire ebreak_inst = (Instruction_current == 32'h00100073);
 //csr指令检测
-wire csr_inst = (opcode==`S_type);
-wire csr_addr = Instruction_current[31:20];
-wire csr_write_enable = csr_inst && (func[2:0] == 3'b001 || func[2:0] == 3'b101); // CSRRW 和 CSRRS 指令需要写 CSR
-wire csr_write_sel = (func[2:0] == 3'b001) ? 1'b0 : 1'b1; // CSRRW 写入寄存器值, CSRRS 写入按位与
+wire csr_inst = (opcode==`CSR_type);
+wire [11:0] csr_addr = Instruction_current[31:20];
+wire csr_write_enable = csr_inst && (func[2:0] == 3'b001 || func[2:0] == 3'b010); // CSRRW 和 CSRRS 指令需要写 CSR
+wire csr_write_sel = (func[2:0] == 3'b001) ? 1'b0 : 1'b1; // CSRRW 写入寄存器值, CSRRS 写入按位或
 
 //运算器功能选择信号, RISC-V的简便之处在于所有的弄能选择都在指令之中体现
 assign ALUop =  (opcode==`I_type_l || opcode==`S_type)?		`ADD:		//取数指令和存数指令用add
@@ -285,7 +285,7 @@ wire    RF_wen_i;
 assign  RF_wen_i  = 	(opcode==`AUIPC || opcode==`JAL || opcode==`JALR)?	1:	//对于跳转指令
 			(opcode==`I_type_l || opcode==`LUI)?			1:	//对于加载指令
 			(opcode==`I_type_c || opcode==`R_type)?			1:	//对于R型指令
-                        (opcode==`S_type && csr_write_enable)? 1:   //对于需要写CSR的指令
+                        (opcode==`CSR_type)?			                1:   //对于需要写CSR的指令
 										0;
 
 //移位器和运算器结果二选一信号

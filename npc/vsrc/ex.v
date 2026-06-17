@@ -222,8 +222,10 @@ assign Write_data   =	(func==3'b000)?	((eff==2'b00)?	{{24{1'b0}},reg_byte_0}:
 
                                         
 //返回ID阶段的数据旁路
-wire    EX_load;
-wire    EX_write;
+wire            EX_load;
+wire            EX_write;
+wire[31:0]      EX_bypath_data;
+assign          EX_bypath_data = (opcode==`CSR_type)? csr_read_data : Result;
 
 assign  EX_load    =    load;
 assign  EX_write   =    EX_work && RF_wen;
@@ -232,7 +234,7 @@ assign  EX_to_ID_bypath_data =  {
                                  EX_load,
                                  EX_write,
                                  RF_waddr,
-                                 Result
+                                 EX_bypath_data
                                 };
 
 //向后传入MEM的数据
@@ -255,14 +257,14 @@ assign  EX_to_MEM_data    =     {
                                 };
 
 //访问CSR寄存器的相关信号
-wire csr_write_enable =ID_to_EX_data_reg[268];
-wire [11:0] csr_addr = ID_to_EX_data_reg[267:256];
+wire csr_write_enable;
+wire [11:0] csr_addr;
 wire [31:0] csr_write_data = ALUop_A; //这里暂时让ALUop_A作为写入CSR的数据, 正好是rs1
-wire csr_write_sel = ID_to_EX_data_reg[255]; //csr写入数据选择
+wire csr_write_sel; //csr写入数据选择
 wire [31:0] csr_read_data;
 
 //连接csr模块
-CSR_INST csr(
+csr CSR_INST(
         .clk(clk),
         .rst(rst),
         .csr_write_enable(csr_write_enable),
@@ -270,5 +272,5 @@ CSR_INST csr(
         .csr_addr(csr_addr),
         .csr_write_data(csr_write_data),
         .csr_read_data(csr_read_data)
-)
+);
 endmodule

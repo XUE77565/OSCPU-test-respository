@@ -58,28 +58,40 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
 //添加csr相关的到做
 //定义csr寄存器地址
 enum {
-  CSR_MSTATUS = 0x300,
-  CSR_MTVEC   = 0x305,
-  CSR_MEPC    = 0x341,
-  CSR_MCAUSE  = 0x342,
+  CSR_MSTATUS  = 0x300,
+  CSR_MTVEC    = 0x305,
+  CSR_MEPC     = 0x341,
+  CSR_MCAUSE   = 0x342,
+  CSR_MCYCLE   = 0xB00,
+  CSR_MCYCLEH  = 0xB80,
+  CSR_MVENDORID= 0xF11,
+  CSR_MARCHID  = 0xF12,
 };
 
 static word_t csr_read(int addr) {
   switch (addr) {
-    case CSR_MSTATUS: return cpu.mstatus;
-    case CSR_MTVEC:   return cpu.mtvec;
-    case CSR_MEPC:    return cpu.mepc;
-    case CSR_MCAUSE:  return cpu.mcause;
+    case CSR_MSTATUS:  return cpu.mstatus;
+    case CSR_MTVEC:    return cpu.mtvec;
+    case CSR_MEPC:     return cpu.mepc;
+    case CSR_MCAUSE:   return cpu.mcause;
+    case CSR_MCYCLE:   return cpu.mcycle;
+    case CSR_MCYCLEH:  return cpu.mcycleh;
+    case CSR_MVENDORID:return 0x79737978;   // "ysyx" 的ASCII, 与NPC一致
+    case CSR_MARCHID:  return 26060176;     // 学号数字部分, 与NPC的 32'd26060176 一致
     default: panic("unsupported csr address = 0x%03x", addr); return 0;
   }
 }
 
 static void csr_write(int addr, word_t data) {
   switch (addr) {
-    case CSR_MSTATUS: cpu.mstatus = data; break;
-    case CSR_MTVEC:   cpu.mtvec   = data; break;
-    case CSR_MEPC:    cpu.mepc    = data; break;
-    case CSR_MCAUSE:  cpu.mcause  = data; break;
+    case CSR_MSTATUS:  cpu.mstatus = data; break;
+    case CSR_MTVEC:    cpu.mtvec   = data; break;
+    case CSR_MEPC:     cpu.mepc    = data; break;
+    case CSR_MCAUSE:   cpu.mcause  = data; break;
+    case CSR_MCYCLE:   cpu.mcycle  = data; break;
+    case CSR_MCYCLEH:  cpu.mcycleh = data; break;
+    case CSR_MVENDORID: break;   // 只读CSR, 写忽略(否则csrrs读它时会走到这里panic)
+    case CSR_MARCHID:   break;   // 只读CSR, 写忽略
     default: panic("unsupported csr address = 0x%03x", addr); break;
   }
 }
@@ -173,5 +185,8 @@ static int decode_exec(Decode *s) {
 
 int isa_exec_once(Decode *s) {
   s->isa.inst = inst_fetch(&s->snpc, 4);
+  //每执行一条指令, mcycle周期计数器+1, 进位到mcycleh
+  cpu.mcycle++;
+  if (cpu.mcycle == 0) cpu.mcycleh++;
   return decode_exec(s);
 }
