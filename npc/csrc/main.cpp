@@ -172,9 +172,9 @@ void sim_init(const char *bin_path) {
   g_top->rst = 1;
   g_top->clk = 0;
   // 取指握手: 内存始终就绪
-  g_top->Inst_Req_Ready = 1;
-  g_top->Inst_Valid = 1;
-  g_top->Instruction = 0;
+  // g_top->Inst_Req_Ready = 1;
+  // g_top->Inst_Valid = 1;
+  // g_top->Instruction = 0;
   // 数据内存握手: 通过 DPI-C 在 mem.v 中直接处理
   g_top->Mem_Req_Ready = 1;
   g_top->Read_data = 0;
@@ -211,7 +211,7 @@ void sim_init(const char *bin_path) {
 // 返回 true 表示本周期有一条指令从 WB 阶段退役
 bool sim_clock_step() {
   // 根据 CPU 输出的 PC 从内存中读取指令, 提供给取指接口
-  g_top->Instruction = pmem_read(g_top->PC);
+  /g_top->Instruction = pmem_read(g_top->PC);
 
   // 上升沿
   g_top->clk = 1;

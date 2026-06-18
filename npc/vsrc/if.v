@@ -7,13 +7,13 @@ module if_stage(
   output [31:0]  PC,
 
   // 有关指令的部分
-  input  [31:0]  Instruction,
-  input          Inst_Valid,
-  output         Inst_Ready,
+  output  [31:0] Instruction,//把Instruction改为output，供top来读
+//   input          Inst_Valid,
+//   output         Inst_Ready,
 
-  // 有关IF的握手信号
-  output         Inst_Req_Valid,
-  input          Inst_Req_Ready,
+//   // 有关IF的握手信号
+//   output         Inst_Req_Valid,
+//   input          Inst_Req_Ready,
 
   // 向下一模块传输的数据
   output [`IF_TO_ID_WIDTH-1:0] IF_to_ID_data,
@@ -31,6 +31,11 @@ module if_stage(
 
   input   MemRead
 );
+  wire Inst_Req_Valid;
+  wire Inst_Req_Ready;
+
+  wire Inst_Valid;
+  wire Inst_Ready;
 
   // 用于内部IF的标记, 因为这里的IF实际上是由IW和IF两个状态合成的
   localparam INIT     = 5'b00001,
@@ -101,6 +106,17 @@ module if_stage(
 
   assign Inst_Ready     = (IF_current_state == IW) || (IF_current_state == INIT);
   assign Inst_Req_Valid = (IF_current_state == IF) && ~prediction_incorrect && ~MemRead;
+
+  ifu_mem ifu_mem_inst(
+    .clk             (clk),
+    .rst             (rst),
+    .PC              (PC),
+    .Inst_Req_Valid  (Inst_Req_Valid),
+    .Inst_Req_Ready  (Inst_Req_Ready),
+    .Instruction     (Instruction),
+    .Inst_Valid      (Inst_Valid),
+    .Inst_Ready      (Inst_Ready)
+  );
 
   // 更新指令寄存器
   reg [31:0] Instruction_reg;
