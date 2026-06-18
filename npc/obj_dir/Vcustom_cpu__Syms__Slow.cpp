@@ -11,7 +11,7 @@ Vcustom_cpu__Syms::Vcustom_cpu__Syms(VerilatedContext* contextp, const char* nam
     , TOP{this, namep}
 {
     // Check resources
-    Verilated::stackCheck(456);
+    Verilated::stackCheck(498);
     // Setup sub module instances
     TOP____024unit.ctor(this, "$unit");
     // Configure time unit / time precision

@@ -1,3 +1,10 @@
+// DPI-C 访存函数声明 (全局唯一, 由 `ifndef 守卫防止重复声明)
+`ifndef PMEM_DPI_DECL
+`define PMEM_DPI_DECL
+import "DPI-C" function int  pmem_read(int raddr);
+import "DPI-C" function void pmem_write(input int addr, input int data, input int mask);
+`endif
+
 // define the operation
 `define DATA_WIDTH  32
 `define ADDR_WIDTH  5

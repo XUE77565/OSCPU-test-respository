@@ -116,6 +116,7 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
     vlSelfRef.PC = vlSelfRef.custom_cpu__DOT__IF_EX__DOT__PC_reg;
+    vlSelfRef.Instruction = vlSelfRef.custom_cpu__DOT__ifu_mem_inst__DOT__ifu_rdata;
     vlSelfRef.Address = ((vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[2U] 
                           << 0x00000014U) | (vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg[1U] 
                                              >> 0x0000000cU));
@@ -157,13 +158,14 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
            & (IData)(vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__MEM_work));
     vlSelfRef.Read_data_Ready = ((8U == (IData)(vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__MEM_current_state)) 
                                  | (1U == (IData)(vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__MEM_current_state)));
-    vlSelfRef.Inst_Ready = ((4U == (IData)(vlSelfRef.custom_cpu__DOT__IF_EX__DOT__IF_current_state)) 
-                            | (1U == (IData)(vlSelfRef.custom_cpu__DOT__IF_EX__DOT__IF_current_state)));
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_11 
         = ((4U == (0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
                                           >> 2U)))) 
            | (0x0cU == (0x0000001fU & (IData)((vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
                                                >> 2U)))));
+    vlSelfRef.custom_cpu__DOT__ifu_mem_inst__DOT__Inst_Ready 
+        = ((4U == (IData)(vlSelfRef.custom_cpu__DOT__IF_EX__DOT__IF_current_state)) 
+           | (1U == (IData)(vlSelfRef.custom_cpu__DOT__IF_EX__DOT__IF_current_state)));
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__prediction_out 
         = ((2U == (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__predictor_current_state)) 
            | (4U == (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__predictor_current_state)));
@@ -484,6 +486,9 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
     vlSelfRef.custom_cpu__DOT__MEM_EX__DOT__MEM_next_state 
         = Vcustom_cpu__ConstPool__TABLE_h1eebf72c_0
         [vlSelfRef.__Vtableidx3];
+    vlSelfRef.custom_cpu__DOT__ifu_mem_inst__DOT__r_done 
+        = ((IData)(vlSelfRef.custom_cpu__DOT__ifu_mem_inst__DOT__Inst_Ready) 
+           & (IData)(vlSelfRef.custom_cpu__DOT__ifu_mem_inst__DOT__ifu_busy));
     vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_ready 
         = (1U & ((~ (IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_work)) 
                  | (IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__MEM_ready)));
@@ -747,9 +752,10 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__predictor_next_state 
         = Vcustom_cpu__ConstPool__TABLE_ha9976d2a_0
         [vlSelfRef.__Vtableidx2];
-    vlSelfRef.Inst_Req_Valid = ((2U == (IData)(vlSelfRef.custom_cpu__DOT__IF_EX__DOT__IF_current_state)) 
-                                & ((~ (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__prediction_incorrect)) 
-                                   & (~ (IData)(vlSelfRef.MemRead))));
+    vlSelfRef.custom_cpu__DOT__ifu_mem_inst__DOT__Inst_Req_Valid 
+        = ((2U == (IData)(vlSelfRef.custom_cpu__DOT__IF_EX__DOT__IF_current_state)) 
+           & ((~ (IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__prediction_incorrect)) 
+              & (~ (IData)(vlSelfRef.MemRead))));
     vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_done 
         = (1U & (~ (((((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_write) 
                        & ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT____VdfgRegularize_h98a0652e_0_5) 
@@ -1002,6 +1008,9 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
                                 [(0x0000001fU & (IData)(
                                                         (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg 
                                                          >> 0x0000000fU)))])))));
+    vlSelfRef.custom_cpu__DOT__ifu_mem_inst__DOT__ar_done 
+        = ((~ (IData)(vlSelfRef.custom_cpu__DOT__ifu_mem_inst__DOT__ifu_busy)) 
+           & (IData)(vlSelfRef.custom_cpu__DOT__ifu_mem_inst__DOT__Inst_Req_Valid));
     vlSelfRef.custom_cpu__DOT__EX_EX__DOT__ID_to_EX_valid 
         = ((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_done) 
            & ((IData)(vlSelfRef.custom_cpu__DOT__EX_EX__DOT__EX_ready) 
@@ -1061,13 +1070,14 @@ VL_ATTR_COLD void Vcustom_cpu___024root___stl_sequent__TOP__0(Vcustom_cpu___024r
                     : (0xfffffffeU & (vlSelfRef.custom_cpu__DOT__ID_EX__DOT__rdata1_true 
                                       + vlSelfRef.custom_cpu__DOT__ID_EX__DOT__I_imm)))
                 : 0U));
-    vlSelfRef.__Vtableidx1 = ((((IData)(vlSelfRef.Inst_Req_Valid) 
+    vlSelfRef.__Vtableidx1 = ((((IData)(vlSelfRef.custom_cpu__DOT__ifu_mem_inst__DOT__Inst_Req_Valid) 
                                 << 0x0000000aU) | (
-                                                   ((IData)(vlSelfRef.Inst_Req_Ready) 
-                                                    << 9U) 
-                                                   | ((IData)(vlSelfRef.Inst_Valid) 
-                                                      << 8U))) 
-                              | (((IData)(vlSelfRef.Inst_Ready) 
+                                                   ((2U 
+                                                     & ((~ (IData)(vlSelfRef.custom_cpu__DOT__ifu_mem_inst__DOT__ifu_busy)) 
+                                                        << 1U)) 
+                                                    | (IData)(vlSelfRef.custom_cpu__DOT__ifu_mem_inst__DOT__ifu_busy)) 
+                                                   << 8U)) 
+                              | (((IData)(vlSelfRef.custom_cpu__DOT__ifu_mem_inst__DOT__Inst_Ready) 
                                   << 7U) | (((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__prediction_ex__DOT__prediction_incorrect) 
                                              << 6U) 
                                             | (((IData)(vlSelfRef.custom_cpu__DOT__ID_EX__DOT__ID_ready) 
@@ -1406,11 +1416,7 @@ VL_ATTR_COLD void Vcustom_cpu___024root___ctor_var_reset(Vcustom_cpu___024root* 
     vlSelf->clk = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 16707436170211756652ull);
     vlSelf->rst = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 18209466448985614591ull);
     vlSelf->PC = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 12700755172620096637ull);
-    vlSelf->Inst_Req_Valid = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 14137557445835842802ull);
-    vlSelf->Inst_Req_Ready = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 6989136464829654867ull);
     vlSelf->Instruction = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 6259496675603560950ull);
-    vlSelf->Inst_Valid = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 1120782595635893045ull);
-    vlSelf->Inst_Ready = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 1553433150701407397ull);
     vlSelf->Address = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 224589347255615128ull);
     vlSelf->MemWrite = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 6222392603918024337ull);
     vlSelf->Write_data = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 1508782950897973885ull);
@@ -1444,6 +1450,12 @@ VL_ATTR_COLD void Vcustom_cpu___024root___ctor_var_reset(Vcustom_cpu___024root* 
     vlSelf->custom_cpu__DOT__IF_EX__DOT__IF_next_state = VL_SCOPED_RAND_RESET_I(5, __VscopeHash, 7646405919625158196ull);
     vlSelf->custom_cpu__DOT__IF_EX__DOT__Instruction_reg = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 8972873979842026400ull);
     vlSelf->custom_cpu__DOT__IF_EX__DOT__PC_reg = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 5890864495973943992ull);
+    vlSelf->custom_cpu__DOT__ifu_mem_inst__DOT__Inst_Req_Valid = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 5068129882562474304ull);
+    vlSelf->custom_cpu__DOT__ifu_mem_inst__DOT__Inst_Ready = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 34734773756781184ull);
+    vlSelf->custom_cpu__DOT__ifu_mem_inst__DOT__ifu_rdata = VL_SCOPED_RAND_RESET_I(32, __VscopeHash, 6474290227458114781ull);
+    vlSelf->custom_cpu__DOT__ifu_mem_inst__DOT__ifu_busy = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 1588007983524054732ull);
+    vlSelf->custom_cpu__DOT__ifu_mem_inst__DOT__ar_done = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 17880314240569492798ull);
+    vlSelf->custom_cpu__DOT__ifu_mem_inst__DOT__r_done = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 10845446835031695732ull);
     vlSelf->custom_cpu__DOT__ID_EX__DOT__ID_ready = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 9686200284555241700ull);
     vlSelf->custom_cpu__DOT__ID_EX__DOT__IF_to_ID_valid = VL_SCOPED_RAND_RESET_I(1, __VscopeHash, 9423267669392419825ull);
     vlSelf->custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg = VL_SCOPED_RAND_RESET_Q(64, __VscopeHash, 8512596943364818898ull);

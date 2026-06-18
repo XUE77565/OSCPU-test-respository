@@ -7,13 +7,15 @@ module custom_cpu(
 
   // Instruction request channel
   output [31:0] PC,
-  output        Inst_Req_Valid,
-  input         Inst_Req_Ready,
 
-  // Instruction response channel
-  input  [31:0] Instruction,
-  input         Inst_Valid,
-  output        Inst_Ready,
+
+  // Instruction: 由内部 ifu_mem 驱动, 仅暴露供仿真读取 (sim_get_inst)
+  output [31:0] Instruction,
+  //集成到内部
+  // input         Inst_Valid,
+  // output        Inst_Ready,
+  // output        Inst_Req_Valid,
+  // input         Inst_Req_Ready,
 
   // Memory request channel
   output [31:0] Address,
@@ -96,6 +98,12 @@ module custom_cpu(
     .ID_ready            (ID_ready),
     .MemRead             (MemRead)
   );
+
+  wire Inst_Req_Valid;
+  wire Inst_Req_Ready;
+
+  wire Inst_Valid;
+  wire Inst_Ready;
 
 //ifu取指总线
   ifu_mem ifu_mem_inst(

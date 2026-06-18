@@ -21,10 +21,6 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
     struct {
         VL_IN8(clk,0,0);
         VL_IN8(rst,0,0);
-        VL_OUT8(Inst_Req_Valid,0,0);
-        VL_IN8(Inst_Req_Ready,0,0);
-        VL_IN8(Inst_Valid,0,0);
-        VL_OUT8(Inst_Ready,0,0);
         VL_OUT8(MemWrite,0,0);
         VL_OUT8(Write_strb,3,0);
         VL_OUT8(MemRead,0,0);
@@ -35,6 +31,11 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         CData/*0:0*/ custom_cpu__DOT__inst_Req_Valid;
         CData/*4:0*/ custom_cpu__DOT__IF_EX__DOT__IF_current_state;
         CData/*4:0*/ custom_cpu__DOT__IF_EX__DOT__IF_next_state;
+        CData/*0:0*/ custom_cpu__DOT__ifu_mem_inst__DOT__Inst_Req_Valid;
+        CData/*0:0*/ custom_cpu__DOT__ifu_mem_inst__DOT__Inst_Ready;
+        CData/*0:0*/ custom_cpu__DOT__ifu_mem_inst__DOT__ifu_busy;
+        CData/*0:0*/ custom_cpu__DOT__ifu_mem_inst__DOT__ar_done;
+        CData/*0:0*/ custom_cpu__DOT__ifu_mem_inst__DOT__r_done;
         CData/*0:0*/ custom_cpu__DOT__ID_EX__DOT__ID_ready;
         CData/*0:0*/ custom_cpu__DOT__ID_EX__DOT__IF_to_ID_valid;
         CData/*3:0*/ custom_cpu__DOT__ID_EX__DOT__func_r;
@@ -82,10 +83,10 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         SData/*10:0*/ __Vtableidx1;
         SData/*8:0*/ __Vtableidx2;
         SData/*11:0*/ __Vtableidx3;
-        VL_OUT(PC,31,0);
     };
     struct {
-        VL_IN(Instruction,31,0);
+        VL_OUT(PC,31,0);
+        VL_OUT(Instruction,31,0);
         VL_OUT(Address,31,0);
         VL_OUT(Write_data,31,0);
         VL_IN(Read_data,31,0);
@@ -109,6 +110,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         VL_OUT(a0_out,31,0);
         IData/*31:0*/ custom_cpu__DOT__IF_EX__DOT__Instruction_reg;
         IData/*31:0*/ custom_cpu__DOT__IF_EX__DOT__PC_reg;
+        IData/*31:0*/ custom_cpu__DOT__ifu_mem_inst__DOT__ifu_rdata;
         IData/*31:0*/ custom_cpu__DOT__ID_EX__DOT__I_imm;
         IData/*31:0*/ custom_cpu__DOT__ID_EX__DOT__RF_wdata;
         IData/*31:0*/ custom_cpu__DOT__ID_EX__DOT__rdata1_true;

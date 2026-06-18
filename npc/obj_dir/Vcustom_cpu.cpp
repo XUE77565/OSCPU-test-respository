@@ -12,10 +12,6 @@ Vcustom_cpu::Vcustom_cpu(VerilatedContext* _vcontextp__, const char* _vcname__)
     , vlSymsp{new Vcustom_cpu__Syms(contextp(), _vcname__, this)}
     , clk{vlSymsp->TOP.clk}
     , rst{vlSymsp->TOP.rst}
-    , Inst_Req_Valid{vlSymsp->TOP.Inst_Req_Valid}
-    , Inst_Req_Ready{vlSymsp->TOP.Inst_Req_Ready}
-    , Inst_Valid{vlSymsp->TOP.Inst_Valid}
-    , Inst_Ready{vlSymsp->TOP.Inst_Ready}
     , MemWrite{vlSymsp->TOP.MemWrite}
     , Write_strb{vlSymsp->TOP.Write_strb}
     , MemRead{vlSymsp->TOP.MemRead}
@@ -170,6 +166,6 @@ VL_ATTR_COLD void Vcustom_cpu::traceBaseModel(VerilatedTraceBaseC* tfp, int leve
             " use --trace-fst with VerilatedFst object, and --trace-vcd with VerilatedVcd object");
     }
     stfp->spTrace()->addModel(this);
-    stfp->spTrace()->addInitCb(&trace_init, &(vlSymsp->TOP), name(), false, 291);
+    stfp->spTrace()->addInitCb(&trace_init, &(vlSymsp->TOP), name(), false, 294);
     Vcustom_cpu___024root__trace_register(&(vlSymsp->TOP), stfp->spTrace());
 }

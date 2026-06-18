@@ -34,10 +34,6 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu VL_NOT_FINAL : public VerilatedMo
     // propagate new values into/out from the Verilated model.
     VL_IN8(&clk,0,0);
     VL_IN8(&rst,0,0);
-    VL_OUT8(&Inst_Req_Valid,0,0);
-    VL_IN8(&Inst_Req_Ready,0,0);
-    VL_IN8(&Inst_Valid,0,0);
-    VL_OUT8(&Inst_Ready,0,0);
     VL_OUT8(&MemWrite,0,0);
     VL_OUT8(&Write_strb,3,0);
     VL_OUT8(&MemRead,0,0);
@@ -46,7 +42,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu VL_NOT_FINAL : public VerilatedMo
     VL_OUT8(&Read_data_Ready,0,0);
     VL_IN8(&intr,0,0);
     VL_OUT(&PC,31,0);
-    VL_IN(&Instruction,31,0);
+    VL_OUT(&Instruction,31,0);
     VL_OUT(&Address,31,0);
     VL_OUT(&Write_data,31,0);
     VL_IN(&Read_data,31,0);

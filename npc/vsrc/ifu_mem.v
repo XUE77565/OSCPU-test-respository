@@ -1,7 +1,5 @@
 `include "define.v"
 
-//import "DPI-C" function int pmem_read(int raddr);
-
 module ifu_mem(
   input   clk,
   input   rst,
@@ -12,7 +10,7 @@ module ifu_mem(
   output         Inst_Req_Ready,
 
 //R
-  input  [31:0]  Instruction,
+  output  [31:0] Instruction,
   output         Inst_Valid,
   input          Inst_Ready
 );
