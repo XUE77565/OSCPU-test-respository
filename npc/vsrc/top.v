@@ -84,11 +84,10 @@ module custom_cpu(
     .rst                 (rst),
     .PC                  (PC),
     .Instruction         (Instruction),
-    //完成ifu，在内部完成
-    // .Inst_Valid          (Inst_Valid),
-    // .Inst_Ready          (Inst_Ready),
-    // .Inst_Req_Valid      (Inst_Req_Valid),
-    // .Inst_Req_Ready      (Inst_Req_Ready),
+    .Inst_Valid          (Inst_Valid),
+    .Inst_Ready          (Inst_Ready),
+    .Inst_Req_Valid      (Inst_Req_Valid),
+    .Inst_Req_Ready      (Inst_Req_Ready),
     .IF_to_ID_data       (IF_to_ID_data),
     .prediction_incorrect(prediction_incorrect),
     .predictor_to_IF_data(predictor_to_IF_data),
@@ -96,6 +95,18 @@ module custom_cpu(
     .IF_to_ID_valid      (IF_to_ID_valid),
     .ID_ready            (ID_ready),
     .MemRead             (MemRead)
+  );
+
+//ifu取指总线
+  ifu_mem ifu_mem_inst(
+    .clk             (clk),
+    .rst             (rst),
+    .PC              (PC),
+    .Inst_Req_Valid  (Inst_Req_Valid),
+    .Inst_Req_Ready  (Inst_Req_Ready),
+    .Instruction     (Instruction),
+    .Inst_Valid      (Inst_Valid),
+    .Inst_Ready      (Inst_Ready)
   );
 
   id_stage ID_EX(
