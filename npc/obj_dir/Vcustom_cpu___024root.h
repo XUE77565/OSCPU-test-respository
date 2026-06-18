@@ -59,11 +59,13 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         CData/*0:0*/ custom_cpu__DOT__EX_EX__DOT__MEM_ready;
         CData/*0:0*/ custom_cpu__DOT__EX_EX__DOT__Branch_real;
         CData/*0:0*/ custom_cpu__DOT__EX_EX__DOT__block_cancel;
+        CData/*0:0*/ custom_cpu__DOT__EX_EX__DOT__exec_redirect;
         CData/*0:0*/ custom_cpu__DOT__EX_EX__DOT__EX_work;
         CData/*3:0*/ custom_cpu__DOT__EX_EX__DOT__Write_strb;
         CData/*0:0*/ custom_cpu__DOT__EX_EX__DOT__EX_write;
         CData/*0:0*/ custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__CarryOut;
         CData/*1:0*/ custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT____VdfgRegularize_hd1e758aa_0_3;
+        CData/*0:0*/ custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__ecall_valid;
         CData/*0:0*/ custom_cpu__DOT__MEM_EX__DOT__MEM_to_WB_valid;
         CData/*4:0*/ custom_cpu__DOT__MEM_EX__DOT__MEM_current_state;
         CData/*4:0*/ custom_cpu__DOT__MEM_EX__DOT__MEM_next_state;
@@ -81,10 +83,10 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         SData/*8:0*/ __Vtableidx2;
         SData/*11:0*/ __Vtableidx3;
         VL_OUT(PC,31,0);
-        VL_IN(Instruction,31,0);
-        VL_OUT(Address,31,0);
     };
     struct {
+        VL_IN(Instruction,31,0);
+        VL_OUT(Address,31,0);
         VL_OUT(Write_data,31,0);
         VL_IN(Read_data,31,0);
         VL_OUT(cpu_perf_cnt_0,31,0);
@@ -114,9 +116,9 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         IData/*31:0*/ custom_cpu__DOT__ID_EX__DOT__MEM_data;
         IData/*31:0*/ custom_cpu__DOT__ID_EX__DOT__prediction_addr;
         IData/*31:0*/ custom_cpu__DOT__ID_EX__DOT__reg_file_ex__DOT__unnamedblk1__DOT__i;
-        VlWide<9>/*269:0*/ custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data;
+        VlWide<9>/*271:0*/ custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data;
         VlWide<7>/*214:0*/ custom_cpu__DOT__EX_EX__DOT__EX_to_MEM_data;
-        VlWide<9>/*269:0*/ custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg;
+        VlWide<9>/*271:0*/ custom_cpu__DOT__EX_EX__DOT__ID_to_EX_data_reg;
         IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__Result;
         IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__EX_bypath_data;
         IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__alu_ex__DOT__Result;
@@ -127,9 +129,13 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__mcycleh;
         IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__mvendorid;
         IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__marchid;
+        IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__mepc;
+        IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__mtvec;
+        IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__mcause;
+        IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__mstatus;
         VlWide<7>/*214:0*/ custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg;
         IData/*31:0*/ custom_cpu__DOT__MEM_EX__DOT__Read_data_current;
-        VlWide<4>/*102:0*/ custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg;
+        VlWide<3>/*70:0*/ custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg;
         IData/*31:0*/ __VactIterCount;
         QData/*63:0*/ custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg;
         VlUnpacked<IData/*31:0*/, 32> custom_cpu__DOT__ID_EX__DOT__reg_file_ex__DOT__regfile;

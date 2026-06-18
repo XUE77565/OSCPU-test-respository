@@ -289,7 +289,7 @@ wire    RF_wen_i;
 assign  RF_wen_i  = 	(opcode==`AUIPC || opcode==`JAL || opcode==`JALR)?	1:	//对于跳转指令
 			(opcode==`I_type_l || opcode==`LUI)?			1:	//对于加载指令
 			(opcode==`I_type_c || opcode==`R_type)?			1:	//对于R型指令
-                        (opcode==`CSR_type)?			                1:   //对于需要写CSR的指令
+                        (opcode==`CSR_type && ~inst_ecall && ~inst_mret)?	1:   //对于需要写CSR的指令
 										0;
 
 //移位器和运算器结果二选一信号
@@ -353,6 +353,8 @@ assign  predictor_to_IF_data =  {
                                 };
 
 assign ID_to_EX_data =  {
+                          inst_ecall,
+                          inst_mret,
                           csr_write_enable,      //csr写使能
                           csr_addr,              //csr地址
                           csr_write_sel,         //csr写入数据选择

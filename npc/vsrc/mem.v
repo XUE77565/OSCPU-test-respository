@@ -7,24 +7,24 @@ module mem_stage(
     //时钟和复位信号
     input   clk,
     input   rst,
-        //Memory request channel
-        output [31:0] Address,
-        output        MemWrite,
-        output [31:0] Write_data,
-        output [ 3:0] Write_strb,
-        output        MemRead,
-        input         Mem_Req_Ready,
+    //Memory request channel
+    output [31:0] Address,
+    output        MemWrite,
+    output [31:0] Write_data,
+    output [ 3:0] Write_strb,
+    output        MemRead,
+    input         Mem_Req_Ready,
 
-        //Memory data response channel
-        input  [31:0] Read_data,
-        input         Read_data_Valid,
-        output        Read_data_Ready,
+    //Memory data response channel
+    input  [31:0] Read_data,
+    input         Read_data_Valid,
+    output        Read_data_Ready,
 
     //来自其他模块的数据
     input   [`EX_TO_MEM_WIDTH-1:0]   EX_to_MEM_data,
 
     //发往其他模块的数据
-    output  [`MEM_TO_WB_WIDTH-1:0]         MEM_to_WB_data,
+    output  [`MEM_TO_WB_WIDTH-1:0]          MEM_to_WB_data,
     output  [`MEM_ID_BYPATH_WIDTH-1:0]      MEM_to_ID_bypath_data,
 
     //和其它模块的握手信号

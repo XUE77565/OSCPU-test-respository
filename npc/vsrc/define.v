@@ -70,7 +70,7 @@
 `define PREDICTION_WIDTH 33
 `define IF_TO_ID_WIDTH   64
 //`define ID_TO_EX_WIDTH   254    //无mul
-`define ID_TO_EX_WIDTH   270    //有mul + ebreak + csr
+`define ID_TO_EX_WIDTH   272    //有mul + ebreak + csr
 `define EX_ID_BYPATH_WIDTH 39
 `define MEM_ID_BYPATH_WIDTH 39
 `define WB_ID_BYPATH_WIDTH 38

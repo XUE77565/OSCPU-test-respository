@@ -54,6 +54,8 @@ wire    [4:0] RF_waddr;
 wire    [31:0] rdata2_true;
 
 wire    ebreak_inst;
+wire    inst_ecall;
+wire    inst_mret;
 
 reg     [`ID_TO_EX_WIDTH-1:0]   ID_to_EX_data_reg;
 
@@ -71,6 +73,8 @@ end
 
 //将数据导入EX模块
 assign  {
+         inst_ecall,
+         inst_mret,
          csr_write_enable,      //csr写使能
          csr_addr,              //csr地址
          csr_write_sel,         //csr写入数据选择        
@@ -163,9 +167,15 @@ always@(posedge clk) begin
         end
 end
 
-assign prediction_incorrect   =  (Branch_real ^ prediction_result) && ~block_cancel;//异或表示分支预测结果和实际相反
+//复用这套逻辑来进行mret的结果
+wire exec_redirect = EX_work && (inst_mret || inst_ecall);
+wire [31:0] exec_PC = (inst_mret)? mepc_value : mtvec_value; //mret跳转到csr_read_data中存储的地址, ecall跳转到PC_EX
 
-assign PC_correct   =  (Branch_real || Jump)?  prediction_addr : PC_EX+4;
+assign prediction_incorrect   =  ((Branch_real ^ prediction_result) || exec_redirect) && ~block_cancel; //异或表示分支预测结果和实际相反
+
+assign PC_correct   =  (exec_redirect)?         exec_PC :
+                        (Branch_real || Jump)?  prediction_addr : 
+                                                PC_EX+4;
 
 
 
@@ -262,6 +272,9 @@ wire [11:0] csr_addr;
 wire [31:0] csr_write_data = ALUop_A; //这里暂时让ALUop_A作为写入CSR的数据, 正好是rs1
 wire csr_write_sel; //csr写入数据选择
 wire [31:0] csr_read_data;
+wire [31:0] mtvec_value;
+wire [31:0] mepc_value;
+wire ecall_valid = inst_ecall && EX_work; //当指令是ecall并且EX正在工作时, 认为ecall_valid有效
 
 //连接csr模块
 csr CSR_INST(
@@ -271,6 +284,10 @@ csr CSR_INST(
         .csr_write_sel(csr_write_sel),
         .csr_addr(csr_addr),
         .csr_write_data(csr_write_data),
+        .ecall_valid(ecall_valid),
+        .exec_PC(PC_EX),
+        .mtvec_value(mtvec_value),
+        .mepc_value(mepc_value),
         .csr_read_data(csr_read_data)
 );
 endmodule

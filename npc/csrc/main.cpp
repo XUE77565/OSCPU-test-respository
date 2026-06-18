@@ -5,7 +5,7 @@
 #include <sys/time.h>
 
 #define ITRACE 0
-#define DIFFTEST 1
+#define DIFFTEST 0
 #define MTRACE 0
 
 // Verilator 头文件
@@ -313,7 +313,7 @@ void sim_exec(uint64_t n) {
   uint64_t cycle = 0;
   uint64_t inst_cnt = 0;  // 本轮已退役的指令数
 
-  while (cycle < MAX_CYCLES) {
+  while (1) {
     bool retired = sim_clock_step();
     cycle++;
 
@@ -341,6 +341,7 @@ void sim_exec(uint64_t n) {
              g_exit_code == 0 ? "\33[1;32mHIT GOOD TRAP\33[0m"
                               : "\33[1;31mHIT BAD TRAP\33[0m",
              sim_get_pc(), g_exit_code);
+      //打印出周期数
       return;
     }
 

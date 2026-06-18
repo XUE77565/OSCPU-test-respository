@@ -9,7 +9,7 @@ module if_stage(
     //有关指令的部分
     input   [31:0]  Instruction,
     input           Inst_Valid,
-	output          Inst_Ready,
+    output          Inst_Ready,
 
     //有关IF的握手信号
     output          Inst_Req_Valid,
