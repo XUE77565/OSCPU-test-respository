@@ -17,18 +17,19 @@ module custom_cpu(
   // output        Inst_Req_Valid,
   // input         Inst_Req_Ready,
 
+  // 集成到内部
   // Memory request channel
-  output [31:0] Address,
-  output        MemWrite,
-  output [31:0] Write_data,
-  output [3:0]  Write_strb,
-  output        MemRead,
-  input         Mem_Req_Ready,
+  // output [31:0] Address,
+  // output        MemWrite,
+  // output [31:0] Write_data,
+  // output [3:0]  Write_strb,
+  // output        MemRead,
+  // input         Mem_Req_Ready,
 
   // Memory data response channel
-  input  [31:0] Read_data,
-  input         Read_data_Valid,
-  output        Read_data_Ready,
+  // input  [31:0] Read_data,
+  // input         Read_data_Valid,
+  // output        Read_data_Ready,
 
   input         intr,
 
@@ -148,6 +149,16 @@ module custom_cpu(
     .PC_correct          (PC_correct)
   );
 
+  wire MemRead;
+  wire MemWrite;
+  wire [31:0] Address;
+  wire [31:0] Write_data;
+  wire [3:0] Write_strb;
+  wire Mem_Req_Ready;
+  wire [31:0] Read_data;
+  wire Read_data_Valid;
+  wire Read_data_Ready;
+
   mem_stage MEM_EX(
     .clk                 (clk),
     .rst                 (rst),
@@ -167,6 +178,20 @@ module custom_cpu(
     .MEM_to_WB_valid     (MEM_to_WB_valid),
     .EX_to_MEM_valid     (EX_to_MEM_valid),
     .WB_ready            (WB_ready)
+  );
+
+  lsu_mem lsu_mem_inst(
+    .clk             (clk),
+    .rst             (rst),
+    .MemRead         (MemRead),
+    .MemWrite        (MemWrite),
+    .Address         (Address),
+    .Write_data      (Write_data),
+    .Write_strb      (Write_strb),
+    .Mem_Req_Ready   (Mem_Req_Ready),
+    .Read_data       (Read_data),
+    .Read_data_Valid (Read_data_Valid),
+    .Read_data_Ready (Read_data_Ready)
   );
 
   wb_stage WB_EX(

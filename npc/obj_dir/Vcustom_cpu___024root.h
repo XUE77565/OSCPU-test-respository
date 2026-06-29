@@ -21,14 +21,9 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
     struct {
         VL_IN8(clk,0,0);
         VL_IN8(rst,0,0);
-        VL_OUT8(MemWrite,0,0);
-        VL_OUT8(Write_strb,3,0);
-        VL_OUT8(MemRead,0,0);
-        VL_IN8(Mem_Req_Ready,0,0);
-        VL_IN8(Read_data_Valid,0,0);
-        VL_OUT8(Read_data_Ready,0,0);
         VL_IN8(intr,0,0);
         CData/*0:0*/ custom_cpu__DOT__inst_Req_Valid;
+        CData/*0:0*/ custom_cpu__DOT__IF_EX__DOT__MemRead;
         CData/*4:0*/ custom_cpu__DOT__IF_EX__DOT__IF_current_state;
         CData/*4:0*/ custom_cpu__DOT__IF_EX__DOT__IF_next_state;
         CData/*0:0*/ custom_cpu__DOT__ifu_mem_inst__DOT__Inst_Req_Valid;
@@ -71,6 +66,11 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         CData/*4:0*/ custom_cpu__DOT__MEM_EX__DOT__MEM_current_state;
         CData/*4:0*/ custom_cpu__DOT__MEM_EX__DOT__MEM_next_state;
         CData/*0:0*/ custom_cpu__DOT__MEM_EX__DOT__MEM_work;
+        CData/*0:0*/ custom_cpu__DOT__lsu_mem_inst__DOT__MemWrite;
+        CData/*0:0*/ custom_cpu__DOT__lsu_mem_inst__DOT__Read_data_Ready;
+        CData/*0:0*/ custom_cpu__DOT__lsu_mem_inst__DOT__lsu_mem_busy;
+        CData/*0:0*/ custom_cpu__DOT__lsu_mem_inst__DOT__mem_request;
+        CData/*0:0*/ custom_cpu__DOT__lsu_mem_inst__DOT__mem_response;
         CData/*0:0*/ custom_cpu__DOT__WB_EX__DOT__WB_work;
         CData/*4:0*/ __Vtableidx4;
         CData/*0:0*/ __VstlFirstIteration;
@@ -82,14 +82,11 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         CData/*0:0*/ __VnbaPhaseResult;
         SData/*10:0*/ __Vtableidx1;
         SData/*8:0*/ __Vtableidx2;
-        SData/*11:0*/ __Vtableidx3;
+        SData/*9:0*/ __Vtableidx3;
     };
     struct {
         VL_OUT(PC,31,0);
         VL_OUT(Instruction,31,0);
-        VL_OUT(Address,31,0);
-        VL_OUT(Write_data,31,0);
-        VL_IN(Read_data,31,0);
         VL_OUT(cpu_perf_cnt_0,31,0);
         VL_OUT(cpu_perf_cnt_1,31,0);
         VL_OUT(cpu_perf_cnt_2,31,0);
@@ -137,6 +134,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vcustom_cpu___024root final {
         IData/*31:0*/ custom_cpu__DOT__EX_EX__DOT__CSR_INST__DOT__mstatus;
         VlWide<7>/*214:0*/ custom_cpu__DOT__MEM_EX__DOT__EX_to_MEM_data_reg;
         IData/*31:0*/ custom_cpu__DOT__MEM_EX__DOT__Read_data_current;
+        IData/*31:0*/ custom_cpu__DOT__lsu_mem_inst__DOT__Read_data_reg;
         VlWide<3>/*70:0*/ custom_cpu__DOT__WB_EX__DOT__MEM_to_WB_data_reg;
         IData/*31:0*/ __VactIterCount;
         QData/*63:0*/ custom_cpu__DOT__ID_EX__DOT__IF_to_ID_data_reg;

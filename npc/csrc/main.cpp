@@ -4,7 +4,7 @@
 #include <string.h>
 #include <sys/time.h>
 
-#define ITRACE 0
+#define ITRACE 1
 #define DIFFTEST 0
 #define MTRACE 0
 
@@ -176,9 +176,9 @@ void sim_init(const char *bin_path) {
   // g_top->Inst_Valid = 1;
   // g_top->Instruction = 0;
   // 数据内存握手: 通过 DPI-C 在 mem.v 中直接处理
-  g_top->Mem_Req_Ready = 1;
-  g_top->Read_data = 0;
-  g_top->Read_data_Valid = 0;
+  // g_top->Mem_Req_Ready = 1;
+  // g_top->Read_data = 0;
+  // g_top->Read_data_Valid = 0;
   // 中断: cpu-tests 不使用中断
   g_top->intr = 0;
   g_top->eval();

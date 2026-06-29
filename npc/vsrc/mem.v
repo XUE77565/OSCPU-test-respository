@@ -114,10 +114,9 @@ module mem_stage(
       end
       SL: begin
         // DPI-C: 读写立即完成, 无需等待外部握手
-        if (load) begin
-          MEM_next_state = SL_DONE;
-        end else if (store) begin
-          MEM_next_state = SL_DONE;
+        //为了适应respValid的lsu_mem，写也放到RDW去等待响应
+        if (load || store) begin
+          MEM_next_state = RDW;
         end else begin
           MEM_next_state = SL;
         end
@@ -171,17 +170,17 @@ module mem_stage(
   always @(posedge clk) begin
     if (rst) begin
       Read_data_current <= 32'b0;
-    end else if (MEM_current_state == SL && load) begin
-      Read_data_current <= pmem_read(Address);
+    end else if (MEM_current_state == RDW && load && Read_data_Valid && Read_data_Ready) begin
+      Read_data_current <= Read_data;
     end
   end
 
-  // 写数据: 通过DPI-C直接写入内存
-  always @(posedge clk) begin
-    if (MEM_current_state == SL && store) begin
-      pmem_write(Address, Write_data, Write_strb);
-    end
-  end
+  // 写数据: 通过DPI-C直接写入内存，已经移动到lsu_mem.v中
+  // always @(posedge clk) begin
+  //   if (MEM_current_state == SL && store) begin
+  //     pmem_write(Address, Write_data, Write_strb);
+  //   end
+  // end
 
   wire [7:0] read_byte_3;
   wire [7:0] read_byte_2;
