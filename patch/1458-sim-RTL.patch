@@ -1,0 +1,27 @@
+From 75ae927c08ae1db3c9ae93f6da93db7233898a03 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 17:00:39 +0800
+Subject: [PATCH 1458/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  17:00:39 up  1:26,  1 user,  load
+ average: 0.22, 0.26, 0.34
+
+---
+ abstract-machine/scripts/platform/npc.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/abstract-machine/scripts/platform/npc.mk b/abstract-machine/scripts/platform/npc.mk
+index d1b471a..3ecf2c6 100644
+--- a/abstract-machine/scripts/platform/npc.mk
++++ b/abstract-machine/scripts/platform/npc.mk
+@@ -28,6 +28,6 @@ image: image-dep
+ 	@$(OBJCOPY) -S --set-section-flags .bss=alloc,contents -O binary $(IMAGE).elf $(IMAGE).bin
+ 
+ run: insert-arg
+-	$(MAKE) -C $(NPC_HOME) sim IMG=$(IMAGE).bin -i
++	$(MAKE) -C $(NPC_HOME) sim IMG=$(IMAGE).bin
+ 
+ .PHONY: insert-arg
+-- 
+2.34.1
+

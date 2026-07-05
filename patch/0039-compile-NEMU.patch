@@ -1,0 +1,27 @@
+From 4886397858e3be81eaa5d1ec8f27b8d58cf31732 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Wed, 22 Apr 2026 15:16:14 +0800
+Subject: [PATCH 0039/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-110-generic #110~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 27 12:43:08
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  15:16:14 up 44 min,  1 user,  load
+ average: 0.33, 0.13, 0.10
+
+---
+ nemu/src/monitor/sdb/sdb.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/nemu/src/monitor/sdb/sdb.c b/nemu/src/monitor/sdb/sdb.c
+index 2282253..412e9ac 100644
+--- a/nemu/src/monitor/sdb/sdb.c
++++ b/nemu/src/monitor/sdb/sdb.c
+@@ -125,6 +125,7 @@ void sdb_mainloop() {
+     int i;
+     for (i = 0; i < NR_CMD; i ++) {
+       if (strcmp(cmd, cmd_table[i].name) == 0) {
++        printf("FOUND COMMAND\n");
+         if (cmd_table[i].handler(args) < 0) { return; }
+         break;
+       }
+-- 
+2.34.1
+

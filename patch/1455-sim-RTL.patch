@@ -1,0 +1,28 @@
+From 709cdd958b0e7c24ae33081da14a0f164f05d700 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 17:00:04 +0800
+Subject: [PATCH 1455/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  17:00:04 up  1:26,  1 user,  load
+ average: 0.26, 0.27, 0.35
+
+---
+ abstract-machine/scripts/platform/npc.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/abstract-machine/scripts/platform/npc.mk b/abstract-machine/scripts/platform/npc.mk
+index 3ecf2c6..8e2d581 100644
+--- a/abstract-machine/scripts/platform/npc.mk
++++ b/abstract-machine/scripts/platform/npc.mk
+@@ -13,7 +13,7 @@ LDSCRIPTS += $(AM_HOME)/scripts/linker.ld
+ LDFLAGS   += --defsym=_pmem_start=0x80000000 --defsym=_entry_offset=0x0
+ LDFLAGS   += --gc-sections -e _start
+ ##打开 -b 选项来打开批处理模式
+-NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt 
++NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt -i
+ 
+ MAINARGS_MAX_LEN = 64
+ MAINARGS_PLACEHOLDER = the_insert-arg_rule_in_Makefile_will_insert_mainargs_here
+-- 
+2.34.1
+

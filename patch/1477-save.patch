@@ -1,0 +1,226 @@
+From e2493835588d862a6a32282e35d83df274d50e36 Mon Sep 17 00:00:00 2001
+From: XueYizhou <xueyizhou23@mails.ucas.ac.cn>
+Date: Fri, 12 Jun 2026 19:15:04 +0800
+Subject: [PATCH 1477/1487] save
+
+---
+ nemu/src/monitor/sdb/expr.c     |  3 ++-
+ nemu/src/monitor/sdb/expreval.c | 28 +++++++++++++---------------
+ nemu/src/monitor/sdb/sdb.c      | 27 +++++++++++++++------------
+ npc/Makefile                    |  7 +------
+ 4 files changed, 31 insertions(+), 34 deletions(-)
+
+diff --git a/nemu/src/monitor/sdb/expr.c b/nemu/src/monitor/sdb/expr.c
+index 379a58e..f2c5bc7 100644
+--- a/nemu/src/monitor/sdb/expr.c
++++ b/nemu/src/monitor/sdb/expr.c
+@@ -103,7 +103,7 @@ static bool make_token(char *e) {
+   nr_token = 0;
+ 
+   while (e[position] != '\0') {
+-    /* Try all rules one by one. */
++    //逐一匹配正则规则
+     for (i = 0; i < NR_REGEX; i ++) {
+       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
+         char *substr_start = e + position;
+@@ -146,6 +146,7 @@ static bool make_token(char *e) {
+ }
+ 
+ word_t expr(char *e, bool *success) {
++  //解析token
+   if (!make_token(e)) {
+     *success = false;
+     return 0;
+diff --git a/nemu/src/monitor/sdb/expreval.c b/nemu/src/monitor/sdb/expreval.c
+index 4a4ec7f..f8440f9 100644
+--- a/nemu/src/monitor/sdb/expreval.c
++++ b/nemu/src/monitor/sdb/expreval.c
+@@ -57,11 +57,11 @@ int expreval(int p, int q, Token *tokens, bool *success) {
+             return 0;
+         }
+     }
+-    //when p and q are a pair of parentheses, we just evaluate the expression inside the parentheses
++    //如果p和q是一对括号，那么我们就只需要计算括号内的表达式即可
+     else if (check_parentheses(p, q, tokens) == true) {
+         return expreval(p + 1, q - 1, tokens, success);
+     }
+-    //divide the expression into two parts by the main operator, and evaluate the two parts recursively
++    //根据主运算符，递归运算
+     else {
+         int val1 = 0, val2 = 0;
+         int op = -1;
+@@ -124,33 +124,32 @@ int expreval(int p, int q, Token *tokens, bool *success) {
+ }
+ 
+ bool check_parentheses(int p, int q, Token *tokens) {
+-    //use depth to check if the p and q are a pair of parentheses
+     if(tokens[p].type != '(' || tokens[q].type != ')') {
+         return false;
+     }
+     int depth = 0;
+     for(int i = p + 1; i < q; i++) {
+-        //if we encounter a '(', we increase the depth, if we encounter a ')', we decrease the depth
++        //如果在p和q之间遇到一个左括号，就把depth加1，如果遇到一个右括号，就把depth减
+         if(tokens[i].type == '(') {
+             depth++;
+         }
+         else if(tokens[i].type == ')') {
+             if(depth == 0) {
+-                //p is matching with a ')' before q, so p and q are not a pair of parentheses
++                //为了避免()()中最左和最后匹配的情况，如果遇到匹配的，就直接return false
+                 return false;
+             }
+             depth--;
+         }
+     }
+-    //EVEN IF DEPTH IS 0, IT DOES NOT MEAN THAT THE PARENTHESES ARE A PAIR, 
+-    //BECAUSE THERE MAY BE OTHER PARENTHESES INSIDE,
+-    //LIKE (A+B)*(C+D), THE PARENTHESES AROUND A+B AND C+D ARE NOT A PAIR
++    //即使depth为0，也不代表这对括号是匹配的，
++    //因为中间可能存在其他括号，
++    //例如(A+B)*(C+D)，A+B和C+D外面的括号并不是一对
+     return true;
+ }
+ 
+ int find_main_operator(int p, int q, Token *tokens) {
+     int main_op = -1;
+-    int min_priority = 100; // a large number
++    int min_priority = 100;
+     int depth = 0;
+ 
+     for(int i = p; i <= q; i++) {
+@@ -163,14 +162,14 @@ int find_main_operator(int p, int q, Token *tokens) {
+         else if(tokens[i].type == ')') {
+             depth--;
+         }
+-        // only consider operators at the top level,
+-        // because we have already checked the parentheses in the previous step,
++        //只用考虑最外层，因为我们剥开了括号
+         else if(depth == 0) { 
+             int priority;
+             switch (tokens[i].type) {
+-                case TK_AND: priority = 0; break; // logical AND has the lowest priority
++                //按照优先级排列
++                case TK_AND: priority = 0; break; 
+                 case TK_EQ:
+-                case TK_NEQ: priority = 1; break; // equal and not equal
++                case TK_NEQ: priority = 1; break;
+                 case '+':
+                 case '-': priority = 2; break;
+                 case '*':
+@@ -178,8 +177,7 @@ int find_main_operator(int p, int q, Token *tokens) {
+                 case TK_DEREF: priority = 4; break; //解引用优先级最高
+                 default: priority = 100; // a large number for unknown operators
+             }
+-            //which is the rightmost operator with the lowest priority, because of the associativity of the operators
+-            //考虑单目运算符左结合
++            //考虑解引用运算符右结合，如果优先级相同，选右边的，其他的选左边的
+             if(priority < min_priority || (priority == min_priority && tokens[i].type != TK_DEREF)) { 
+                 min_priority = priority;
+                 main_op = i;
+diff --git a/nemu/src/monitor/sdb/sdb.c b/nemu/src/monitor/sdb/sdb.c
+index 020c2e5..540f100 100644
+--- a/nemu/src/monitor/sdb/sdb.c
++++ b/nemu/src/monitor/sdb/sdb.c
+@@ -37,6 +37,7 @@ static char* rl_gets() {
+ 
+   line_read = readline("(nemu) ");
+ 
++  //非空行才加入历史
+   if (line_read && *line_read) {
+     add_history(line_read);
+   }
+@@ -45,13 +46,15 @@ static char* rl_gets() {
+ }
+ 
+ static int cmd_c(char *args) {
+-  cpu_exec(-1);
++  cpu_exec(-1);//-1表示一直执行
+   return 0;
+ }
+ 
+ 
+ static int cmd_q(char *args) {
++  //设置nemu状态，完成优雅的退出
+   nemu_state.state = NEMU_QUIT;
++  //返回值为负，退出mainloop
+   return -1;
+ }
+ 
+@@ -88,9 +91,7 @@ static int cmd_info(char *args) {
+ }
+ 
+ static int cmd_x(char *args) {
+-  printf("args = %s\n", args);
+-  //The first argument is the number of 4-byte words to be scanned, 
+-  //and the second argument is the expression to be evaluated.
++  //printf("args = %s\n", args);
+   char *arg_end = args + strlen(args);
+   char *num = strtok(args, " ");
+   char *expr = num + strlen(num) + 1;
+@@ -149,8 +150,9 @@ static int cmd_w(char *args) {
+   if(wp == NULL) {
+     return 0;
+   }
++  //-1是为了给expr预留出空间
+   strncpy(wp->expr, args, sizeof(wp->expr) - 1);
+-  wp->expr[sizeof(wp->expr) - 1] = '\0'; // Ensure null-termination
++  wp->expr[sizeof(wp->expr) - 1] = '\0';
+   bool success = false;
+   wp->old_value = expr(args, &success);
+   if(success == false) {
+@@ -187,14 +189,14 @@ static struct {
+   int (*handler) (char *);
+ } cmd_table [] = {
+   { "help", "Display information about all supported commands", cmd_help },
+-  { "c", "Continue the execution of the program", cmd_c },
+-  { "q", "Exit NEMU", cmd_q },
+-  { "si", "Si N executes N instructions, default steps = 1", cmd_si },
++  { "c"   , "Continue the execution of the program", cmd_c },
++  { "q"   , "Exit NEMU", cmd_q },
++  { "si"  , "Si N executes N instructions, default steps = 1", cmd_si },
+   { "info", "Print the register status or watchpoint information", cmd_info },
+-  { "x", "Scan the memory: x N EXPR, evaluate EXPR and scan N words in memory", cmd_x },
+-  { "p", "Evaluate the expression EXPR and print the result", cmd_p },
+-  { "w", "Set a watchpoint for an expression EXPR", cmd_w },
+-  { "d", "Delete the watchpoint with the given number N", cmd_d },
++  { "x"   , "Scan the memory: x N EXPR, evaluate EXPR and scan N words in memory", cmd_x },
++  { "p"   , "Evaluate the expression EXPR and print the result", cmd_p },
++  { "w"   , "Set a watchpoint for an expression EXPR", cmd_w },
++  { "d"   , "Delete the watchpoint with the given number N", cmd_d },
+ 
+   /* TODO: Add more commands */
+ 
+@@ -245,6 +247,7 @@ void sdb_mainloop() {
+     /* treat the remaining string as the arguments,
+      * which may need further parsing
+      */
++    //解析命令参数
+     char *args = cmd + strlen(cmd) + 1;
+     //printf("args = %s\n", args);
+     if (args >= str_end) {
+diff --git a/npc/Makefile b/npc/Makefile
+index ea28255..fd4a087 100644
+--- a/npc/Makefile
++++ b/npc/Makefile
+@@ -1,8 +1,4 @@
+-# ***************************************************************************************
+-# NPC Makefile - 使用 Verilator 将 Verilog 编译为 C++ 仿真可执行文件
+-# ***************************************************************************************
+-
+-# ============================== 路径变量 ==============================
++# 使用 Verilator 将 Verilog 编译为 C++ 仿真可执行文件
+ 
+ # NPC 项目的根目录，通过 realpath 获取绝对路径
+ NPC_HOME := $(shell pwd)
+@@ -56,7 +52,6 @@ $(TARGET): $(VSRCS) $(CSRCS)
+ 	verilator $(VERILATOR_FLAGS) $(VSRCS) $(CSRCS) -o $(TARGET)
+ 
+ # 仿真模式: 默认 batch, 传 MODE=-i 切换到交互模式
+-# 用法: make ARCH=minirv-npc ALL=add run MODE=-i
+ MODE ?=
+ 
+ # sim 目标：先通过 git_commit 记录 RTL 变更，再编译运行
+-- 
+2.34.1
+

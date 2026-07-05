@@ -1,0 +1,35 @@
+From e719aea7a20ac4ffb01bdb4061e596d264136f1c Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 1 Jun 2026 17:47:41 +0800
+Subject: [PATCH 1049/1487] > run NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-117-generic #117~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 22:17:46
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  17:47:41 up  2:34,  1 user,  load
+ average: 0.24, 0.31, 0.18
+
+---
+ abstract-machine/am/src/platform/nemu/ioe/gpu.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/abstract-machine/am/src/platform/nemu/ioe/gpu.c b/abstract-machine/am/src/platform/nemu/ioe/gpu.c
+index 7a07d61..27f7d51 100644
+--- a/abstract-machine/am/src/platform/nemu/ioe/gpu.c
++++ b/abstract-machine/am/src/platform/nemu/ioe/gpu.c
+@@ -15,10 +15,13 @@ void __am_gpu_init() {
+ }
+ 
+ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
++  uint32_t screen_wh = inl(VGACTL_ADDR);
++  uint32_t h = screen_wh & 0xffff;
++  uint32_t w = screen_wh >> 16;
+   *cfg = (AM_GPU_CONFIG_T) {
+     .present = true, .has_accel = false,
+-    .width = 0, .height = 0,
+-    .vmemsz = 0
++    .width = w, .height = h,
++    .vmemsz = w * h * sizeof(uint32_t)
+   };
+ }
+ 
+-- 
+2.34.1
+

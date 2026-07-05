@@ -1,0 +1,28 @@
+From f0cc2d876be5932797b6b14e4e0077c43fc0f779 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Fri, 24 Apr 2026 00:28:29 +0800
+Subject: [PATCH 0108/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-110-generic #110~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 27 12:43:08
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  00:28:29 up  9:34,  1 user,  load
+ average: 0.16, 1.03, 1.38
+
+---
+ nemu/src/monitor/monitor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/nemu/src/monitor/monitor.c b/nemu/src/monitor/monitor.c
+index 28ddb54..b05f767 100644
+--- a/nemu/src/monitor/monitor.c
++++ b/nemu/src/monitor/monitor.c
+@@ -163,7 +163,7 @@ void init_monitor(int argc, char *argv[]) {
+ 
+       if (success) {
+         if(line_num % 100 == 0) {
+-          printf("Checked [%d/10000] expressions...\n", line_num);
++          printf("Checked [%d/100000] expressions...\n", line_num);
+         }
+         if (eval_result == file_result) {
+           //printf("Expression test passed: %s == %u\n", expression, eval_result);
+-- 
+2.34.1
+

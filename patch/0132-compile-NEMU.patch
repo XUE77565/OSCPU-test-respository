@@ -1,0 +1,36 @@
+From 795e92d9a5ceb0b5591ffd7ad9bd14dc305dac7e Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Wed, 13 May 2026 19:32:50 +0800
+Subject: [PATCH 0132/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-111-generic #111~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 14 17:13:45
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  19:32:50 up  2:40,  1 user,  load
+ average: 0.73, 0.46, 0.34
+
+---
+ nemu/src/isa/riscv32/inst.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/nemu/src/isa/riscv32/inst.c b/nemu/src/isa/riscv32/inst.c
+index 54dc262..9791180 100644
+--- a/nemu/src/isa/riscv32/inst.c
++++ b/nemu/src/isa/riscv32/inst.c
+@@ -25,6 +25,7 @@
+ enum {
+   TYPE_I, TYPE_U, TYPE_S,
+   TYPE_J, // jump
++  TYPE_R, // register
+   TYPE_N, // none
+ };
+ 
+@@ -62,6 +63,8 @@ static int decode_exec(Decode *s) {
+ }
+ 
+   INSTPAT_START();
++  //TYPE-R
++  INSTPAT("0000000 ????? ????? 000 ????? 01100 11", add    , R, R(rd) = src1 + src2);
+   //TYPE-U
+   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(rd) = s->pc + imm);
+ 
+-- 
+2.34.1
+

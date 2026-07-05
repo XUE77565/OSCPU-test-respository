@@ -1,0 +1,23 @@
+From 3430035714ed7a312e71e5d5722e03476836e7bd Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 18 May 2026 22:50:24 +0800
+Subject: [PATCH 0514/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-111-generic #111~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 14 17:13:45
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  22:50:24 up  4:37,  1 user,  load
+ average: 0.52, 0.27, 0.11
+
+---
+ am-kernels | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 160000 am-kernels
+
+diff --git a/am-kernels b/am-kernels
+new file mode 160000
+index 0000000..c408823
+--- /dev/null
++++ b/am-kernels
+@@ -0,0 +1 @@
++Subproject commit c4088239e2425ffcb3cccd0fd603872d6c745fbb
+-- 
+2.34.1
+

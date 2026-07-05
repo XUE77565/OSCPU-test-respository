@@ -1,0 +1,29 @@
+From e9c4bddfd174abe78f29189b3113b4c2a28416f8 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Thu, 23 Apr 2026 18:07:45 +0800
+Subject: [PATCH 0093/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-110-generic #110~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 27 12:43:08
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  18:07:45 up  3:13,  1 user,  load
+ average: 0.19, 0.22, 0.24
+
+---
+ nemu/src/monitor/sdb/expreval.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/nemu/src/monitor/sdb/expreval.c b/nemu/src/monitor/sdb/expreval.c
+index e06657f..a8cd85e 100644
+--- a/nemu/src/monitor/sdb/expreval.c
++++ b/nemu/src/monitor/sdb/expreval.c
+@@ -53,7 +53,9 @@ uint32_t expreval(int p, int q, Token *tokens, bool *success) {
+             return 0;
+         }
+         val1 = expreval(p, op - 1, tokens, success);
++        printf("val1 = %u\n", val1);
+         val2 = expreval(op + 1, q, tokens, success);
++        printf("val2 = %u\n", val2);
+ 
+         switch (tokens[op].type) {
+             case '+': return val1 + val2;
+-- 
+2.34.1
+

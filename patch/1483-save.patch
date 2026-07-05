@@ -1,0 +1,176 @@
+From a4c7340dfe2a58dbd148e4046975f29bbb4e2410 Mon Sep 17 00:00:00 2001
+From: XueYizhou <xueyizhou23@mails.ucas.ac.cn>
+Date: Thu, 18 Jun 2026 15:48:35 +0800
+Subject: [PATCH 1483/1487] save
+
+---
+ npc/csrc/main.cpp  |  8 +++----
+ npc/vsrc/if.v      | 28 ++++++++++++++++++------
+ npc/vsrc/ifu_mem.v | 53 ++++++++++++++++++++++++++++++++++++++++++++++
+ npc/vsrc/top.v     |  9 ++++----
+ 4 files changed, 84 insertions(+), 14 deletions(-)
+ create mode 100644 npc/vsrc/ifu_mem.v
+
+diff --git a/npc/csrc/main.cpp b/npc/csrc/main.cpp
+index 34bee43..fc9325b 100644
+--- a/npc/csrc/main.cpp
++++ b/npc/csrc/main.cpp
+@@ -172,9 +172,9 @@ void sim_init(const char *bin_path) {
+   g_top->rst = 1;
+   g_top->clk = 0;
+   // 取指握手: 内存始终就绪
+-  g_top->Inst_Req_Ready = 1;
+-  g_top->Inst_Valid = 1;
+-  g_top->Instruction = 0;
++  // g_top->Inst_Req_Ready = 1;
++  // g_top->Inst_Valid = 1;
++  // g_top->Instruction = 0;
+   // 数据内存握手: 通过 DPI-C 在 mem.v 中直接处理
+   g_top->Mem_Req_Ready = 1;
+   g_top->Read_data = 0;
+@@ -211,7 +211,7 @@ void sim_init(const char *bin_path) {
+ // 返回 true 表示本周期有一条指令从 WB 阶段退役
+ bool sim_clock_step() {
+   // 根据 CPU 输出的 PC 从内存中读取指令, 提供给取指接口
+-  g_top->Instruction = pmem_read(g_top->PC);
++  /g_top->Instruction = pmem_read(g_top->PC);
+ 
+   // 上升沿
+   g_top->clk = 1;
+diff --git a/npc/vsrc/if.v b/npc/vsrc/if.v
+index 0e898a0..9284906 100644
+--- a/npc/vsrc/if.v
++++ b/npc/vsrc/if.v
+@@ -7,13 +7,13 @@ module if_stage(
+   output [31:0]  PC,
+ 
+   // 有关指令的部分
+-  input  [31:0]  Instruction,
+-  input          Inst_Valid,
+-  output         Inst_Ready,
++  output  [31:0] Instruction,//把Instruction改为output，供top来读
++//   input          Inst_Valid,
++//   output         Inst_Ready,
+ 
+-  // 有关IF的握手信号
+-  output         Inst_Req_Valid,
+-  input          Inst_Req_Ready,
++//   // 有关IF的握手信号
++//   output         Inst_Req_Valid,
++//   input          Inst_Req_Ready,
+ 
+   // 向下一模块传输的数据
+   output [`IF_TO_ID_WIDTH-1:0] IF_to_ID_data,
+@@ -31,6 +31,11 @@ module if_stage(
+ 
+   input   MemRead
+ );
++  wire Inst_Req_Valid;
++  wire Inst_Req_Ready;
++
++  wire Inst_Valid;
++  wire Inst_Ready;
+ 
+   // 用于内部IF的标记, 因为这里的IF实际上是由IW和IF两个状态合成的
+   localparam INIT     = 5'b00001,
+@@ -102,6 +107,17 @@ module if_stage(
+   assign Inst_Ready     = (IF_current_state == IW) || (IF_current_state == INIT);
+   assign Inst_Req_Valid = (IF_current_state == IF) && ~prediction_incorrect && ~MemRead;
+ 
++  ifu_mem ifu_mem_inst(
++    .clk             (clk),
++    .rst             (rst),
++    .PC              (PC),
++    .Inst_Req_Valid  (Inst_Req_Valid),
++    .Inst_Req_Ready  (Inst_Req_Ready),
++    .Instruction     (Instruction),
++    .Inst_Valid      (Inst_Valid),
++    .Inst_Ready      (Inst_Ready)
++  );
++
+   // 更新指令寄存器
+   reg [31:0] Instruction_reg;
+ 
+diff --git a/npc/vsrc/ifu_mem.v b/npc/vsrc/ifu_mem.v
+new file mode 100644
+index 0000000..6f16baa
+--- /dev/null
++++ b/npc/vsrc/ifu_mem.v
+@@ -0,0 +1,53 @@
++`include "define.v"
++
++//import "DPI-C" function int pmem_read(int raddr);
++
++module ifu_mem(
++  input   clk,
++  input   rst,
++
++//AR
++  input   [31:0] PC,
++  input          Inst_Req_Valid,
++  output         Inst_Req_Ready,
++
++//R
++  input  [31:0]  Instruction,
++  output         Inst_Valid,
++  input          Inst_Ready
++);
++
++  reg [31:0] ifu_rdata;
++  reg        ifu_busy;
++
++  wire ar_done = Inst_Req_Valid && Inst_Req_Ready;//AR握手完成
++  wire r_done  = Inst_Valid && Inst_Ready;        //R握手完成
++
++  //每次只处理一个指令
++  assign Inst_Req_Ready = !ifu_busy;
++
++  always @(posedge clk) begin
++    if (rst) begin
++      ifu_busy <= 0;
++      ifu_rdata <= 0;
++    end 
++    else begin
++      if (ar_done) begin
++        //地址握手完成，发出内存读请求
++        ifu_rdata <= pmem_read(PC); //从内存读取指令数据
++        ifu_busy <= 1; 
++      end 
++      else if (r_done) begin
++        ifu_busy <= 0; //收到R响应后退出忙碌状态，准备处理下一条指令
++      end 
++      else begin
++        ifu_busy <= ifu_busy; //保持当前忙碌状态不变
++        ifu_rdata <= ifu_rdata; //保持当前数据不变
++      end
++    end
++  end
++
++  assign Instruction = ifu_rdata;
++  assign Inst_Valid = ifu_busy; //当正在处理指令时，输出有效信号
++
++endmodule
+\ No newline at end of file
+diff --git a/npc/vsrc/top.v b/npc/vsrc/top.v
+index 8a85179..67e1689 100644
+--- a/npc/vsrc/top.v
++++ b/npc/vsrc/top.v
+@@ -84,10 +84,11 @@ module custom_cpu(
+     .rst                 (rst),
+     .PC                  (PC),
+     .Instruction         (Instruction),
+-    .Inst_Valid          (Inst_Valid),
+-    .Inst_Ready          (Inst_Ready),
+-    .Inst_Req_Valid      (Inst_Req_Valid),
+-    .Inst_Req_Ready      (Inst_Req_Ready),
++    //完成ifu，在内部完成
++    // .Inst_Valid          (Inst_Valid),
++    // .Inst_Ready          (Inst_Ready),
++    // .Inst_Req_Valid      (Inst_Req_Valid),
++    // .Inst_Req_Ready      (Inst_Req_Ready),
+     .IF_to_ID_data       (IF_to_ID_data),
+     .prediction_incorrect(prediction_incorrect),
+     .predictor_to_IF_data(predictor_to_IF_data),
+-- 
+2.34.1
+

@@ -1,0 +1,264 @@
+From 118d8c147a0b217e6aad1dc02762e107341211c1 Mon Sep 17 00:00:00 2001
+From: XueYizhou <xueyizhou23@mails.ucas.ac.cn>
+Date: Wed, 17 Jun 2026 19:52:15 +0800
+Subject: [PATCH 1479/1487] save
+
+---
+ nemu/src/isa/riscv32/include/isa-def.h |  2 ++
+ nemu/src/isa/riscv32/inst.c            | 39 ++++++++++++++++++--------
+ npc/vsrc/csr.v                         | 25 ++++++++++++++---
+ npc/vsrc/define.v                      |  2 +-
+ npc/vsrc/ex.v                          | 18 ++++++------
+ npc/vsrc/id.v                          | 14 ++++-----
+ npc/vsrc/mem.v                         |  2 +-
+ 7 files changed, 69 insertions(+), 33 deletions(-)
+
+diff --git a/nemu/src/isa/riscv32/include/isa-def.h b/nemu/src/isa/riscv32/include/isa-def.h
+index d0ae886..077baa4 100644
+--- a/nemu/src/isa/riscv32/include/isa-def.h
++++ b/nemu/src/isa/riscv32/include/isa-def.h
+@@ -26,6 +26,8 @@ typedef struct {
+   word_t mcause;//异常原因
+   word_t mstatus;//处理器状态
+   word_t mtvec;//异常入口地址
++  word_t mcycle;//周期计数器低32位
++  word_t mcycleh;//周期计数器高32位
+ } MUXDEF(CONFIG_RV64, riscv64_CPU_state, riscv32_CPU_state);
+ 
+ // decode
+diff --git a/nemu/src/isa/riscv32/inst.c b/nemu/src/isa/riscv32/inst.c
+index d0dd836..b3399bd 100644
+--- a/nemu/src/isa/riscv32/inst.c
++++ b/nemu/src/isa/riscv32/inst.c
+@@ -58,28 +58,40 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
+ //添加csr相关的到做
+ //定义csr寄存器地址
+ enum {
+-  CSR_MSTATUS = 0x300,
+-  CSR_MTVEC   = 0x305,
+-  CSR_MEPC    = 0x341,
+-  CSR_MCAUSE  = 0x342,
++  CSR_MSTATUS  = 0x300,
++  CSR_MTVEC    = 0x305,
++  CSR_MEPC     = 0x341,
++  CSR_MCAUSE   = 0x342,
++  CSR_MCYCLE   = 0xB00,
++  CSR_MCYCLEH  = 0xB80,
++  CSR_MVENDORID= 0xF11,
++  CSR_MARCHID  = 0xF12,
+ };
+ 
+ static word_t csr_read(int addr) {
+   switch (addr) {
+-    case CSR_MSTATUS: return cpu.mstatus;
+-    case CSR_MTVEC:   return cpu.mtvec;
+-    case CSR_MEPC:    return cpu.mepc;
+-    case CSR_MCAUSE:  return cpu.mcause;
++    case CSR_MSTATUS:  return cpu.mstatus;
++    case CSR_MTVEC:    return cpu.mtvec;
++    case CSR_MEPC:     return cpu.mepc;
++    case CSR_MCAUSE:   return cpu.mcause;
++    case CSR_MCYCLE:   return cpu.mcycle;
++    case CSR_MCYCLEH:  return cpu.mcycleh;
++    case CSR_MVENDORID:return 0x79737978;   // "ysyx" 的ASCII, 与NPC一致
++    case CSR_MARCHID:  return 26060176;     // 学号数字部分, 与NPC的 32'd26060176 一致
+     default: panic("unsupported csr address = 0x%03x", addr); return 0;
+   }
+ }
+ 
+ static void csr_write(int addr, word_t data) {
+   switch (addr) {
+-    case CSR_MSTATUS: cpu.mstatus = data; break;
+-    case CSR_MTVEC:   cpu.mtvec   = data; break;
+-    case CSR_MEPC:    cpu.mepc    = data; break;
+-    case CSR_MCAUSE:  cpu.mcause  = data; break;
++    case CSR_MSTATUS:  cpu.mstatus = data; break;
++    case CSR_MTVEC:    cpu.mtvec   = data; break;
++    case CSR_MEPC:     cpu.mepc    = data; break;
++    case CSR_MCAUSE:   cpu.mcause  = data; break;
++    case CSR_MCYCLE:   cpu.mcycle  = data; break;
++    case CSR_MCYCLEH:  cpu.mcycleh = data; break;
++    case CSR_MVENDORID: break;   // 只读CSR, 写忽略(否则csrrs读它时会走到这里panic)
++    case CSR_MARCHID:   break;   // 只读CSR, 写忽略
+     default: panic("unsupported csr address = 0x%03x", addr); break;
+   }
+ }
+@@ -173,5 +185,8 @@ static int decode_exec(Decode *s) {
+ 
+ int isa_exec_once(Decode *s) {
+   s->isa.inst = inst_fetch(&s->snpc, 4);
++  //每执行一条指令, mcycle周期计数器+1, 进位到mcycleh
++  cpu.mcycle++;
++  if (cpu.mcycle == 0) cpu.mcycleh++;
+   return decode_exec(s);
+ }
+diff --git a/npc/vsrc/csr.v b/npc/vsrc/csr.v
+index 0f45d38..04e3221 100644
+--- a/npc/vsrc/csr.v
++++ b/npc/vsrc/csr.v
+@@ -15,11 +15,16 @@ module csr(
+ //定义mcycle和mcycleh寄存器
+ reg [31:0] mcycle;
+ reg [31:0] mcycleh;
++//定义mvendroid
++reg [31:0] mvendorid;
++reg [31:0] marchid;
+ 
+ always @(posedge clk) begin
+   if (rst) begin
+     mcycle <= 32'b0;
+     mcycleh <= 32'b0;
++    mvendorid <= 32'h79737978;
++    marchid <= 32'd26060176;
+   end else begin
+     mcycle <= mcycle + 1;
+     if (mcycle == 32'hffffffff) begin
+@@ -28,11 +33,23 @@ always @(posedge clk) begin
+   end
+ end
+ 
+-if(csr_write_enable) begin
++always @(posedge clk) begin
++  if(csr_write_enable) begin
++    case (csr_addr)
++      12'hB00: mcycle <= csr_write_sel ? (mcycle | csr_write_data) : csr_write_data ; //写mcycle
++      12'hB80: mcycleh <= csr_write_sel ? (mcycle | csr_write_data) : csr_write_data ; //写mcycleh
++      default: ; //其他CSR地址暂不处理
++    endcase
++  end
++end
++
++always @(*) begin
+   case (csr_addr)
+-    12'hB00: mcycle <= csr_write_data; //写mcycle
+-    12'hB80: mcycleh <= csr_write_data; //写mcycleh
+-    default: ; //其他CSR地址暂不处理
++    12'hB00: csr_read_data = mcycle; //读mcycle
++    12'hB80: csr_read_data = mcycleh; //读mcycleh
++    12'hF11: csr_read_data = mvendorid; //读mvendorid
++    12'hF12: csr_read_data = marchid; //读marchid
++    default: csr_read_data = 32'b0; //其他CSR地址返回0
+   endcase
+ end
+ 
+diff --git a/npc/vsrc/define.v b/npc/vsrc/define.v
+index a27ef89..410ef63 100644
+--- a/npc/vsrc/define.v
++++ b/npc/vsrc/define.v
+@@ -10,7 +10,7 @@
+ `define SLT  3'b111
+ `define SLTU 3'b011
+ 
+-`define S_type        5'b11100        //CSR指令
++`define CSR_type        5'b11100        //CSR指令
+ 
+ //规定指令类型
+ `define R_type          5'b01100        //R型的计算指令
+diff --git a/npc/vsrc/ex.v b/npc/vsrc/ex.v
+index 8841386..c1bd110 100644
+--- a/npc/vsrc/ex.v
++++ b/npc/vsrc/ex.v
+@@ -222,8 +222,10 @@ assign Write_data   =	(func==3'b000)?	((eff==2'b00)?	{{24{1'b0}},reg_byte_0}:
+ 
+                                         
+ //返回ID阶段的数据旁路
+-wire    EX_load;
+-wire    EX_write;
++wire            EX_load;
++wire            EX_write;
++wire[31:0]      EX_bypath_data;
++assign          EX_bypath_data = (opcode==`CSR_type)? csr_read_data : Result;
+ 
+ assign  EX_load    =    load;
+ assign  EX_write   =    EX_work && RF_wen;
+@@ -232,7 +234,7 @@ assign  EX_to_ID_bypath_data =  {
+                                  EX_load,
+                                  EX_write,
+                                  RF_waddr,
+-                                 Result
++                                 EX_bypath_data
+                                 };
+ 
+ //向后传入MEM的数据
+@@ -255,14 +257,14 @@ assign  EX_to_MEM_data    =     {
+                                 };
+ 
+ //访问CSR寄存器的相关信号
+-wire csr_write_enable =ID_to_EX_data_reg[268];
+-wire [11:0] csr_addr = ID_to_EX_data_reg[267:256];
++wire csr_write_enable;
++wire [11:0] csr_addr;
+ wire [31:0] csr_write_data = ALUop_A; //这里暂时让ALUop_A作为写入CSR的数据, 正好是rs1
+-wire csr_write_sel = ID_to_EX_data_reg[255]; //csr写入数据选择
++wire csr_write_sel; //csr写入数据选择
+ wire [31:0] csr_read_data;
+ 
+ //连接csr模块
+-CSR_INST csr(
++csr CSR_INST(
+         .clk(clk),
+         .rst(rst),
+         .csr_write_enable(csr_write_enable),
+@@ -270,5 +272,5 @@ CSR_INST csr(
+         .csr_addr(csr_addr),
+         .csr_write_data(csr_write_data),
+         .csr_read_data(csr_read_data)
+-)
++);
+ endmodule
+\ No newline at end of file
+diff --git a/npc/vsrc/id.v b/npc/vsrc/id.v
+index 9c4f961..eaa7a67 100644
+--- a/npc/vsrc/id.v
++++ b/npc/vsrc/id.v
+@@ -82,8 +82,8 @@ wire [31:0]		rdata2_true;
+ wire 		    Branch;
+ wire   [2:0]    ALUop;
+ wire   [1:0]	Shiftop;
+-wire		    Jump;
+-wire		    AluShi_sel;
++wire		Jump;
++wire		AluShi_sel;
+ wire            load;
+ wire            store;
+ 
+@@ -116,10 +116,10 @@ wire mul = (opcode==`R_type && func7==7'b0000001 && func==3'b000);
+ //ebreak指令检测
+ wire ebreak_inst = (Instruction_current == 32'h00100073);
+ //csr指令检测
+-wire csr_inst = (opcode==`S_type);
+-wire csr_addr = Instruction_current[31:20];
+-wire csr_write_enable = csr_inst && (func[2:0] == 3'b001 || func[2:0] == 3'b101); // CSRRW 和 CSRRS 指令需要写 CSR
+-wire csr_write_sel = (func[2:0] == 3'b001) ? 1'b0 : 1'b1; // CSRRW 写入寄存器值, CSRRS 写入按位与
++wire csr_inst = (opcode==`CSR_type);
++wire [11:0] csr_addr = Instruction_current[31:20];
++wire csr_write_enable = csr_inst && (func[2:0] == 3'b001 || func[2:0] == 3'b010); // CSRRW 和 CSRRS 指令需要写 CSR
++wire csr_write_sel = (func[2:0] == 3'b001) ? 1'b0 : 1'b1; // CSRRW 写入寄存器值, CSRRS 写入按位或
+ 
+ //运算器功能选择信号, RISC-V的简便之处在于所有的弄能选择都在指令之中体现
+ assign ALUop =  (opcode==`I_type_l || opcode==`S_type)?		`ADD:		//取数指令和存数指令用add
+@@ -285,7 +285,7 @@ wire    RF_wen_i;
+ assign  RF_wen_i  = 	(opcode==`AUIPC || opcode==`JAL || opcode==`JALR)?	1:	//对于跳转指令
+ 			(opcode==`I_type_l || opcode==`LUI)?			1:	//对于加载指令
+ 			(opcode==`I_type_c || opcode==`R_type)?			1:	//对于R型指令
+-                        (opcode==`S_type && csr_write_enable)? 1:   //对于需要写CSR的指令
++                        (opcode==`CSR_type)?			                1:   //对于需要写CSR的指令
+ 										0;
+ 
+ //移位器和运算器结果二选一信号
+diff --git a/npc/vsrc/mem.v b/npc/vsrc/mem.v
+index c011bba..4c859ef 100644
+--- a/npc/vsrc/mem.v
++++ b/npc/vsrc/mem.v
+@@ -211,7 +211,7 @@ assign read_byte_0 = Read_data_current [ 7: 0];
+ 
+ wire [31:0]     RF_wdata;
+ 
+-assign  RF_wdata  =	(opcode==`S_type)?                      csr_read_data:
++assign  RF_wdata  =	(opcode==`CSR_type)?                      csr_read_data:
+                         (opcode==`JAL ||opcode==`JALR)?		PC_MEM + 4:
+ 			(opcode==`AUIPC)?			PC_MEM + U_imm:
+ 			(opcode==`LUI)?				U_imm:
+-- 
+2.34.1
+

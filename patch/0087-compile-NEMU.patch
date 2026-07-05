@@ -1,0 +1,27 @@
+From 478cd3b095137846b92b9ef78eedb5bb3ea956c7 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Thu, 23 Apr 2026 17:31:40 +0800
+Subject: [PATCH 0087/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-110-generic #110~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 27 12:43:08
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  17:31:40 up  2:37,  1 user,  load
+ average: 0.23, 0.25, 0.38
+
+---
+ nemu/src/monitor/monitor.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/nemu/src/monitor/monitor.c b/nemu/src/monitor/monitor.c
+index 08e757a..a858b55 100644
+--- a/nemu/src/monitor/monitor.c
++++ b/nemu/src/monitor/monitor.c
+@@ -169,6 +169,7 @@ void init_monitor(int argc, char *argv[]) {
+           printf("  Expression: %s\n", expression);
+           printf("  Expected result: %u\n", file_result);
+           printf("  Evaluated result: %u\n", (unsigned)eval_result);
++          assert(0);
+           // Optionally, you can decide to halt NEMU on failure
+           // nemu_state.state = NEMU_ABORT;
+           // return;
+-- 
+2.34.1
+

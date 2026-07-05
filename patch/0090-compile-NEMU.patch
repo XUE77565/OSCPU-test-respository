@@ -1,0 +1,27 @@
+From b65e0f97e81185081e76bc9088d5e01573729efc Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Thu, 23 Apr 2026 17:37:11 +0800
+Subject: [PATCH 0090/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-110-generic #110~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 27 12:43:08
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  17:37:11 up  2:43,  1 user,  load
+ average: 0.17, 0.21, 0.31
+
+---
+ nemu/src/monitor/sdb/expreval.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/nemu/src/monitor/sdb/expreval.c b/nemu/src/monitor/sdb/expreval.c
+index 68f83a2..120b598 100644
+--- a/nemu/src/monitor/sdb/expreval.c
++++ b/nemu/src/monitor/sdb/expreval.c
+@@ -130,6 +130,7 @@ int find_main_operator(int p, int q, Token *tokens) {
+             }
+         }
+     }
++    printf("____p = %d, q = %d, main operator: %c at position %d___\n", p, q, tokens[main_op].type, main_op);
+     return main_op;
+ }
+ 
+-- 
+2.34.1
+

@@ -1,5 +1,5 @@
 STUID = ysyx_26060176
-STUNAME = xyzabc
+STUNAME = XueYizhou薛翼舟
 
 # DO NOT modify the following code!!!
 

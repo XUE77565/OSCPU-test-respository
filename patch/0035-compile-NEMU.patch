@@ -1,0 +1,26 @@
+From 75b975bc115bdfb83b95e649f8f614257ae5e873 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Wed, 22 Apr 2026 15:00:58 +0800
+Subject: [PATCH 0035/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-110-generic #110~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 27 12:43:08
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  15:00:58 up 28 min,  1 user,  load
+ average: 0.28, 0.18, 0.07
+
+---
+ nemu/src/utils/state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/nemu/src/utils/state.c b/nemu/src/utils/state.c
+index 6c2a64b..1de55ea 100644
+--- a/nemu/src/utils/state.c
++++ b/nemu/src/utils/state.c
+@@ -22,5 +22,5 @@ int is_exit_status_bad() {
+     (nemu_state.state == NEMU_QUIT);
+   //printf("[NEMU good] = %d\n", good);
+   //The return value needs to be 0 to prevent the make command from reporting an error
+-  return good;
++  return !good;
+ }
+-- 
+2.34.1
+

@@ -4,7 +4,7 @@
 #include <string.h>
 #include <sys/time.h>
 
-#define ITRACE 1
+#define ITRACE 0
 #define DIFFTEST 0
 #define MTRACE 0
 
@@ -42,11 +42,11 @@ static Vcustom_cpu *g_top = nullptr;
 static bool g_ebreak = false;
 static int  g_exit_code = 0;
 
-// 最近加载的二进制文件大小 (供 DiffTest init 使用)
+// 用于difftest
 static long g_img_size = 0;
 
-// ==================== 内存辅助函数 ====================
 
+//有关内存的函数
 static inline uint8_t* guest_to_host(uint32_t addr) {
   return &pmem[addr - PMEM_START];
 }
@@ -55,7 +55,7 @@ static inline bool in_pmem(uint32_t addr) {
   return (addr >= PMEM_START) && (addr < PMEM_START + PMEM_SIZE);
 }
 
-// 加载二进制文件到物理内存
+// 加载二进制文件到物理内存，仿照nemu
 static void load_binary(const char *bin_path) {
   FILE *fp = fopen(bin_path, "rb");
   if (!fp) {
@@ -78,8 +78,8 @@ static void load_binary(const char *bin_path) {
   printf("Loaded %ld bytes from %s into pmem\n", size, bin_path);
 }
 
-// ==================== DPI-C 回调函数 ====================
 
+// DPI-C回调函数
 // ebreak 回调, 由 wb.v 通过 DPI-C 调用
 // 不再直接 exit(), 而是设置标志让 sim_exec 自行处理状态转换
 extern "C" void set_ebreak() {
@@ -94,7 +94,7 @@ extern "C" void set_ebreak() {
 extern "C" int pmem_read(int raddr) {
   uint32_t addr = (uint32_t)(raddr & ~0x3u);
 
-  // DEBUG: 追踪对栈区域的读取
+  // DEBUG: 追踪对栈区域的读取，这是之前用于检查texit的bug的
   if (addr >= 0x80008fd0 && addr <= 0x80009000) {
     int val = in_pmem(addr) ? *(int32_t *)guest_to_host(addr) : 0;
     if(ITRACE){
@@ -126,7 +126,6 @@ extern "C" int pmem_read(int raddr) {
 }
 
 // 向物理地址写入, 由 mem.v 通过 DPI-C 调用
-// 总是往地址为 waddr & ~0x3u 的 4 字节按掩码 wmask 写入 wdata
 // wmask 中每比特表示 wdata 中 1 个字节的掩码
 extern "C" void pmem_write(int waddr, int wdata, int wmask) {
   uint32_t addr = (uint32_t)(waddr & ~0x3u);
@@ -141,7 +140,7 @@ extern "C" void pmem_write(int waddr, int wdata, int wmask) {
 
   // 普通内存写入, 按字节掩码写入
   if (in_pmem(addr)) {
-    // DEBUG: 追踪对栈区域的写入 (sp 附近)
+    // DEBUG: 追踪对栈区域的写入 (sp 附近)，用于texit的debug
     if (addr >= 0x80008fd0 && addr <= 0x80009000) {
       if(MTRACE){
         printf("[STORE] addr=0x%08x data=0x%08x mask=0x%02x\n", addr, (uint32_t)wdata, (uint8_t)wmask);
@@ -160,8 +159,7 @@ extern "C" void pmem_write(int waddr, int wdata, int wmask) {
   }
 }
 
-// ==================== 仿真控制接口 ====================
-
+// 开始仿真
 // 初始化仿真: 加载二进制, 初始化 Verilator, 复位 CPU
 void sim_init(const char *bin_path) {
   load_binary(bin_path);
@@ -200,17 +198,15 @@ void sim_init(const char *bin_path) {
   init_wp_pool();
   init_regex();
 
-  // 初始化 DiffTest (加载 NEMU 参考实现)
-  // NPC_HOME 由 Makefile 传入绝对路径
+  // 初始化 DiffTest
   if(DIFFTEST){
     init_difftest("/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/nemu/build/riscv32-nemu-interpreter-so", g_img_size);
   }
 }
 
 // 推进一个时钟周期
-// 返回 true 表示本周期有一条指令从 WB 阶段退役
+// 返回 true 表示本周期有一条指令从 WB 阶段退役，用这个来和difftest进行比对
 bool sim_clock_step() {
-  // 根据 CPU 输出的 PC 从内存中读取指令, 提供给取指接口
   //g_top->Instruction = pmem_read(g_top->PC);
 
   // 上升沿
@@ -221,8 +217,7 @@ bool sim_clock_step() {
   g_top->clk = 0;
   g_top->eval();
 
-  // 通过 Verilator 暴露的内部信号 WB_work 判断本周期是否有指令退役
-  // (比 inst_retired[69] 更准确, 后者仅在有寄存器写回时为 1)
+  // 通过 WB_work 判断本周期是否有指令退役
   return g_top->rootp->custom_cpu__DOT__WB_EX__DOT__WB_work;
 }
 
@@ -262,6 +257,7 @@ uint32_t sim_get_wb_wdata() {
 
 // 通过 Verilator 暴露的内部信号路径读取寄存器值
 // 等效于 DPI-C 方式: Verilator 将 regfile 数组编译为可直接访问的 C 数组
+// 这个功能是问ai得到的
 uint32_t sim_get_reg(int idx) {
   if (idx < 0 || idx >= 32 || !g_top) return 0;
   if (idx == 0) return 0;  // x0 始终为 0
@@ -300,7 +296,6 @@ uint8_t* sim_get_pmem_ptr() {
 }
 
 // 仿照 NEMU cpu_exec: 执行 n 条指令
-// n = -1 (即 UINT64_MAX) 表示持续运行直到 ebreak
 void sim_exec(uint64_t n) {
   switch (npc_state.state) {
     case NPC_END: case NPC_ABORT: case NPC_QUIT:
@@ -360,7 +355,6 @@ void sim_exec(uint64_t n) {
 }
 
 // ==================== 主函数 ====================
-
 int main(int argc, char *argv[]) {
   if (argc < 2) {
     fprintf(stderr, "Usage: %s <binary> [-i]\n", argv[0]);

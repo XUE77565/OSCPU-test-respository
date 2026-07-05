@@ -1,0 +1,40 @@
+From 8486faf19db984472c8a14ee69fba76bf161bba2 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 18 May 2026 18:44:26 +0800
+Subject: [PATCH 0353/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-111-generic #111~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 14 17:13:45
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  18:44:26 up 31 min,  1 user,  load
+ average: 0.24, 0.23, 0.20
+
+---
+ nemu/include/macro.h        | 1 +
+ nemu/src/isa/riscv32/inst.c | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/nemu/include/macro.h b/nemu/include/macro.h
+index 6b102c2..313117b 100644
+--- a/nemu/include/macro.h
++++ b/nemu/include/macro.h
+@@ -86,6 +86,7 @@
+ #define BITMASK(bits) ((1ull << (bits)) - 1)
+ #define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
+ #define SEXT(x, len) ({ struct { int64_t n : len; } __x = { .n = x }; (uint64_t)__x.n; })
++#define ZEXT(x, len) ({ struct { uint64_t n : len; } __x = { .n = x }; __x.n; })
+ 
+ #define ROUNDUP(a, sz)   ((((uintptr_t)a) + (sz) - 1) & ~((sz) - 1))
+ #define ROUNDDOWN(a, sz) ((((uintptr_t)a)) & ~((sz) - 1))
+diff --git a/nemu/src/isa/riscv32/inst.c b/nemu/src/isa/riscv32/inst.c
+index 8429644..814856b 100644
+--- a/nemu/src/isa/riscv32/inst.c
++++ b/nemu/src/isa/riscv32/inst.c
+@@ -92,6 +92,7 @@ static int decode_exec(Decode *s) {
+   //load
+   INSTPAT("??????? ????? ????? 010 ????? 00000 11", lw     , I, R(rd) = Mr(src1 + imm, 4));
+   INSTPAT("??????? ????? ????? 001 ????? 00000 11", lh     , I, R(rd) = SEXT(Mr(src1 + imm, 2), 16));
++  INSTPAT("??????? ????? ????? 101 ????? 00000 11", lhu    , I, R(rd) = ZEXT(Mr(src1 + imm, 2), 16));
+   INSTPAT("??????? ????? ????? 010 ????? 00100 11", slti   , I, R(rd) = ((sword_t)src1 < (sword_t)imm) ? 1 : 0);
+   INSTPAT("??????? ????? ????? 011 ????? 00100 11", sltiu  , I, R(rd) = (src1 < imm) ? 1 : 0);
+   INSTPAT("0100000 ????? ????? 101 ????? 00100 11", srai   , I, R(rd) = (sword_t)src1 >> BITS(imm, 4, 0));
+-- 
+2.34.1
+

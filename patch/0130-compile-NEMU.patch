@@ -1,0 +1,27 @@
+From c15452c08af36001305db1621cfe9ff6c6de4bd0 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Wed, 13 May 2026 19:31:26 +0800
+Subject: [PATCH 0130/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-111-generic #111~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 14 17:13:45
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  19:31:26 up  2:38,  1 user,  load
+ average: 0.51, 0.36, 0.29
+
+---
+ nemu/src/isa/riscv32/inst.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/nemu/src/isa/riscv32/inst.c b/nemu/src/isa/riscv32/inst.c
+index e1aeb04..54dc262 100644
+--- a/nemu/src/isa/riscv32/inst.c
++++ b/nemu/src/isa/riscv32/inst.c
+@@ -69,6 +69,7 @@ static int decode_exec(Decode *s) {
+   INSTPAT("??????? ????? ????? 100 ????? 00000 11", lbu    , I, R(rd) = Mr(src1 + imm, 1));
+   INSTPAT("??????? ????? ????? 000 ????? 00100 11", addi   , I, R(rd) = src1 + imm);//li是伪指令，解析为addi x0
+   INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, R(rd) = s->snpc; s->dnpc = src1 + imm);
++  INSTPAT("??????? ????? ????? 010 ????? 00000 11", lw     , I, R(rd) = Mr(src1 + imm, 4));
+ 
+   //TYPE-S
+   INSTPAT("??????? ????? ????? 010 ????? 01000 11", sw     , S, Mw(src1 + imm, 4, src2));
+-- 
+2.34.1
+

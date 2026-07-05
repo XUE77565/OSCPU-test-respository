@@ -1,0 +1,30 @@
+From 324ee720ae4ef21fe3850abc86bab10c70519c4d Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Wed, 27 May 2026 20:59:15 +0800
+Subject: [PATCH 0881/1487] > run NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-117-generic #117~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 22:17:46
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  20:59:15 up  2:46,  1 user,  load
+ average: 1.23, 0.42, 0.18
+
+---
+ .gitignore | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/.gitignore b/.gitignore
+index d80e05c..dd52f5a 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -11,9 +11,9 @@
+ !.gitignore
+ !init.sh
+ !testall.sh
++!/am-kernels/*
+ <<<<<<< HEAD
+ /fceux-am
+ =======
+ /nvboard
+ /fceux-am
+-/am-kernels
+-- 
+2.34.1
+

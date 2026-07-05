@@ -1,0 +1,31 @@
+From 502d12a8caafc3467bb118f6860f8e3d36456b3f Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Wed, 22 Apr 2026 17:45:58 +0800
+Subject: [PATCH 0071/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-110-generic #110~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 27 12:43:08
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  17:45:58 up  3:13,  1 user,  load
+ average: 0.11, 0.25, 0.24
+
+---
+ nemu/src/monitor/sdb/sdb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/nemu/src/monitor/sdb/sdb.c b/nemu/src/monitor/sdb/sdb.c
+index a2502b3..4fa9272 100644
+--- a/nemu/src/monitor/sdb/sdb.c
++++ b/nemu/src/monitor/sdb/sdb.c
+@@ -98,7 +98,10 @@ static int cmd_x(char *args) {
+ 
+   int n = atoi(num);
+   paddr_t addr;
+-  addr = sscanf(expr, FMT_PADDR, &addr);
++  if (sscanf(expr, "%x", &addr) != 1) {
++    printf("Invalid address format: %s\n", expr);
++    return 0;
++  }
+   printf("n = %d, addr = " FMT_PADDR "\n", n, addr);
+   return 0;
+ }
+-- 
+2.34.1
+

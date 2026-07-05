@@ -1,0 +1,27 @@
+From a0a03b23875b3e275d8fef390a6e56827b1c4203 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Wed, 13 May 2026 19:53:29 +0800
+Subject: [PATCH 0158/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-111-generic #111~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 14 17:13:45
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  19:53:29 up  3:00,  1 user,  load
+ average: 0.74, 0.52, 0.39
+
+---
+ nemu/src/isa/riscv32/inst.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/nemu/src/isa/riscv32/inst.c b/nemu/src/isa/riscv32/inst.c
+index f01d07e..6756f3d 100644
+--- a/nemu/src/isa/riscv32/inst.c
++++ b/nemu/src/isa/riscv32/inst.c
+@@ -69,6 +69,7 @@ static int decode_exec(Decode *s) {
+   INSTPAT_START();
+   //TYPE-R
+   INSTPAT("0000000 ????? ????? 000 ????? 01100 11", add    , R, R(rd) = src1 + src2);
++  INSTPAT("0100000 ????? ????? 000 ????? 01100 11", sub    , R, R(rd) = src1 - src2);
+   INSTPAT("0000000 ????? ????? 011 ????? 01100 11", sltu   , R, R(rd) = (src1 < src2) ? 1 : 0);
+   INSTPAT("0000000 ????? ????? 100 ????? 01100 11", xor    , R, R(rd) = src1 ^ src2);
+   INSTPAT("0000000 ????? ????? 110 ????? 01100 11", or     , R, R(rd) = src1 | src2);
+-- 
+2.34.1
+

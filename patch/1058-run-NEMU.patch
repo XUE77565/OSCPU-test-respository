@@ -1,0 +1,28 @@
+From 0117781dcaeae465a2537413afd7568f23396648 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Wed, 3 Jun 2026 16:30:25 +0800
+Subject: [PATCH 1058/1487] > run NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-117-generic #117~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 22:17:46
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  16:30:25 up  1:53,  1 user,  load
+ average: 0.63, 0.22, 0.14
+
+---
+ abstract-machine/scripts/platform/npc.mk | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/abstract-machine/scripts/platform/npc.mk b/abstract-machine/scripts/platform/npc.mk
+index 84cb96b..596d6b6 100644
+--- a/abstract-machine/scripts/platform/npc.mk
++++ b/abstract-machine/scripts/platform/npc.mk
+@@ -12,6 +12,8 @@ CFLAGS    += -fdata-sections -ffunction-sections
+ LDSCRIPTS += $(AM_HOME)/scripts/linker.ld
+ LDFLAGS   += --defsym=_pmem_start=0x80000000 --defsym=_entry_offset=0x0
+ LDFLAGS   += --gc-sections -e _start
++##打开 -b 选项来打开批处理模式
++NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt -b
+ 
+ MAINARGS_MAX_LEN = 64
+ MAINARGS_PLACEHOLDER = the_insert-arg_rule_in_Makefile_will_insert_mainargs_here
+-- 
+2.34.1
+

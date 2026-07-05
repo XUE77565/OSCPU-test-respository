@@ -1,0 +1,23 @@
+From adfce5b806fa1f242e88f8574d9278274f3d10a7 Mon Sep 17 00:00:00 2001
+From: XUEEE77565 <xueyizhou23@mails.ucas.ac.cn>
+Date: Fri, 3 Apr 2026 15:47:43 +0800
+Subject: [PATCH 0004/1487] NJU-ProjectN/nvboard master initialized without
+ tracing
+
+NJU-ProjectN/nvboard af02f2286e3a9c18005857e7444239c7e25051c9 Merge pull request #55 from Hong-forever/master
+---
+ .gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/.gitignore b/.gitignore
+index c5a9b75..7b94672 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -10,3 +10,4 @@
+ !README.md
+ !.gitignore
+ !init.sh
++/nvboard
+-- 
+2.34.1
+

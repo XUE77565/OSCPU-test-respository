@@ -1,0 +1,27 @@
+From 32b05a99e0f889ea35f55ab77e42e68713522345 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 16:28:16 +0800
+Subject: [PATCH 1383/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  16:28:16 up 54 min,  1 user,  load
+ average: 2.53, 1.28, 0.70
+
+---
+ npc/csrc/main.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/npc/csrc/main.cpp b/npc/csrc/main.cpp
+index f7ec042..67933da 100644
+--- a/npc/csrc/main.cpp
++++ b/npc/csrc/main.cpp
+@@ -129,6 +129,7 @@ int main(int argc, char *argv[]) {
+   // 加载二进制文件到物理内存
+   load_binary(argv[1]);
+ 
++  cin 
+   printf("Begin testing CPU with binary: %s\n", argv[1]);
+ 
+   // 初始化 Verilator
+-- 
+2.34.1
+

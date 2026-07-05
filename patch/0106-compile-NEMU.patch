@@ -1,0 +1,28 @@
+From 0022e11ef5e276a83119f603a82776fa048713ca Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Thu, 23 Apr 2026 18:38:30 +0800
+Subject: [PATCH 0106/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-110-generic #110~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 27 12:43:08
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  18:38:30 up  3:44,  1 user,  load
+ average: 0.59, 0.82, 0.59
+
+---
+ nemu/src/monitor/sdb/expr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/nemu/src/monitor/sdb/expr.c b/nemu/src/monitor/sdb/expr.c
+index 4a192f1..d9974fa 100644
+--- a/nemu/src/monitor/sdb/expr.c
++++ b/nemu/src/monitor/sdb/expr.c
+@@ -157,7 +157,7 @@ word_t expr(char *e, bool *success) {
+     printf("Invalid parentheses in expression: %s\n", e);
+     return 0;
+   }
+-  Log("PASSED parentheses check\n");
++  //Log("PASSED parentheses check\n");
+ 
+   int result = expreval(p, q, tokens, success);
+ 
+-- 
+2.34.1
+

@@ -1,0 +1,114 @@
+From c3c5bec8d2dce821747f179fb9d04a24c34f43d9 Mon Sep 17 00:00:00 2001
+From: XueYizhou <xueyizhou23@mails.ucas.ac.cn>
+Date: Thu, 18 Jun 2026 15:53:59 +0800
+Subject: [PATCH 1484/1487] save
+
+---
+ npc/vsrc/if.v  | 30 ++++++++----------------------
+ npc/vsrc/top.v | 21 ++++++++++++++++-----
+ 2 files changed, 24 insertions(+), 27 deletions(-)
+
+diff --git a/npc/vsrc/if.v b/npc/vsrc/if.v
+index 9284906..a95ff66 100644
+--- a/npc/vsrc/if.v
++++ b/npc/vsrc/if.v
+@@ -1,5 +1,7 @@
+ `include "define.v"
+ 
++
++
+ module if_stage(
+   // 时钟, PC和复位信号
+   input          clk,
+@@ -7,13 +9,13 @@ module if_stage(
+   output [31:0]  PC,
+ 
+   // 有关指令的部分
+-  output  [31:0] Instruction,//把Instruction改为output，供top来读
+-//   input          Inst_Valid,
+-//   output         Inst_Ready,
++  input  [31:0]  Instruction,//把Instruction改为output，供top来读
++  input          Inst_Valid,
++  output         Inst_Ready,
+ 
+-//   // 有关IF的握手信号
+-//   output         Inst_Req_Valid,
+-//   input          Inst_Req_Ready,
++  // 有关IF的握手信号
++  output         Inst_Req_Valid,
++  input          Inst_Req_Ready,
+ 
+   // 向下一模块传输的数据
+   output [`IF_TO_ID_WIDTH-1:0] IF_to_ID_data,
+@@ -31,11 +33,6 @@ module if_stage(
+ 
+   input   MemRead
+ );
+-  wire Inst_Req_Valid;
+-  wire Inst_Req_Ready;
+-
+-  wire Inst_Valid;
+-  wire Inst_Ready;
+ 
+   // 用于内部IF的标记, 因为这里的IF实际上是由IW和IF两个状态合成的
+   localparam INIT     = 5'b00001,
+@@ -107,17 +104,6 @@ module if_stage(
+   assign Inst_Ready     = (IF_current_state == IW) || (IF_current_state == INIT);
+   assign Inst_Req_Valid = (IF_current_state == IF) && ~prediction_incorrect && ~MemRead;
+ 
+-  ifu_mem ifu_mem_inst(
+-    .clk             (clk),
+-    .rst             (rst),
+-    .PC              (PC),
+-    .Inst_Req_Valid  (Inst_Req_Valid),
+-    .Inst_Req_Ready  (Inst_Req_Ready),
+-    .Instruction     (Instruction),
+-    .Inst_Valid      (Inst_Valid),
+-    .Inst_Ready      (Inst_Ready)
+-  );
+-
+   // 更新指令寄存器
+   reg [31:0] Instruction_reg;
+ 
+diff --git a/npc/vsrc/top.v b/npc/vsrc/top.v
+index 67e1689..e0bf007 100644
+--- a/npc/vsrc/top.v
++++ b/npc/vsrc/top.v
+@@ -84,11 +84,10 @@ module custom_cpu(
+     .rst                 (rst),
+     .PC                  (PC),
+     .Instruction         (Instruction),
+-    //完成ifu，在内部完成
+-    // .Inst_Valid          (Inst_Valid),
+-    // .Inst_Ready          (Inst_Ready),
+-    // .Inst_Req_Valid      (Inst_Req_Valid),
+-    // .Inst_Req_Ready      (Inst_Req_Ready),
++    .Inst_Valid          (Inst_Valid),
++    .Inst_Ready          (Inst_Ready),
++    .Inst_Req_Valid      (Inst_Req_Valid),
++    .Inst_Req_Ready      (Inst_Req_Ready),
+     .IF_to_ID_data       (IF_to_ID_data),
+     .prediction_incorrect(prediction_incorrect),
+     .predictor_to_IF_data(predictor_to_IF_data),
+@@ -98,6 +97,18 @@ module custom_cpu(
+     .MemRead             (MemRead)
+   );
+ 
++//ifu取指总线
++  ifu_mem ifu_mem_inst(
++    .clk             (clk),
++    .rst             (rst),
++    .PC              (PC),
++    .Inst_Req_Valid  (Inst_Req_Valid),
++    .Inst_Req_Ready  (Inst_Req_Ready),
++    .Instruction     (Instruction),
++    .Inst_Valid      (Inst_Valid),
++    .Inst_Ready      (Inst_Ready)
++  );
++
+   id_stage ID_EX(
+     .clk                 (clk),
+     .rst                 (rst),
+-- 
+2.34.1
+
