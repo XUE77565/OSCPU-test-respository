@@ -1,0 +1,214 @@
+From efe85c51ada359d59bb5839d1207ab21bd848504 Mon Sep 17 00:00:00 2001
+From: XueYizhou <xueyizhou23@mails.ucas.ac.cn>
+Date: Sun, 5 Jul 2026 14:34:31 +0800
+Subject: [PATCH] 1
+
+---
+ bsp/abstract-machine/.gitignore    |  1 -
+ bsp/abstract-machine/rtconfig.h    | 99 ++++++++++++++++++++++++++++++
+ bsp/abstract-machine/src/context.c | 58 +++++++++++++++--
+ 3 files changed, 153 insertions(+), 5 deletions(-)
+ create mode 100644 bsp/abstract-machine/rtconfig.h
+
+diff --git a/bsp/abstract-machine/.gitignore b/bsp/abstract-machine/.gitignore
+index 27ab723..5a3de72 100644
+--- a/bsp/abstract-machine/.gitignore
++++ b/bsp/abstract-machine/.gitignore
+@@ -1,2 +1 @@
+-rtconfig.h
+ files.mk
+diff --git a/bsp/abstract-machine/rtconfig.h b/bsp/abstract-machine/rtconfig.h
+new file mode 100644
+index 0000000..4145ad9
+--- /dev/null
++++ b/bsp/abstract-machine/rtconfig.h
+@@ -0,0 +1,99 @@
++#ifndef RT_CONFIG_H__
++#define RT_CONFIG_H__
++#include "extra.h"
++
++#define RT_CONFIG_H__
++#define RT_NAME_MAX 24
++#define RT_ALIGN_SIZE 8
++#define RT_THREAD_PRIORITY_32
++#define RT_THREAD_PRIORITY_MAX 32
++#define RT_TICK_PER_SECOND 100
++#define RT_USING_OVERFLOW_CHECK
++#define RT_USING_HOOK
++#define RT_HOOK_USING_FUNC_PTR
++#define RT_USING_IDLE_HOOK
++#define RT_IDLE_HOOK_LIST_SIZE 4
++#define IDLE_THREAD_STACK_SIZE 16384
++#define RT_USING_TIMER_SOFT
++#define RT_TIMER_THREAD_PRIO 4
++#define RT_TIMER_THREAD_STACK_SIZE 16384
++#define RT_KPRINTF_USING_LONGLONG
++#define RT_DEBUG
++#define RT_DEBUG_COLOR
++#define RT_USING_SEMAPHORE
++#define RT_USING_MUTEX
++#define RT_USING_EVENT
++#define RT_USING_MAILBOX
++#define RT_USING_MESSAGEQUEUE
++#define RT_USING_MEMPOOL
++#define RT_USING_SMALL_MEM
++#define RT_USING_SMALL_MEM_AS_HEAP
++#define RT_USING_MEMTRACE
++#define RT_USING_HEAP
++#define RT_USING_DEVICE
++#define RT_USING_DEVICE_OPS
++#define RT_USING_CONSOLE
++#define RT_CONSOLEBUF_SIZE 256
++#define RT_CONSOLE_DEVICE_NAME "uart"
++#define RT_VER_NUM 0x50001
++#define RT_USING_COMPONENTS_INIT
++#define RT_USING_USER_MAIN
++#define RT_MAIN_THREAD_STACK_SIZE 32768
++#define RT_MAIN_THREAD_PRIORITY 10
++#define RT_USING_MSH
++#define RT_USING_FINSH
++#define FINSH_USING_MSH
++#define FINSH_THREAD_NAME "tshell"
++#define FINSH_THREAD_PRIORITY 20
++#define FINSH_THREAD_STACK_SIZE 4096
++#define FINSH_USING_HISTORY
++#define FINSH_HISTORY_LINES 10
++#define FINSH_USING_SYMTAB
++#define FINSH_CMD_SIZE 80
++#define MSH_USING_BUILT_IN_COMMANDS
++#define FINSH_USING_DESCRIPTION
++#define FINSH_ARG_MAX 10
++#define RT_USING_DFS
++#define DFS_USING_POSIX
++#define DFS_USING_WORKDIR
++#define DFS_FD_MAX 32
++#define RT_USING_DFS_V1
++#define DFS_FILESYSTEMS_MAX 4
++#define DFS_FILESYSTEM_TYPES_MAX 4
++#define RT_USING_DFS_ELMFAT
++#define RT_DFS_ELM_CODE_PAGE 437
++#define RT_DFS_ELM_WORD_ACCESS
++#define RT_DFS_ELM_USE_LFN_3
++#define RT_DFS_ELM_USE_LFN 3
++#define RT_DFS_ELM_LFN_UNICODE_0
++#define RT_DFS_ELM_LFN_UNICODE 0
++#define RT_DFS_ELM_MAX_LFN 255
++#define RT_DFS_ELM_DRIVES 2
++#define RT_DFS_ELM_MAX_SECTOR_SIZE 512
++#define RT_DFS_ELM_REENTRANT
++#define RT_DFS_ELM_MUTEX_TIMEOUT 3000
++#define RT_USING_DFS_DEVFS
++#define RT_USING_DFS_ROMFS
++#define RT_USING_DEVICE_IPC
++#define RT_UNAMED_PIPE_NUMBER 64
++#define RT_USING_SYSTEM_WORKQUEUE
++#define RT_SYSTEM_WORKQUEUE_STACKSIZE 16384
++#define RT_SYSTEM_WORKQUEUE_PRIORITY 23
++#define RT_USING_SERIAL
++#define RT_USING_SERIAL_V1
++#define RT_SERIAL_USING_DMA
++#define RT_SERIAL_RB_BUFSZ 64
++#define RT_USING_CPUTIME
++#define CPUTIME_TIMER_FREQ 300000000
++#define RT_USING_NULL
++#define RT_USING_ZERO
++#define RT_USING_RANDOM
++#define RT_USING_RTC
++#define RT_LIBC_DEFAULT_TIMEZONE 8
++#define RT_USING_UTEST
++#define UTEST_THR_STACK_SIZE 4096
++#define UTEST_THR_PRIORITY 20
++#define RT_USING_ADT
++#define BOARD_AM
++
++#endif
+diff --git a/bsp/abstract-machine/src/context.c b/bsp/abstract-machine/src/context.c
+index ee38829..1aa8bf4 100644
+--- a/bsp/abstract-machine/src/context.c
++++ b/bsp/abstract-machine/src/context.c
+@@ -2,8 +2,20 @@
+ #include <klib.h>
+ #include <rtthread.h>
+ 
++//由于CTE机制，用全局变量进行信息传递
++static rt_ubase_t to_switch = 0;
++static rt_ubase_t from_switch = 0;
++
+ static Context* ev_handler(Event e, Context *c) {
+   switch (e.event) {
++    case EVENT_YIELD:
++      if(from_switch){
++        *(Context **)from_switch = c;//保存上下文到switch_from
++      }
++      if(to_switch){
++        c = *(Context **)to_switch;//切换到switch_to指向的上下文
++      };
++      return c;
+     default: printf("Unhandled event ID = %d\n", e.event); assert(0);
+   }
+   return c;
+@@ -13,19 +25,57 @@ void __am_cte_init() {
+   cte_init(ev_handler);
+ }
+ 
++//用于切换到to指向的上下文
+ void rt_hw_context_switch_to(rt_ubase_t to) {
+-  assert(0);
++  from_switch = 0;
++  to_switch = to;
++  yield();//触发切换
+ }
+ 
+ void rt_hw_context_switch(rt_ubase_t from, rt_ubase_t to) {
+-  assert(0);
++  from_switch = from;
++  to_switch = to;
++  yield();//触发切换
+ }
+ 
+ void rt_hw_context_switch_interrupt(void *context, rt_ubase_t from, rt_ubase_t to, struct rt_thread *to_thread) {
+   assert(0);
+ }
+ 
++//包裹函数，作为kcontext的真正入口
++struct thread_init_args {
++  void (*tentry)(void *);
++  void *parameter;
++  void (*texit)(void);
++};
++
++//先调用tentry，再调用texit
++//注意: args 放在栈底(Context下方), 当 tentry 内部触发 yield 时,
++//      trap handler 会在 sp-144 处保存上下文帧, 会覆盖 args 区域.
++//      所以必须先把 args 拷贝到局部变量(在 wrapper 自己的栈帧中, 地址更高, 不会被覆盖).
++static void thread_init_wrapper(void *args) {
++  //原本 struct thread_init_args *init_args = (struct thread_init_args *)args;
++  //这个是指针，所以被复写之后会出现问题
++  struct thread_init_args init_args = *(struct thread_init_args *)args;
++  init_args.tentry(init_args.parameter);
++  init_args.texit();
++}
++
++//创建上下文
+ rt_uint8_t *rt_hw_stack_init(void *tentry, void *parameter, rt_uint8_t *stack_addr, void *texit) {
+-  assert(0);
+-  return NULL;
++  //对齐栈地址
++  stack_addr = (rt_uint8_t *)((uintptr_t)stack_addr & (0xFFFFFFFC));
++  //计算地址
++  uintptr_t args_addr = (uintptr_t)(stack_addr - sizeof(Context) - sizeof(struct thread_init_args));
++  //创建args
++  struct thread_init_args *args = (struct thread_init_args *)args_addr;
++  args->tentry = (void (*)(void *))tentry;//tentry是线程入口函数，有参数parameter
++  args->parameter = parameter;
++  args->texit = (void (*)(void))texit;//texit是线程退出函数，无参数
++  //构造上下文，开辟出空间
++  Area kstack;
++  kstack.start = (void *)args_addr;
++  kstack.end = (void *)stack_addr;
++  //调用包裹函数
++  return (rt_uint8_t *)kcontext(kstack, thread_init_wrapper, (void *)args);
+ }
+-- 
+2.34.1
+
