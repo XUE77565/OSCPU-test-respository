@@ -5,7 +5,7 @@
 !/nexus-am/*
 !/nanos-lite/*
 !/navy-apps/*
-!/npc/*
+!/npc/
 !Makefile
 !README.md
 !.gitignore
@@ -13,7 +13,7 @@
 !testall.sh
 !/am-kernels/*
 !.gitignore
-!/rt-thread-am/*
+!/rt-thread-am/
 !/patch/*
 <<<<<<< HEAD
 /fceux-am
