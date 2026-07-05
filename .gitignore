@@ -12,5 +12,6 @@
 !README.md
 !.gitignore
 !init.sh
-!testall.sh
+!testall_npc.sh
+!testall_nemu.sh
 !.gitignore
