@@ -1,0 +1,22 @@
+/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/build/riscv32e-nemu/src/boards/bs-5.o: \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/bs-5.cpp \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/mapinc.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../types.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/abstract-machine/klib/include/klib.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/abstract-machine/am/include/am.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/abstract-machine/am/include/arch/riscv.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/abstract-machine/am/include/amdev.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../utils/memory.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../x6502.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../x6502struct.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../fceu.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../types.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../git.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../utils/md5.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../utils/../types.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../utils/valuearray.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../ppu.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../sound.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../state.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../cart.h \
+ /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/fceux-am/src/boards/../unif.h
