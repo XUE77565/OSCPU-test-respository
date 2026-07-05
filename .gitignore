@@ -6,6 +6,7 @@
 !/nanos-lite/*
 !/navy-apps/*
 !/npc/*
+!/patch/*
 !/abstract-machine/*
 !Makefile
 !README.md
@@ -13,4 +14,3 @@
 !init.sh
 !testall.sh
 !.gitignore
-!/patch/*
