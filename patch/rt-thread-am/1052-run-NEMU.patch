@@ -1,0 +1,55 @@
+From 9eca94f3057cefbc94ec6ae44741723573696fe5 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 1 Jun 2026 17:49:33 +0800
+Subject: [PATCH 1052/1487] > run NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-117-generic #117~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 22:17:46
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  17:49:33 up  2:36,  1 user,  load
+ average: 0.87, 0.49, 0.25
+
+---
+ abstract-machine/am/src/platform/nemu/ioe/gpu.c | 6 +++---
+ nemu/src/device/vga.c                           | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/abstract-machine/am/src/platform/nemu/ioe/gpu.c b/abstract-machine/am/src/platform/nemu/ioe/gpu.c
+index 68b6f43..4ed5ca4 100644
+--- a/abstract-machine/am/src/platform/nemu/ioe/gpu.c
++++ b/abstract-machine/am/src/platform/nemu/ioe/gpu.c
+@@ -6,8 +6,9 @@
+ 
+ void __am_gpu_init() {
+   int i;
+-  int w = io_read(AM_GPU_CONFIG).width;
+-  int h = io_read(AM_GPU_CONFIG).height;
++  uint32_t screen_wh = inl(VGACTL_ADDR);
++  uint32_t h = screen_wh & 0xffff;
++  uint32_t w = screen_wh >> 16;
+   printf("GPU screen: %d * %d\n", w, h);
+   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
+   for(i = 0; i < w * h; i++) {
+@@ -20,7 +21,6 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
+   uint32_t screen_wh = inl(VGACTL_ADDR);
+   uint32_t h = screen_wh & 0xffff;
+   uint32_t w = screen_wh >> 16;
+-  //printf("GPU screen: %d * %d\n", w, h);
+   *cfg = (AM_GPU_CONFIG_T) {
+     .present = true, .has_accel = false,
+     .width = w, .height = h,
+diff --git a/nemu/src/device/vga.c b/nemu/src/device/vga.c
+index e41bc2a..c71dfa9 100644
+--- a/nemu/src/device/vga.c
++++ b/nemu/src/device/vga.c
+@@ -72,8 +72,8 @@ static inline void update_screen() {
+ #endif
+ 
+ void vga_update_screen() {
+-  if(vgactl_port_base[0] == 1) {
+-    vgactl_port_base[0] = 0;
++  if(vgactl_port_base[1]) {
++    vgactl_port_base[1] = 0;
+     IFDEF(CONFIG_VGA_SHOW_SCREEN, update_screen());
+   }
+ }
+-- 
+2.34.1
+

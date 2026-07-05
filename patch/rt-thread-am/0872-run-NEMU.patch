@@ -1,0 +1,42 @@
+From 50222dba8beb9d6e35ff423de9e567e5ab0b212e Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Tue, 26 May 2026 23:05:59 +0800
+Subject: [PATCH 0872/1487] > run NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-117-generic #117~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 22:17:46
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  23:05:59 up 33 min,  1 user,  load
+ average: 0.23, 0.32, 0.28
+
+---
+ nemu/src/cpu/cpu-exec.c    | 2 +-
+ nemu/src/monitor/monitor.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/nemu/src/cpu/cpu-exec.c b/nemu/src/cpu/cpu-exec.c
+index b8da24d..5969c5f 100644
+--- a/nemu/src/cpu/cpu-exec.c
++++ b/nemu/src/cpu/cpu-exec.c
+@@ -32,7 +32,7 @@ static bool g_print_step = false;
+ 
+ extern const char *find_func_by_addr(uint32_t addr);
+ 
+-#ifdef CONFIG_FTRACE_COND
++#ifdef CONFIG_FTRACE
+ static int call_depth = 0;
+ 
+ static void trace_ftrace(vaddr_t pc, vaddr_t dnpc, uint32_t inst) {
+diff --git a/nemu/src/monitor/monitor.c b/nemu/src/monitor/monitor.c
+index ad63cf9..a8bb692 100644
+--- a/nemu/src/monitor/monitor.c
++++ b/nemu/src/monitor/monitor.c
+@@ -240,7 +240,7 @@ void init_monitor(int argc, char *argv[]) {
+   /* Initialize the simple debugger. */
+   init_sdb();
+ 
+-  #ifdef CONFIG_MRACE_COND
++  #ifdef CONFIG_FTRACE_COND
+     /* Initialize ftrace with ELF file */
+     if(FTRACE_COND) {
+       void init_ftrace(const char *elf_file);
+-- 
+2.34.1
+

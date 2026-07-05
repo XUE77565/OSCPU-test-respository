@@ -1,0 +1,495 @@
+From 15c41a469851f383a2a6fb5cc0d86ff6bc5358f7 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Wed, 13 May 2026 11:08:49 +0800
+Subject: [PATCH 0110/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-111-generic #111~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 14 17:13:45
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  11:08:49 up 45 min,  1 user,  load
+ average: 0.51, 0.33, 0.18
+
+---
+ nemu/Kconfig                      |  6 ++
+ nemu/scripts/build.mk             |  2 +-
+ nemu/src/cpu/cpu-exec.c           | 12 +++-
+ nemu/src/isa/riscv32/inst.c       |  1 +
+ nemu/src/monitor/sdb/expr.c       | 15 +++--
+ nemu/src/monitor/sdb/expreval.c   | 48 +++++++++++-----
+ nemu/src/monitor/sdb/sdb.c        | 60 +++++++++++++++++++-
+ nemu/src/monitor/sdb/sdb.h        | 12 ++++
+ nemu/src/monitor/sdb/watchpoint.c | 92 ++++++++++++++++++++++++++++---
+ 9 files changed, 216 insertions(+), 32 deletions(-)
+
+diff --git a/nemu/Kconfig b/nemu/Kconfig
+index a1ed68e..f9395ee 100644
+--- a/nemu/Kconfig
++++ b/nemu/Kconfig
+@@ -127,6 +127,12 @@ endmenu
+ menu "Testing and Debugging"
+ 
+ 
++config WATCHPOINT
++  bool "Enable watchpoint"
++  default n
++  help
++    Enable watchpoints for NEMU. When enabled, NEMU will check all watchpoints after executing every instruction. This hurts performance.
++
+ config TRACE
+   bool "Enable tracer"
+   default y
+diff --git a/nemu/scripts/build.mk b/nemu/scripts/build.mk
+index 51350e8..c75e73e 100644
+--- a/nemu/scripts/build.mk
++++ b/nemu/scripts/build.mk
+@@ -22,7 +22,7 @@ CXX := g++
+ endif
+ LD := $(CXX)
+ INCLUDES = $(addprefix -I, $(INC_PATH))
+-CFLAGS  := -O2 -MMD -Wall -Werror $(INCLUDES) $(CFLAGS)
++CFLAGS  := -O2 -save-temps=obj -MMD -Wall -Werror $(INCLUDES) $(CFLAGS)
+ LDFLAGS := -O2 $(LDFLAGS)
+ 
+ OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
+diff --git a/nemu/src/cpu/cpu-exec.c b/nemu/src/cpu/cpu-exec.c
+index b3220c6..ba00c8d 100644
+--- a/nemu/src/cpu/cpu-exec.c
++++ b/nemu/src/cpu/cpu-exec.c
+@@ -31,15 +31,23 @@ static uint64_t g_timer = 0; // unit: us
+ static bool g_print_step = false;
+ 
+ void device_update();
++extern void check_watchpoints();
+ 
+ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
+ #ifdef CONFIG_ITRACE_COND
+   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
+ #endif
+   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
++  
+   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
++
++#ifdef CONFIG_WATCHPOINT
++  printf("Checking watchpoints...\n");
++  check_watchpoints();
++#endif
+ }
+ 
++//包括一条指令执行的全部阶段
+ static void exec_once(Decode *s, vaddr_t pc) {
+   s->pc = pc;
+   s->snpc = pc;
+@@ -53,7 +61,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
+   int i;
+   uint8_t *inst = (uint8_t *)&s->isa.inst;
+ #ifdef CONFIG_ISA_x86
+-  for (i = 0; i < ilen; i ++) {
++  //for (i = 0; i < ilen; i ++) {
+ #else
+   for (i = ilen - 1; i >= 0; i --) {
+ #endif
+@@ -76,7 +84,7 @@ static void execute(uint64_t n) {
+   Decode s;
+   for (;n > 0; n --) {
+     exec_once(&s, cpu.pc);
+-    g_nr_guest_inst ++;
++    g_nr_guest_inst ++;//记录客户指令++
+     trace_and_difftest(&s, cpu.pc);
+     if (nemu_state.state != NEMU_RUNNING) break;
+     IFDEF(CONFIG_DEVICE, device_update());
+diff --git a/nemu/src/isa/riscv32/inst.c b/nemu/src/isa/riscv32/inst.c
+index efe5148..6738a89 100644
+--- a/nemu/src/isa/riscv32/inst.c
++++ b/nemu/src/isa/riscv32/inst.c
+@@ -69,6 +69,7 @@ static int decode_exec(Decode *s) {
+ 
+   R(0) = 0; // reset $zero to 0
+ 
++  //这里相当于自动执行了这条指令，返回0
+   return 0;
+ }
+ 
+diff --git a/nemu/src/monitor/sdb/expr.c b/nemu/src/monitor/sdb/expr.c
+index afd625a..0942d17 100644
+--- a/nemu/src/monitor/sdb/expr.c
++++ b/nemu/src/monitor/sdb/expr.c
+@@ -52,7 +52,7 @@ static struct rule {
+   {"!=", TK_NEQ},    // not equal
+   {"0[xX][0-9a-fA-F]+", TK_HEX},  // hexadecimal number
+   {"[0-9]+", TK_DEC},             // decimal number
+-  {"\\$[a-zA-Z]+", TK_REG},        // register
++  {"\\$[a-zA-Z]+[0-9]*", TK_REG},        // register
+   {"&&", TK_AND}        // logical AND operator
+ };
+ 
+@@ -85,9 +85,9 @@ static bool check_deref(Token *tokens, int nr_token) {
+   if(nr_token >= 2) {
+     int last_token_type = tokens[nr_token - 2].type;
+     if(last_token_type == TK_NOTYPE || last_token_type == '(' || 
+-       last_token_type== '+' || last_token_type == '-' ||
++       last_token_type == '+' || last_token_type == '-' ||
+        last_token_type == '*' || last_token_type == '/' ||
+-       last_token_type== TK_EQ || last_token_type == TK_NEQ ||
++       last_token_type == TK_EQ || last_token_type == TK_NEQ ||
+        last_token_type == TK_AND) {
+       return true;
+     }
+@@ -135,7 +135,7 @@ static bool make_token(char *e) {
+           tokens[nr_token].type = rules[i].token_type;
+           nr_token++;
+           //检查解引用
+-          if(check_deref(tokens, nr_token) == true) {
++          if(tokens[nr_token - 1].type == '*' && check_deref(tokens, nr_token) == true) {
+             tokens[nr_token - 1].type = TK_DEREF;
+           }
+         }
+@@ -160,6 +160,11 @@ word_t expr(char *e, bool *success) {
+   }
+   int p = 0;
+   int q = nr_token - 1;
++  // printf("Tokens:\n");
++  // for (int i = 0; i < nr_token; i++) {
++  //   printf("  tokens[%d]: type = %d, str = '%s'\n", i, tokens[i].type, tokens[i].str);
++  // }
++  // printf("p = %d, q = %d\n", p, q);
+ 
+   //First check if the parentheses in the expression are valid,
+   bool check_parentheses = valid_parentheses(tokens, nr_token); 
+@@ -170,7 +175,7 @@ word_t expr(char *e, bool *success) {
+   }
+   //Log("PASSED parentheses check\n");
+ 
+-  uint32_t result = (uint32_t)expreval(p, q, tokens, success);
++  word_t result = (uint32_t)expreval(p, q, tokens, success);
+ 
+   if(*success) {
+     return result;
+diff --git a/nemu/src/monitor/sdb/expreval.c b/nemu/src/monitor/sdb/expreval.c
+index 2b57579..4a4ec7f 100644
+--- a/nemu/src/monitor/sdb/expreval.c
++++ b/nemu/src/monitor/sdb/expreval.c
+@@ -3,6 +3,7 @@
+ #include <isa.h>
+ #include <regex.h>
+ #include <stdlib.h>
++#include <memory/vaddr.h>
+ 
+ enum {
+   TK_NOTYPE = 256, 
+@@ -16,6 +17,7 @@ enum {
+ };
+ 
+ int expreval(int p, int q, Token *tokens, bool *success) {
++    //printf("TK_DEC = %d, TK_HEX = %d, TK_REG = %d\n", TK_DEC, TK_HEX, TK_REG);
+     if(p > q) {
+         *success = false;
+         printf("Bad expression\n");
+@@ -32,6 +34,7 @@ int expreval(int p, int q, Token *tokens, bool *success) {
+             *success = true;
+             return strtoul(tokens[p].str, NULL, 10);
+         }
++        //考虑解引用
+         else if (tokens[p].type == TK_REG) {
+             *success = true;
+             //remove the '$' in the register name
+@@ -47,7 +50,6 @@ int expreval(int p, int q, Token *tokens, bool *success) {
+             }
+             return reg_index;
+         }
+-        //TODO: we can also eval the register value here, but we need to parse the register name first
+         else {
+             *success = false;
+             printf("p == q but encountered a non-numeric token: %d\n", tokens[p].type);
+@@ -61,7 +63,7 @@ int expreval(int p, int q, Token *tokens, bool *success) {
+     }
+     //divide the expression into two parts by the main operator, and evaluate the two parts recursively
+     else {
+-        int val1, val2;
++        int val1 = 0, val2 = 0;
+         int op = -1;
+         op = find_main_operator(p, q, tokens);
+         if(op == -1) {
+@@ -70,18 +72,31 @@ int expreval(int p, int q, Token *tokens, bool *success) {
+             assert(0);
+             return 0;
+         }
+-        val1 = expreval(p, op - 1, tokens, success);
+-        // printf("Strings of tokens from %d to %d: ", p, op - 1);
+-        // for(int i = p; i < op; i++) {
+-        //     printf("%s ", tokens[i].str);
+-        // }
+-        // printf("\n[%d, %d]val1 = %u\n", p, op - 1, val1);
+-        val2 = expreval(op + 1, q, tokens, success);
+-        // printf("Strings of tokens from %d to %d: ", op + 1, q);
+-        // for(int i = op + 1; i <= q; i++) {
+-        //     printf("%s ", tokens[i].str);
+-        // }
+-        // printf("\n[%d, %d]val2 = %u\n", op + 1, q, val2);
++
++        //在找到解引用单目运算符之后，只用计算右侧的值
++        if(tokens[op].type == TK_DEREF) {
++            val2 = expreval(op + 1, q, tokens, success);
++            if(*success == false) {
++                return 0;
++            }
++        }
++        else {
++            val1 = expreval(p, op - 1, tokens, success);
++            // printf("Strings of tokens from %d to %d: ", p, op - 1);
++            // for(int i = p; i < op; i++) {
++            //     printf("%s ", tokens[i].str);
++            // }
++            // printf("\n[%d, %d]val1 = %u\n", p, op - 1, val1);
++            if(*success == false) {
++                return 0;
++            }
++            val2 = expreval(op + 1, q, tokens, success);
++            // printf("Strings of tokens from %d to %d: ", op + 1, q);
++            // for(int i = op + 1; i <= q; i++) {
++            //     printf("%s ", tokens[i].str);
++            // }
++            // printf("\n[%d, %d]val2 = %u\n", op + 1, q, val2);
++        }
+ 
+         switch (tokens[op].type) {
+             case TK_EQ: return val1 == val2;
+@@ -98,6 +113,7 @@ int expreval(int p, int q, Token *tokens, bool *success) {
+                     return 0;
+                 }
+                 return val1 / val2;
++            case TK_DEREF: return vaddr_read(val2, 4);
+             default: 
+                 *success = false;
+                 printf("Unknown operator: %d\n", tokens[op].type);
+@@ -159,10 +175,12 @@ int find_main_operator(int p, int q, Token *tokens) {
+                 case '-': priority = 2; break;
+                 case '*':
+                 case '/': priority = 3; break;
++                case TK_DEREF: priority = 4; break; //解引用优先级最高
+                 default: priority = 100; // a large number for unknown operators
+             }
+             //which is the rightmost operator with the lowest priority, because of the associativity of the operators
+-            if(priority <= min_priority) { 
++            //考虑单目运算符左结合
++            if(priority < min_priority || (priority == min_priority && tokens[i].type != TK_DEREF)) { 
+                 min_priority = priority;
+                 main_op = i;
+             }
+diff --git a/nemu/src/monitor/sdb/sdb.c b/nemu/src/monitor/sdb/sdb.c
+index b4cd0bf..535a9b0 100644
+--- a/nemu/src/monitor/sdb/sdb.c
++++ b/nemu/src/monitor/sdb/sdb.c
+@@ -77,7 +77,8 @@ static int cmd_info(char *args) {
+     isa_reg_display();
+   }
+   else if (strcmp(args, "w") == 0) {
+-    //wp_display();
++    extern void wp_display();
++    wp_display();
+   }
+   else {
+     printf("Unknown info command '%s'\n", args);
+@@ -119,7 +120,61 @@ static int cmd_x(char *args) {
+   return 0;
+ }
+ 
++static int cmd_p(char *args) {
++  if (args == NULL) {
++    printf("Usage: p EXPR\n");
++    return 0;
++  }
++
++  bool success = false;
++  printf("Evaluating expression: %s\n", args);
++  word_t result = expr(args, &success);
++  if (success) {
++    printf(FMT_WORD "\n", result);
++  }
++  else {
++    printf("Failed to evaluate expression: %s\n", args);
++  }
++  return 0;
++}
+ 
++static int cmd_w(char *args) {
++  if (args == NULL) {
++    printf("Usage: w EXPR\n");
++    return 0;
++  }
++
++  WP *wp = new_wp();
++  if(wp == NULL) {
++    return 0;
++  }
++  strncpy(wp->expr, args, sizeof(wp->expr) - 1);
++  wp->expr[sizeof(wp->expr) - 1] = '\0'; // Ensure null-termination
++  bool success = false;
++  wp->old_value = expr(args, &success);
++  if(success == false) {
++    printf("Failed to evaluate expression: %s\n", args);
++    free_wp(wp);
++    return 0;
++  }
++  printf("Set watchpoint %d: %s = " FMT_WORD "\n", wp->NO, wp->expr, wp->old_value);
++  return 0;
++}
++
++static int cmd_d(char *args) {
++  if (args == NULL) {
++    printf("Usage: d N\n");
++    return 0;
++  }
++
++  int num = atoi(args);
++  if (delete_wp_by_no(num)) {
++    printf("Deleted watchpoint %d\n", num);
++  } else {
++    printf("No watchpoint number %d\n", num);
++  }
++  return 0;
++}
+ 
+ 
+ static int cmd_help(char *args);
+@@ -136,6 +191,9 @@ static struct {
+   { "si", "Si N executes N instructions, default steps = 1", cmd_si },
+   { "info", "Print the register status or watchpoint information", cmd_info },
+   { "x", "Scan the memory: x N EXPR, evaluate EXPR and scan N words in memory", cmd_x },
++  { "p", "Evaluate the expression EXPR and print the result", cmd_p },
++  { "w", "Set a watchpoint for an expression EXPR", cmd_w },
++  { "d", "Delete the watchpoint with the given number N", cmd_d },
+ 
+   /* TODO: Add more commands */
+ 
+diff --git a/nemu/src/monitor/sdb/sdb.h b/nemu/src/monitor/sdb/sdb.h
+index 4842a52..2c9727b 100644
+--- a/nemu/src/monitor/sdb/sdb.h
++++ b/nemu/src/monitor/sdb/sdb.h
+@@ -23,6 +23,18 @@ typedef struct token {
+   char str[32];
+ } Token;
+ 
++#define EXPR_LEN 128
++
++typedef struct watchpoint {
++  int NO;
++  char expr[EXPR_LEN];
++  word_t old_value;
++  struct watchpoint *next;
++} WP;
++
+ word_t expr(char *e, bool *success);
++WP* new_wp();
++void free_wp(WP *wp);
++bool delete_wp_by_no(int no);
+ 
+ #endif
+diff --git a/nemu/src/monitor/sdb/watchpoint.c b/nemu/src/monitor/sdb/watchpoint.c
+index 56cacd8..9004165 100644
+--- a/nemu/src/monitor/sdb/watchpoint.c
++++ b/nemu/src/monitor/sdb/watchpoint.c
+@@ -17,14 +17,6 @@
+ 
+ #define NR_WP 32
+ 
+-typedef struct watchpoint {
+-  int NO;
+-  struct watchpoint *next;
+-
+-  /* TODO: Add more members if necessary */
+-
+-} WP;
+-
+ static WP wp_pool[NR_WP] = {};
+ static WP *head = NULL, *free_ = NULL;
+ 
+@@ -39,5 +31,89 @@ void init_wp_pool() {
+   free_ = wp_pool;
+ }
+ 
++//添加一个新的watchpoint
++WP* new_wp() {
++  if(free_ == NULL) {
++    printf("No free watchpoint\n");
++    assert(0);
++    return NULL;
++  }
++  WP *wp = free_;
++  free_ = free_->next;
++  wp->next = head;
++  head = wp;
++  return wp;
++}
++
++void free_wp(WP *wp) {
++  if(wp == NULL) {
++    printf("Cannot free a NULL watchpoint\n");
++    assert(0);
++    return;
++  }
++  WP *prev = NULL, *cur = head;
++  while(cur != NULL) {
++    if(cur == wp) {
++      //wp是头节点
++      if(prev == NULL) {
++        head = cur->next;
++      }
++      //删除cur节点
++      else {
++        prev->next = cur->next;
++      }
++      //将cur节点加入free链表而且重置表达式
++      memset(cur->expr, 0, sizeof(cur->expr));
++      cur->next = free_;
++      free_ = cur;
++      return;
++    }
++    prev = cur;
++    cur = cur->next;
++  }
++  printf("Cannot find the watchpoint to free\n");
++}
++
++bool delete_wp_by_no(int no) {
++  WP *wp = head;
++  while(wp != NULL) {
++    if(wp->NO == no) {
++      free_wp(wp);
++      return true;
++    }
++    wp = wp->next;
++  }
++  return false;
++}
++
++//检查监视点的值是否发生变化
++void check_watchpoints() {
++  WP *wp = NULL;
++  bool success;
++  for(wp = head; wp != NULL; wp = wp->next) {
++    word_t new_value = expr(wp->expr, &success);
++    if(success == false) {
++      printf("Failed to evaluate the expression of watchpoint %d: %s\n", wp->NO, wp->expr);
++      continue;
++    }
++    if(new_value != wp->old_value) {
++      nemu_state.state = NEMU_STOP;
++      printf("Watchpoint %d: %s\n", wp->NO, wp->expr);
++      printf("Old value = " FMT_WORD "\n", wp->old_value);
++      printf("New value = " FMT_WORD "\n", new_value);
++      wp->old_value = new_value;
++    }
++  }
++}
++
++void wp_display() {
++  WP *wp = NULL;
++  printf("%-8s %-24s %s\n", "Num", "Expression", "Old Value");
++  for(wp = head; wp != NULL; wp = wp->next) {
++    printf("%-8d %-24s " FMT_WORD "\n", wp->NO, wp->expr, wp->old_value);
++  }
++}  
++
++
+ /* TODO: Implement the functionality of watchpoint */
+ 
+-- 
+2.34.1
+

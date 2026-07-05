@@ -1,0 +1,31 @@
+From 3729113447c88694f8c441e9c9fa055f277a77ee Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 16:29:15 +0800
+Subject: [PATCH 1434/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  16:29:15 up 55 min,  1 user,  load
+ average: 2.07, 1.41, 0.78
+
+---
+ npc/vsrc/regfile.v | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/npc/vsrc/regfile.v b/npc/vsrc/regfile.v
+index b1413e5..3ba0e78 100644
+--- a/npc/vsrc/regfile.v
++++ b/npc/vsrc/regfile.v
+@@ -20,6 +20,11 @@ module regfile(
+ 
+ reg [`DATA_WIDTH-1:0] regfile [2**`ADDR_WIDTH-1:0];
+ 
++// 在仿真开始时将寄存器数组指针传给 C++
++initial begin
++    set_gpr_ptr(regfile);
++end
++
+ //同步写，异步读
+ assign rdata1 = (raddr1 == 0) ? 0 : regfile[raddr1];
+ assign rdata2 = (raddr2 == 0) ? 0 : regfile[raddr2];
+-- 
+2.34.1
+

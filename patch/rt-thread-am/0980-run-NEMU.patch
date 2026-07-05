@@ -1,0 +1,40 @@
+From 602e59ca7e57d346207bf03d5019253610bc7881 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Thu, 28 May 2026 20:30:34 +0800
+Subject: [PATCH 0980/1487] > run NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-117-generic #117~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 22:17:46
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  20:30:34 up 0 min,  1 user,  load
+ average: 2.51, 0.72, 0.25
+
+---
+ nemu/src/cpu/difftest/dut.c | 1 +
+ nemu/src/cpu/difftest/ref.c | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/nemu/src/cpu/difftest/dut.c b/nemu/src/cpu/difftest/dut.c
+index a3db718..e2845d6 100644
+--- a/nemu/src/cpu/difftest/dut.c
++++ b/nemu/src/cpu/difftest/dut.c
+@@ -99,6 +99,7 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
+   }
+ }
+ 
++
+ void difftest_step(vaddr_t pc, vaddr_t npc) {
+   CPU_state ref_r;
+ 
+diff --git a/nemu/src/cpu/difftest/ref.c b/nemu/src/cpu/difftest/ref.c
+index abcef67..f400ffa 100644
+--- a/nemu/src/cpu/difftest/ref.c
++++ b/nemu/src/cpu/difftest/ref.c
+@@ -35,6 +35,7 @@ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction)
+   }
+ }
+ 
++
+ // `direction`为`DIFFTEST_TO_DUT`时, 获取REF的寄存器状态到`dut`;
+ // `direction`为`DIFFTEST_TO_REF`时, 设置REF的寄存器状态为`dut`;
+ __EXPORT void difftest_regcpy(void *dut, bool direction) {
+-- 
+2.34.1
+

@@ -1,0 +1,37 @@
+From 67ecab1cd42e489b7000f579269d6fc34782a15d Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Thu, 4 Jun 2026 15:50:44 +0800
+Subject: [PATCH 1179/1487] > run NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  15:50:44 up 46 min,  1 user,  load
+ average: 0.29, 0.24, 0.32
+
+---
+ nemu/src/device/io/map.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/nemu/src/device/io/map.c b/nemu/src/device/io/map.c
+index 8b85809..60759a0 100644
+--- a/nemu/src/device/io/map.c
++++ b/nemu/src/device/io/map.c
+@@ -54,7 +54,7 @@ void init_map() {
+ 
+ word_t map_read(paddr_t addr, int len, IOMap *map) {
+   assert(len >= 1 && len <= 8);
+-  printf("map_read: addr = 0x%08x, len = %d\n", addr, len);
++  //printf("map_read: addr = 0x%08x, len = %d\n", addr, len);
+   check_bound(map, addr);
+   paddr_t offset = addr - map->low;
+   invoke_callback(map->callback, offset, len, false); // prepare data to read
+@@ -64,7 +64,7 @@ word_t map_read(paddr_t addr, int len, IOMap *map) {
+ 
+ void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
+   assert(len >= 1 && len <= 8);
+-  printf("map_write: addr = 0x%08x, len = %d, data = 0x%08x\n", addr, len, data);
++  //printf("map_write: addr = 0x%08x, len = %d, data = 0x%08x\n", addr, len, data);
+   check_bound(map, addr);
+   paddr_t offset = addr - map->low;
+   host_write(map->space + offset, len, data);
+-- 
+2.34.1
+

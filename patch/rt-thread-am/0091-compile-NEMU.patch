@@ -1,0 +1,95 @@
+From 9af84739c1b5b2fc5743e9bb1f4c48c630be7e34 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Thu, 23 Apr 2026 17:57:38 +0800
+Subject: [PATCH 0091/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-110-generic #110~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 27 12:43:08
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  17:57:38 up  3:03,  1 user,  load
+ average: 0.37, 0.27, 0.25
+
+---
+ nemu/src/monitor/sdb/expr.c     |  8 ++++++++
+ nemu/src/monitor/sdb/expreval.c | 23 ++++++++++++++++++++++-
+ nemu/src/monitor/sdb/expreval.h |  2 ++
+ 3 files changed, 32 insertions(+), 1 deletion(-)
+
+diff --git a/nemu/src/monitor/sdb/expr.c b/nemu/src/monitor/sdb/expr.c
+index e9aef9a..671c1be 100644
+--- a/nemu/src/monitor/sdb/expr.c
++++ b/nemu/src/monitor/sdb/expr.c
+@@ -150,6 +150,14 @@ word_t expr(char *e, bool *success) {
+   int p = 0;
+   int q = nr_token - 1;
+ 
++  //First check if the parentheses in the expression are valid,
++  bool check_parentheses = valid_parentheses(tokens, nr_token); 
++  if(!check_parentheses) {
++    *success = false;
++    printf("Invalid parentheses in expression: %s\n", e);
++    return 0;
++  }
++
+   uint32_t result = expreval(p, q, tokens, success);
+ 
+   if(*success) {
+diff --git a/nemu/src/monitor/sdb/expreval.c b/nemu/src/monitor/sdb/expreval.c
+index 120b598..e06657f 100644
+--- a/nemu/src/monitor/sdb/expreval.c
++++ b/nemu/src/monitor/sdb/expreval.c
+@@ -89,12 +89,16 @@ bool check_parentheses(int p, int q, Token *tokens) {
+         }
+         else if(tokens[i].type == ')') {
+             if(depth == 0) {
++                //p is matching with a ')' before q, so p and q are not a pair of parentheses
+                 return false;
+             }
+             depth--;
+         }
+     }
+-    return depth == 0;
++    //EVEN IF DEPTH IS 0, IT DOES NOT MEAN THAT THE PARENTHESES ARE A PAIR, 
++    //BECAUSE THERE MAY BE OTHER PARENTHESES INSIDE,
++    //LIKE (A+B)*(C+D), THE PARENTHESES AROUND A+B AND C+D ARE NOT A PAIR
++    return true;
+ }
+ 
+ int find_main_operator(int p, int q, Token *tokens) {
+@@ -134,6 +138,23 @@ int find_main_operator(int p, int q, Token *tokens) {
+     return main_op;
+ }
+ 
++bool valid_parentheses(Token *tokens, int nr_token) {
++    int depth = 0;
++    for(int i = 0; i < nr_token; i++) {
++        if(tokens[i].type == '(') {
++            depth++;
++        }
++        else if(tokens[i].type == ')') {
++            depth--;
++            if(depth < 0) {
++                printf("Invalid parentheses at token %d\n", i);
++                return false;
++            }
++        }
++    }
++    return depth == 0;
++}
++
+ 
+ 
+ 
+diff --git a/nemu/src/monitor/sdb/expreval.h b/nemu/src/monitor/sdb/expreval.h
+index fa28ff1..2608668 100644
+--- a/nemu/src/monitor/sdb/expreval.h
++++ b/nemu/src/monitor/sdb/expreval.h
+@@ -8,6 +8,8 @@ uint32_t expreval(int p, int q, Token *tokens, bool *success);
+ 
+ bool check_parentheses(int p, int q, Token *tokens);
+ 
++bool valid_parentheses(Token *tokens, int nr_token);
++
+ int find_main_operator(int p, int q, Token *tokens);
+ 
+ #endif
+-- 
+2.34.1
+

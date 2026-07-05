@@ -1,0 +1,80 @@
+From 5f720a1d5a71c93f8ab69a7e94126446bc6f593a Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 1 Jun 2026 15:23:36 +0800
+Subject: [PATCH 1040/1487] > run NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-117-generic #117~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 22:17:46
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  15:23:36 up 10 min,  1 user,  load
+ average: 0.12, 0.25, 0.17
+
+---
+ nemu/Kconfig              | 10 ++++++++++
+ nemu/Makefile             |  1 +
+ nemu/src/device/io/mmio.c | 18 ++++++++++++++++--
+ 3 files changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/nemu/Kconfig b/nemu/Kconfig
+index 781e941..2045ae2 100644
+--- a/nemu/Kconfig
++++ b/nemu/Kconfig
+@@ -177,6 +177,16 @@ config FTRACE_COND
+   string "Only trace function when the condition is true"
+   default "true"
+ 
++config DTRACE
++  depends on TRACE
++  bool "Enable device tracer"
++  default y
++
++config DTRACE_COND
++  depends on DTRACE
++  string "Only trace device when the condition is true"
++  default "true"
++
+ config DIFFTEST
+   depends on TARGET_NATIVE_ELF
+   bool "Enable differential testing"
+diff --git a/nemu/Makefile b/nemu/Makefile
+index 0cddf58..cb1dc49 100644
+--- a/nemu/Makefile
++++ b/nemu/Makefile
+@@ -51,6 +51,7 @@ CFLAGS_BUILD += $(if $(CONFIG_CC_ASAN),-fsanitize=address,)
+ CFLAGS_TRACE += -DITRACE_COND=$(if $(CONFIG_ITRACE_COND),$(call remove_quote,$(CONFIG_ITRACE_COND)),true)
+ CFLAGS_TRACE += -DMTRACE_COND=$(if $(CONFIG_MTRACE_COND),$(call remove_quote,$(CONFIG_MTRACE_COND)),true)
+ CFLAGS_TRACE += -DFTRACE_COND=$(if $(CONFIG_FTRACE_COND),$(call remove_quote,$(CONFIG_FTRACE_COND)),true)
++CFLAGS_TRACE += -DDTRACE_COND=$(if $(CONFIG_DTRACE_COND),$(call remove_quote,$(CONFIG_DTRACE_COND)),true)
+ CFLAGS  += $(CFLAGS_BUILD) $(CFLAGS_TRACE) -D__GUEST_ISA__=$(GUEST_ISA)
+ LDFLAGS += $(CFLAGS_BUILD)
+ 
+diff --git a/nemu/src/device/io/mmio.c b/nemu/src/device/io/mmio.c
+index 8625faa..07a18e3 100644
+--- a/nemu/src/device/io/mmio.c
++++ b/nemu/src/device/io/mmio.c
+@@ -55,9 +55,23 @@ void add_mmio_map(const char *name, paddr_t addr, void *space, uint32_t len, io_
+ 
+ /* bus interface */
+ word_t mmio_read(paddr_t addr, int len) {
+-  return map_read(addr, len, fetch_mmio_map(addr));
++  IOMap *map = fetch_mmio_map(addr);
++#ifdef CONFIG_DTRACE_COND
++  if (DTRACE_COND) {
++    printf("mmio_read: addr = " FMT_PADDR ", len = %d, device = %s\n", 
++           addr, len, map ? map->name : "none");
++  }
++#endif
++  return map_read(addr, len, map);
+ }
+ 
+ void mmio_write(paddr_t addr, int len, word_t data) {
+-  map_write(addr, len, data, fetch_mmio_map(addr));
++  IOMap *map = fetch_mmio_map(addr);
++#ifdef CONFIG_DTRACE_COND
++  if (DTRACE_COND) {
++    printf("mmio_write: addr = " FMT_PADDR ", len = %d, data = " FMT_WORD ", device = %s\n", 
++           addr, len, data, map ? map->name : "none");
++  }
++#endif
++  map_write(addr, len, data, map);
+ }
+-- 
+2.34.1
+

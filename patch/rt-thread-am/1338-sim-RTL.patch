@@ -1,0 +1,42 @@
+From f850492519e15d7187ae24f5d3dd49f235c9ebce Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 15:49:39 +0800
+Subject: [PATCH 1338/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  15:49:39 up 15 min,  1 user,  load
+ average: 0.26, 0.36, 0.34
+
+---
+ npc/Makefile      | 2 +-
+ npc/csrc/main.cpp | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/npc/Makefile b/npc/Makefile
+index 1fcf4a8..13ca5a8 100644
+--- a/npc/Makefile
++++ b/npc/Makefile
+@@ -37,7 +37,7 @@ VERILATOR_FLAGS := --cc \
+ 	-I$(VSRC_DIR) \
+ 	--trace \
+ 	-Wno-TIMESCALEMOD \
+-	-Wno-fatal
++	# -Wno-fatal
+ 
+ # 传递给 C++ 编译器的选项
+ # -I: 让 C++ 能 include sdb.h; -g: 调试信息; -O2: 优化
+diff --git a/npc/csrc/main.cpp b/npc/csrc/main.cpp
+index b84eee9..8b9f38e 100644
+--- a/npc/csrc/main.cpp
++++ b/npc/csrc/main.cpp
+@@ -118,6 +118,8 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
+   }
+ }
+ 
++
++
+ int main(int argc, char *argv[]) {
+   if (argc < 2) {
+     fprintf(stderr, "Usage: %s <binary>\n", argv[0]);
+-- 
+2.34.1
+

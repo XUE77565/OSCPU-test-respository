@@ -1,0 +1,28 @@
+From 7f590a603afe9f5f036609c0efc716b16ca0354d Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 16:52:48 +0800
+Subject: [PATCH 1448/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  16:52:48 up  1:18,  1 user,  load
+ average: 0.48, 0.51, 0.45
+
+---
+ npc/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/npc/Makefile b/npc/Makefile
+index 875aa96..fc46b62 100644
+--- a/npc/Makefile
++++ b/npc/Makefile
+@@ -38,7 +38,7 @@ VERILATOR_FLAGS := --cc \
+ 	--trace \
+ 	-Wno-TIMESCALEMOD \
+ 	-Wno-fatal \
+-	-i
++	#-i
+ 
+ # 传递给 C++ 编译器的选项
+ # -I: 让 C++ 能 include sdb.h; -g: 调试信息; -O2: 优化
+-- 
+2.34.1
+

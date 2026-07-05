@@ -1,0 +1,28 @@
+From 2c90c50ade39dc9c72d6c2ae3f0e6108ac60b257 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Thu, 4 Jun 2026 15:55:17 +0800
+Subject: [PATCH 1184/1487] > run NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  15:55:17 up 51 min,  1 user,  load
+ average: 0.48, 0.28, 0.30
+
+---
+ nemu/src/device/io/map.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/nemu/src/device/io/map.c b/nemu/src/device/io/map.c
+index 5065533..1548db2 100644
+--- a/nemu/src/device/io/map.c
++++ b/nemu/src/device/io/map.c
+@@ -34,7 +34,7 @@ uint8_t* new_space(int size) {
+ 
+ static void check_bound(IOMap *map, paddr_t addr) {
+   //printf("check_bound: addr = 0x%08x\n", addr);
+-  printf("map->high = 0x%08x, map->low = 0x%08x\n", map->high, map->low);
++  //printf("map->high = 0x%08x, map->low = 0x%08x\n", map->high, map->low);
+   if (map == NULL) {
+     Assert(map != NULL, "address (" FMT_PADDR ") is out of bound at pc = " FMT_WORD, addr, cpu.pc);
+   } else {
+-- 
+2.34.1
+

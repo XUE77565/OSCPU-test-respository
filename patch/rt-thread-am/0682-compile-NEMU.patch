@@ -1,0 +1,157 @@
+From 0338587225c72757b8ba04dd404be1ee5cc33dd2 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 25 May 2026 22:26:33 +0800
+Subject: [PATCH 0682/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-117-generic #117~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 22:17:46
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  22:26:33 up  6:56,  1 user,  load
+ average: 0.20, 0.22, 0.22
+
+---
+ abstract-machine/klib/src/stdio.c  | 109 ++++++++++++++++++++++++++---
+ abstract-machine/klib/src/string.c |   2 +-
+ 2 files changed, 100 insertions(+), 11 deletions(-)
+
+diff --git a/abstract-machine/klib/src/stdio.c b/abstract-machine/klib/src/stdio.c
+index 1b19953..f22ec18 100644
+--- a/abstract-machine/klib/src/stdio.c
++++ b/abstract-machine/klib/src/stdio.c
+@@ -5,24 +5,113 @@
+ 
+ #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
+ 
+-int printf(const char *fmt, ...) {
+-  panic("Not implemented");
++int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
++  size_t count = 0;
++  while (*fmt != '\0') {
++    if (*fmt == '%') {
++      fmt++;
++      if (*fmt == 'd') {
++        int num = va_arg(ap, int);
++        unsigned int unum;
++        if (num < 0) {
++          if (n > 0 && count < n - 1) {
++            out[count] = '-';
++          }
++          count++;
++          //这样避免了溢出的循环
++          unum = (unsigned int)(-(num + 1)) + 1;
++        } else {
++          unum = (unsigned int)num;
++        }
++        char buf[20];
++        int i = 0;
++        do {
++          buf[i++] = unum % 10 + '0';
++          unum /= 10;
++        } while (unum > 0);
++        for (int j = i - 1; j >= 0; j--) {
++          if (n > 0 && count < n - 1) {
++            out[count] = buf[j];
++          }
++          count++;
++        }
++      } else if (*fmt == 's') {
++        char *str = va_arg(ap, char *);
++        if (str == NULL) str = "(null)";
++        while (*str != '\0') {
++          if (n > 0 && count < n - 1) {
++            out[count] = *str;
++          }
++          count++;
++          str++;
++        }
++      } else if (*fmt == '%') {
++        if (n > 0 && count < n - 1) {
++          out[count] = '%';
++        }
++        count++;
++      } else {
++        // 对于尚未支持的格式（比如 %x），原样输出
++        if (n > 0 && count < n - 1) {
++          out[count] = '%';
++        }
++        count++;
++        if (n > 0 && count < n - 1) {
++          out[count] = *fmt;
++        }
++        count++;
++      }
++    } else {
++      if (n > 0 && count < n - 1) {
++        out[count] = *fmt;
++      }
++      count++;
++    }
++    fmt++;
++  }
++  
++  if (n > 0) {
++    if (count < n) {
++      out[count] = '\0';
++    } else {
++      out[n - 1] = '\0';
++    }
++  }
++  return (int)count;
+ }
+ 
+-int vsprintf(char *out, const char *fmt, va_list ap) {
+-  panic("Not implemented");
++int snprintf(char *out, size_t n, const char *fmt, ...) {
++  va_list ap;
++  va_start(ap, fmt);
++  int ret = vsnprintf(out, n, fmt, ap);
++  va_end(ap);
++  return ret;
+ }
+ 
+-int sprintf(char *out, const char *fmt, ...) {
+-  panic("Not implemented");
++int vsprintf(char *out, const char *fmt, va_list ap) {
++  // trick: size_t 是无符号的，-1 转成 size_t 等于它的最大值，相当于不限制长度
++  return vsnprintf(out, (size_t)-1, fmt, ap);
+ }
+ 
+-int snprintf(char *out, size_t n, const char *fmt, ...) {
+-  panic("Not implemented");
++int sprintf(char *out, const char *fmt, ...) {
++  va_list ap;
++  va_start(ap, fmt);
++  int ret = vsprintf(out, fmt, ap);
++  va_end(ap);
++  return ret;
+ }
+ 
+-int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
+-  panic("Not implemented");
++int printf(const char *fmt, ...) {
++  char buf[2048]; // 分配2KB左右的缓冲区支持本地打印通常绰绰有余
++  va_list ap;
++  va_start(ap, fmt);
++  int ret = vsnprintf(buf, sizeof(buf), fmt, ap);
++  va_end(ap);
++  
++  for (int i = 0; i < ret && i < sizeof(buf) - 1; i++) {
++    putch(buf[i]);
++  }
++  return ret;
+ }
+ 
+ #endif
+diff --git a/abstract-machine/klib/src/string.c b/abstract-machine/klib/src/string.c
+index cd9cef7..81b6591 100644
+--- a/abstract-machine/klib/src/string.c
++++ b/abstract-machine/klib/src/string.c
+@@ -28,7 +28,7 @@ char *strncpy(char *dst, const char *src, size_t n) {
+     *ptr++ = *src++;
+     i++;
+   }
+-  //如果src的长度不足n，填充剩余
++  //补全末尾
+   *ptr = '\0';
+   return dst;
+ }
+-- 
+2.34.1
+

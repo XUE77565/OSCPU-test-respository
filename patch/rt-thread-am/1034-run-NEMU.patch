@@ -1,0 +1,62 @@
+From 0edfb476f75013d04410bb7c315d5470206e1fe1 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 1 Jun 2026 14:57:24 +0800
+Subject: [PATCH 1034/1487] > run NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-117-generic #117~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 22:17:46
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  14:57:24 up 16 min,  1 user,  load
+ average: 0.30, 0.31, 0.21
+
+---
+ abstract-machine/klib/src/stdlib.c   | 19 ++++++++++++-------
+ am-kernels/kernels/demo/include/io.h |  2 +-
+ 2 files changed, 13 insertions(+), 8 deletions(-)
+
+diff --git a/abstract-machine/klib/src/stdlib.c b/abstract-machine/klib/src/stdlib.c
+index 382635d..43040d1 100644
+--- a/abstract-machine/klib/src/stdlib.c
++++ b/abstract-machine/klib/src/stdlib.c
+@@ -29,17 +29,22 @@ int atoi(const char* nptr) {
+   return x;
+ }
+ 
++static char *addr = NULL;
++
+ void *malloc(size_t size) {
+-  // On native, malloc() will be called during initializaion of C runtime.
+-  // Therefore do not call panic() here, else it will yield a dead recursion:
+-  //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
+-#if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
+-  panic("Not implemented");
+-#endif
+-  return NULL;
++  if(addr == NULL){
++    addr = (char *)heap.start;
++  }
++  size = (size_t)ROUNDUP(size, 8);//进行内存对其
++  char *ret = addr;
++
++  addr += size;
++
++  return (void *)ret;
+ }
+ 
+ void free(void *ptr) {
++
+ }
+ 
+ #endif
+diff --git a/am-kernels/kernels/demo/include/io.h b/am-kernels/kernels/demo/include/io.h
+index 9ed6b50..b3ddd4f 100644
+--- a/am-kernels/kernels/demo/include/io.h
++++ b/am-kernels/kernels/demo/include/io.h
+@@ -1,6 +1,6 @@
+ #ifndef __DRAW_H__
+ 
+-#define HAS_GUI
++//#define HAS_GUI
+ 
+ #include <stdio.h>
+ #include <am.h>
+-- 
+2.34.1
+

@@ -1,0 +1,27 @@
+From d4ea650cbfea51bd66fd1d749edeeb2474d27d70 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 16:27:18 +0800
+Subject: [PATCH 1364/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  16:27:18 up 53 min,  1 user,  load
+ average: 1.14, 0.81, 0.52
+
+---
+ npc/csrc/main.cpp | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/npc/csrc/main.cpp b/npc/csrc/main.cpp
+index fb94a29..8b9f38e 100644
+--- a/npc/csrc/main.cpp
++++ b/npc/csrc/main.cpp
+@@ -125,7 +125,6 @@ int main(int argc, char *argv[]) {
+     fprintf(stderr, "Usage: %s <binary>\n", argv[0]);
+     return 1;
+   }
+-  printf("Starting simulation with binary: %s\n", argv[1]);
+ 
+   // 加载二进制文件到物理内存
+   load_binary(argv[1]);
+-- 
+2.34.1
+

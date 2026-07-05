@@ -1,0 +1,32 @@
+From 742042ebfd71eae90bf9b2430ee2e8aac058f065 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 1 Jun 2026 15:56:33 +0800
+Subject: [PATCH 1047/1487] > run NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-117-generic #117~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 22:17:46
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  15:56:33 up 43 min,  1 user,  load
+ average: 0.32, 0.40, 0.25
+
+---
+ abstract-machine/am/src/platform/nemu/ioe/input.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/abstract-machine/am/src/platform/nemu/ioe/input.c b/abstract-machine/am/src/platform/nemu/ioe/input.c
+index f8f294c..4aa14d5 100644
+--- a/abstract-machine/am/src/platform/nemu/ioe/input.c
++++ b/abstract-machine/am/src/platform/nemu/ioe/input.c
+@@ -1,12 +1,10 @@
+ #include <am.h>
+ #include <nemu.h>
+-#include <stdio.h>
+ 
+ #define KEYDOWN_MASK 0x8000
+ 
+ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
+   uint32_t key_value = inl(KBD_ADDR);
+-  printf("key_value = 0x%08x\n", key_value);
+   kbd->keydown = (key_value & KEYDOWN_MASK) != 0;//检查是否按下按键
+   kbd->keycode = key_value & ~KEYDOWN_MASK;
+ }
+-- 
+2.34.1
+

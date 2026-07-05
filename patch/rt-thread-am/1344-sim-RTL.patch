@@ -1,0 +1,28 @@
+From 7c904266babb62c420d39b1445971f40397dd704 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 15:58:52 +0800
+Subject: [PATCH 1344/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  15:58:52 up 24 min,  1 user,  load
+ average: 0.26, 0.40, 0.39
+
+---
+ npc/vsrc/alu.v | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/npc/vsrc/alu.v b/npc/vsrc/alu.v
+index 57a1cfd..e6c91e0 100644
+--- a/npc/vsrc/alu.v
++++ b/npc/vsrc/alu.v
+@@ -41,7 +41,7 @@ module alu(
+                                 (ALUop == `SLT)  ? (({A[31],B[31]} == 2'b10) ? 1 : 
+                                                     ({A[31],B[31]} == 2'b01) ? 0 : 
+                                                     (temp_sub[31]  == 1) ? 1: 0) :
+-                                (ALUop == `SLTU) ? 32{unsigned_sub[32] == 1} : 0;
++                                (ALUop == `SLTU) ? 32{unsigned_sub[32]} : 0;
+ 	
+ 	assign Overflow =   (ALUop == `ADD) ? ((A[31] && B[31] && ~Result[31]) || (~A[31] && ~B[31] && Result[31])) :
+ 			            (ALUop == `SUB) ? ((A[31] && ~B[31] && ~Result[31]) || (~A[31] && B[31] && Result[31])) : 
+-- 
+2.34.1
+

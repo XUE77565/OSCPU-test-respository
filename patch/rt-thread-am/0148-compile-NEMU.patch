@@ -1,0 +1,53 @@
+From 77ad85234e8d0a670606d126090fbcd18c8be7d2 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Wed, 13 May 2026 19:46:15 +0800
+Subject: [PATCH 0148/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-111-generic #111~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 14 17:13:45
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  19:46:15 up  2:53,  1 user,  load
+ average: 0.38, 0.28, 0.32
+
+---
+ nemu/src/isa/riscv32/inst.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/nemu/src/isa/riscv32/inst.c b/nemu/src/isa/riscv32/inst.c
+index e38eb2e..efcce44 100644
+--- a/nemu/src/isa/riscv32/inst.c
++++ b/nemu/src/isa/riscv32/inst.c
+@@ -27,6 +27,7 @@ enum {
+   TYPE_J, // jump
+   TYPE_R, // register
+   TYPE_N, // none
++  TYPE_B
+ };
+ 
+ #define src1R() do { *src1 = R(rs1); } while (0)
+@@ -35,6 +36,7 @@ enum {
+ #define immU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
+ #define immS() do { *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); } while(0)
+ #define immJ() do { *imm = SEXT((BITS(i, 31, 31) << 20) | (BITS(i, 19, 12) << 12) | (BITS(i, 20, 20) << 11) | (BITS(i, 30, 21) << 1), 21); } while(0)
++#define immB() do { *imm = SEXT((BITS(i, 31, 31) << 12) | (BITS(i, 7, 7) << 11) | (BITS(i, 30, 25) << 5) | (BITS(i, 11, 8) << 1), 13); } while(0)
+ 
+ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
+   uint32_t i = s->isa.inst;
+@@ -47,6 +49,7 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
+     case TYPE_U:                   immU(); break;
+     case TYPE_S: src1R(); src2R(); immS(); break;
+     case TYPE_R: src1R(); src2R();         break;
++    case TYPE_B: src1R(); src2R(); immB(); break;
+     case TYPE_N: break;
+     default: panic("unsupported type = %d", type);
+   }
+@@ -86,6 +89,9 @@ static int decode_exec(Decode *s) {
+ 
+   //TYPE-J
+   INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(rd) = s->snpc; s->dnpc = s->pc + imm);
++
++  //TYPE-B
++  INSTPAT("??????? ????? ????? 000 ????? 11000 11", beq    , B, s->dnpc = (src1 == src2) ? s->pc + imm : s->snpc);
+   
+   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
+   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
+-- 
+2.34.1
+

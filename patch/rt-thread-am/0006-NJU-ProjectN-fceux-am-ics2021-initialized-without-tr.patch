@@ -1,0 +1,23 @@
+From 01d5f2193a012de494b4d5e057c544a022e515f7 Mon Sep 17 00:00:00 2001
+From: XueYizhou <xueyizhou23@mails.ucas.ac.cn>
+Date: Sun, 5 Apr 2026 15:46:44 +0800
+Subject: [PATCH 0006/1487] NJU-ProjectN/fceux-am ics2021 initialized without
+ tracing
+
+NJU-ProjectN/fceux-am d5524ba624300869d6c793f01e6632e4dc3066ef drivers,sdl: fix video when underflow
+---
+ .gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/.gitignore b/.gitignore
+index 7b94672..86e9344 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -11,3 +11,4 @@
+ !.gitignore
+ !init.sh
+ /nvboard
++/fceux-am
+-- 
+2.34.1
+

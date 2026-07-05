@@ -1,0 +1,38 @@
+From f0b0787a41d68b148f0e00f036bf4f53102be960 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 17:06:46 +0800
+Subject: [PATCH 1467/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  17:06:46 up  1:32,  1 user,  load
+ average: 0.30, 0.24, 0.30
+
+---
+ npc/csrc/main.cpp | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/npc/csrc/main.cpp b/npc/csrc/main.cpp
+index 4896491..bb96086 100644
+--- a/npc/csrc/main.cpp
++++ b/npc/csrc/main.cpp
+@@ -4,6 +4,8 @@
+ #include <string.h>
+ #include <sys/time.h>
+ 
++#define ITRACE 1
++
+ // Verilator 头文件
+ #include "Vcustom_cpu.h"
+ #include "Vcustom_cpu___024root.h"
+@@ -236,6 +238,9 @@ void sim_exec(uint64_t n) {
+     if (retired) {
+       inst_cnt++;
+       npc_state.nr_inst++;
++      if(ITRACE){
++        printf("0x%08x: Instruction retired, Instruction: %lu\n", sim_get_pc(), (unsigned long)npc_state.nr_inst);
++      }
+     }
+ 
+     // 检测 ebreak
+-- 
+2.34.1
+

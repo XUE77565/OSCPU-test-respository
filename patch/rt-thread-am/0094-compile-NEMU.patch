@@ -1,0 +1,31 @@
+From 246bdc5184583057b9ec6069e93aa5e2e0b4ceb9 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Thu, 23 Apr 2026 18:09:06 +0800
+Subject: [PATCH 0094/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-110-generic #110~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 27 12:43:08
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  18:09:06 up  3:14,  1 user,  load
+ average: 0.09, 0.18, 0.23
+
+---
+ nemu/src/monitor/sdb/expreval.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/nemu/src/monitor/sdb/expreval.c b/nemu/src/monitor/sdb/expreval.c
+index a8cd85e..42706a7 100644
+--- a/nemu/src/monitor/sdb/expreval.c
++++ b/nemu/src/monitor/sdb/expreval.c
+@@ -53,9 +53,9 @@ uint32_t expreval(int p, int q, Token *tokens, bool *success) {
+             return 0;
+         }
+         val1 = expreval(p, op - 1, tokens, success);
+-        printf("val1 = %u\n", val1);
++        printf("[%d, %d]val1 = %u\n", p, op - 1, val1);
+         val2 = expreval(op + 1, q, tokens, success);
+-        printf("val2 = %u\n", val2);
++        printf("[%d, %d]val2 = %u\n", op + 1, q, val2);
+ 
+         switch (tokens[op].type) {
+             case '+': return val1 + val2;
+-- 
+2.34.1
+

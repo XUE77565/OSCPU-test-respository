@@ -1,0 +1,120 @@
+From 608c78dc405cd9a60033ed075a5ff9f47a832b3c Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 15:40:14 +0800
+Subject: [PATCH 1303/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  15:40:14 up 6 min,  1 user,  load
+ average: 0.59, 0.60, 0.30
+
+---
+ npc/obj_dir/Vcustom_cpu.mk                     | 10 +++++-----
+ npc/obj_dir/Vcustom_cpu__Dpi.h                 |  6 +++---
+ npc/obj_dir/Vcustom_cpu___024root__0.cpp       |  6 +++---
+ npc/obj_dir/Vcustom_cpu___024root__0__Slow.cpp |  2 +-
+ 4 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/npc/obj_dir/Vcustom_cpu.mk b/npc/obj_dir/Vcustom_cpu.mk
+index 53b34a8..6bacea0 100644
+--- a/npc/obj_dir/Vcustom_cpu.mk
++++ b/npc/obj_dir/Vcustom_cpu.mk
+@@ -4,7 +4,7 @@
+ # Execute this makefile from the object directory:
+ #    make -f Vcustom_cpu.mk
+ 
+-default: /home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/build/npc
++default: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/build/npc
+ 
+ ### Constants...
+ # Perl executable (from $PERL, defaults to 'perl' if not set)
+@@ -37,7 +37,7 @@ VM_PREFIX = Vcustom_cpu
+ VM_MODPREFIX = Vcustom_cpu
+ # User CFLAGS (from -CFLAGS on Verilator command line)
+ VM_USER_CFLAGS = \
+-  -I/home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/include -g -O2 \
++  -I/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/include -g -O2 \
+ 
+ # User LDLIBS (from -LDFLAGS on Verilator command line)
+ VM_USER_LDLIBS = \
+@@ -63,13 +63,13 @@ include $(VERILATOR_ROOT)/include/verilated.mk
+ ### Executable rules... (from --exe)
+ VPATH += $(VM_USER_DIR)
+ 
+-main.o: /home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/main.cpp 
++main.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/main.cpp 
+ 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
+-sdb.o: /home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/sdb.cpp 
++sdb.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/sdb.cpp 
+ 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
+ 
+ ### Link rules... (from --exe)
+-/home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/build/npc: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a
++/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/build/npc: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a
+ 	$(LINK) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) $(LIBS) $(SC_LIBS) -o $@
+ 
+ # Verilated -*- Makefile -*-
+diff --git a/npc/obj_dir/Vcustom_cpu__Dpi.h b/npc/obj_dir/Vcustom_cpu__Dpi.h
+index 96d74f7..77ffea0 100644
+--- a/npc/obj_dir/Vcustom_cpu__Dpi.h
++++ b/npc/obj_dir/Vcustom_cpu__Dpi.h
+@@ -16,11 +16,11 @@ extern "C" {
+ 
+ 
+     // DPI IMPORTS
+-    // DPI import at /home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/mem.v:3:29
++    // DPI import at /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/mem.v:3:29
+     extern int pmem_read(int raddr);
+-    // DPI import at /home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/mem.v:4:30
++    // DPI import at /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/mem.v:4:30
+     extern void pmem_write(int addr, int data, const svBitVecVal* mask);
+-    // DPI import at /home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/wb.v:4:30
++    // DPI import at /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/wb.v:4:30
+     extern void set_ebreak();
+ 
+ #ifdef __cplusplus
+diff --git a/npc/obj_dir/Vcustom_cpu___024root__0.cpp b/npc/obj_dir/Vcustom_cpu___024root__0.cpp
+index ecc45f5..d3f0398 100644
+--- a/npc/obj_dir/Vcustom_cpu___024root__0.cpp
++++ b/npc/obj_dir/Vcustom_cpu___024root__0.cpp
+@@ -1733,7 +1733,7 @@ void Vcustom_cpu___024root___eval(Vcustom_cpu___024root* vlSelf) {
+ #ifdef VL_DEBUG
+             Vcustom_cpu___024root___dump_triggers__ico(vlSelfRef.__VicoTriggered, "ico"s);
+ #endif
+-            VL_FATAL_MT("/home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/top.v", 4, "", "DIDNOTCONVERGE: Input combinational region did not converge after '--converge-limit' of 100 tries");
++            VL_FATAL_MT("/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/top.v", 4, "", "DIDNOTCONVERGE: Input combinational region did not converge after '--converge-limit' of 100 tries");
+         }
+         __VicoIterCount = ((IData)(1U) + __VicoIterCount);
+         vlSelfRef.__VicoPhaseResult = Vcustom_cpu___024root___eval_phase__ico(vlSelf);
+@@ -1745,7 +1745,7 @@ void Vcustom_cpu___024root___eval(Vcustom_cpu___024root* vlSelf) {
+ #ifdef VL_DEBUG
+             Vcustom_cpu___024root___dump_triggers__act(vlSelfRef.__VnbaTriggered, "nba"s);
+ #endif
+-            VL_FATAL_MT("/home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/top.v", 4, "", "DIDNOTCONVERGE: NBA region did not converge after '--converge-limit' of 100 tries");
++            VL_FATAL_MT("/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/top.v", 4, "", "DIDNOTCONVERGE: NBA region did not converge after '--converge-limit' of 100 tries");
+         }
+         __VnbaIterCount = ((IData)(1U) + __VnbaIterCount);
+         vlSelfRef.__VactIterCount = 0U;
+@@ -1754,7 +1754,7 @@ void Vcustom_cpu___024root___eval(Vcustom_cpu___024root* vlSelf) {
+ #ifdef VL_DEBUG
+                 Vcustom_cpu___024root___dump_triggers__act(vlSelfRef.__VactTriggered, "act"s);
+ #endif
+-                VL_FATAL_MT("/home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/top.v", 4, "", "DIDNOTCONVERGE: Active region did not converge after '--converge-limit' of 100 tries");
++                VL_FATAL_MT("/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/top.v", 4, "", "DIDNOTCONVERGE: Active region did not converge after '--converge-limit' of 100 tries");
+             }
+             vlSelfRef.__VactIterCount = ((IData)(1U) 
+                                          + vlSelfRef.__VactIterCount);
+diff --git a/npc/obj_dir/Vcustom_cpu___024root__0__Slow.cpp b/npc/obj_dir/Vcustom_cpu___024root__0__Slow.cpp
+index 2bfaf41..cdf5db2 100644
+--- a/npc/obj_dir/Vcustom_cpu___024root__0__Slow.cpp
++++ b/npc/obj_dir/Vcustom_cpu___024root__0__Slow.cpp
+@@ -57,7 +57,7 @@ VL_ATTR_COLD void Vcustom_cpu___024root___eval_settle(Vcustom_cpu___024root* vlS
+ #ifdef VL_DEBUG
+             Vcustom_cpu___024root___dump_triggers__stl(vlSelfRef.__VstlTriggered, "stl"s);
+ #endif
+-            VL_FATAL_MT("/home/xyzabc/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/top.v", 4, "", "DIDNOTCONVERGE: Settle region did not converge after '--converge-limit' of 100 tries");
++            VL_FATAL_MT("/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/top.v", 4, "", "DIDNOTCONVERGE: Settle region did not converge after '--converge-limit' of 100 tries");
+         }
+         __VstlIterCount = ((IData)(1U) + __VstlIterCount);
+         vlSelfRef.__VstlPhaseResult = Vcustom_cpu___024root___eval_phase__stl(vlSelf);
+-- 
+2.34.1
+

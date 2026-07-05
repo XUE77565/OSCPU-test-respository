@@ -1,0 +1,28 @@
+From e9c54b3f344ccd26da563fe9d037361187659d83 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Wed, 22 Apr 2026 17:23:03 +0800
+Subject: [PATCH 0063/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-110-generic #110~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 27 12:43:08
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  17:23:03 up  2:50,  1 user,  load
+ average: 0.55, 0.28, 0.15
+
+---
+ nemu/src/monitor/sdb/sdb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/nemu/src/monitor/sdb/sdb.c b/nemu/src/monitor/sdb/sdb.c
+index c479cdd..b1c817a 100644
+--- a/nemu/src/monitor/sdb/sdb.c
++++ b/nemu/src/monitor/sdb/sdb.c
+@@ -82,7 +82,7 @@ static int cmd_info(char *args) {
+ static int cmd_x(char *args) {
+   printf("args = %s\n", args);
+   char *num = strtok(args, " ");
+-  char *expr = args + strlen(num) + 1;
++  char *expr = num + strlen(num) + 1;
+   if(expr >= args + strlen(args)) {
+     expr = NULL;
+   }
+-- 
+2.34.1
+

@@ -1,0 +1,117 @@
+From 5deae6247524ad5b367eab15995dd2658bfad5e3 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 16:39:25 +0800
+Subject: [PATCH 1438/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  16:39:25 up  1:05,  1 user,  load
+ average: 0.17, 0.30, 0.45
+
+---
+ npc/csrc/main.cpp    | 18 +++++-------------
+ npc/csrc/sdb/sdb.cpp |  6 +++---
+ npc/vsrc/regfile.v   |  8 --------
+ 3 files changed, 8 insertions(+), 24 deletions(-)
+
+diff --git a/npc/csrc/main.cpp b/npc/csrc/main.cpp
+index d2b6813..574de6b 100644
+--- a/npc/csrc/main.cpp
++++ b/npc/csrc/main.cpp
+@@ -33,9 +33,6 @@ static uint8_t pmem[PMEM_SIZE];
+ // 全局仿真顶层指针, 供 DPI-C 回调函数访问 CPU 内部信号
+ static Vcustom_cpu *g_top = nullptr;
+ 
+-// DPI-C 传入的寄存器数组指针 (由 regfile.v 中的 set_gpr_ptr 设置)
+-static uint32_t *cpu_regs = nullptr;
+-
+ // ebreak 标志, 由 DPI-C set_ebreak() 设置
+ static bool g_ebreak = false;
+ static int  g_exit_code = 0;
+@@ -74,11 +71,6 @@ static void load_binary(const char *bin_path) {
+ 
+ // ==================== DPI-C 回调函数 ====================
+ 
+-// 由 regfile.v 的 initial 块调用, 将寄存器数组指针传给 C++
+-extern "C" void set_gpr_ptr(int *regs) {
+-  cpu_regs = (uint32_t *)regs;
+-}
+-
+ // ebreak 回调, 由 wb.v 通过 DPI-C 调用
+ // 不再直接 exit(), 而是设置标志让 sim_exec 自行处理状态转换
+ extern "C" void set_ebreak() {
+@@ -205,12 +197,12 @@ uint32_t sim_get_pc() {
+   return g_top ? (uint32_t)g_top->PC : 0;
+ }
+ 
+-// 通过 DPI-C 指针获取寄存器值
++// 通过 Verilator 暴露的内部信号路径读取寄存器值
++// 等效于 DPI-C 方式: Verilator 将 regfile 数组编译为可直接访问的 C 数组
+ uint32_t sim_get_reg(int idx) {
+-  if (idx < 0 || idx >= 32 || !cpu_regs) return 0;
+-  // x0 始终为 0 (硬件中也是如此, 但 DPI-C 指针直接读取原始数组, 需显式处理)
+-  if (idx == 0) return 0;
+-  return cpu_regs[idx];
++  if (idx < 0 || idx >= 32 || !g_top) return 0;
++  if (idx == 0) return 0;  // x0 始终为 0
++  return g_top->custom_cpu__DOT__ID_EX__DOT__reg_file_ex__DOT__regfile[idx];
+ }
+ 
+ // 打印所有寄存器和 PC (仿照 NEMU isa_reg_display)
+diff --git a/npc/csrc/sdb/sdb.cpp b/npc/csrc/sdb/sdb.cpp
+index 89b7465..e963658 100644
+--- a/npc/csrc/sdb/sdb.cpp
++++ b/npc/csrc/sdb/sdb.cpp
+@@ -16,7 +16,7 @@ void sdb_set_batch_mode() {
+ // ==================== 命令处理函数 ====================
+ 
+ static int cmd_c(char *args) {
+-  //sim_exec(-1);
++  sim_exec(-1);
+   return 0;
+ }
+ 
+@@ -29,7 +29,7 @@ static int cmd_si(char *args) {
+     printf("Invalid step count: %s\n", args);
+     return 0;
+   }
+-  //sim_exec(n);
++  sim_exec(n);
+   return 0;
+ }
+ 
+@@ -40,7 +40,7 @@ static int cmd_q(char *args) {
+ 
+ static int cmd_info(char *args) {
+   if (args == NULL || strcmp(args, "r") == 0) {
+-    //sim_print_regs();
++    sim_print_regs();
+   } else {
+     printf("Unknown info subcommand: %s\n", args);
+   }
+diff --git a/npc/vsrc/regfile.v b/npc/vsrc/regfile.v
+index 3ba0e78..b9c14f5 100644
+--- a/npc/vsrc/regfile.v
++++ b/npc/vsrc/regfile.v
+@@ -1,8 +1,5 @@
+ `include "define.v"
+ 
+-// DPI-C: 将寄存器数组指针传递给 C++ 环境, 用于 sim_get_reg / sim_print_regs
+-import "DPI-C" function void set_gpr_ptr(input int regs[32]);
+-
+ module regfile(
+     input clk,
+     input rst,
+@@ -20,11 +17,6 @@ module regfile(
+ 
+ reg [`DATA_WIDTH-1:0] regfile [2**`ADDR_WIDTH-1:0];
+ 
+-// 在仿真开始时将寄存器数组指针传给 C++
+-initial begin
+-    set_gpr_ptr(regfile);
+-end
+-
+ //同步写，异步读
+ assign rdata1 = (raddr1 == 0) ? 0 : regfile[raddr1];
+ assign rdata2 = (raddr2 == 0) ? 0 : regfile[raddr2];
+-- 
+2.34.1
+

@@ -1,0 +1,28 @@
+From d1a8df26af033ead3b26d03d39dcbfbba984fd61 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Thu, 23 Apr 2026 18:28:29 +0800
+Subject: [PATCH 0098/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-110-generic #110~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 27 12:43:08
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  18:28:29 up  3:34,  1 user,  load
+ average: 1.01, 0.54, 0.38
+
+---
+ nemu/src/monitor/sdb/expreval.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/nemu/src/monitor/sdb/expreval.c b/nemu/src/monitor/sdb/expreval.c
+index 1126425..fbd640c 100644
+--- a/nemu/src/monitor/sdb/expreval.c
++++ b/nemu/src/monitor/sdb/expreval.c
+@@ -43,7 +43,7 @@ int expreval(int p, int q, Token *tokens, bool *success) {
+     }
+     //divide the expression into two parts by the main operator, and evaluate the two parts recursively
+     else {
+-        uint32_t val1, val2;
++        int val1, val2;
+         int op = -1;
+         op = find_main_operator(p, q, tokens);
+         if(op == -1) {
+-- 
+2.34.1
+

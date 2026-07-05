@@ -1,0 +1,28 @@
+From ae1f20800a4abb8efdb0c7a8f3bca1aa6013c0ab Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Thu, 28 May 2026 18:29:19 +0800
+Subject: [PATCH 0896/1487] > run NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-117-generic #117~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 22:17:46
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  18:29:19 up 25 min,  1 user,  load
+ average: 0.55, 0.35, 0.22
+
+---
+ nemu/src/cpu/difftest/ref.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/nemu/src/cpu/difftest/ref.c b/nemu/src/cpu/difftest/ref.c
+index 304e150..8d6f47a 100644
+--- a/nemu/src/cpu/difftest/ref.c
++++ b/nemu/src/cpu/difftest/ref.c
+@@ -19,7 +19,7 @@
+ #include <memory/paddr.h>
+ 
+ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
+-  printf("NEED TO BE IMPLEMENTED");
++  printf("NEED TO BE IMPLEMENTED\n");
+   assert(0);
+ }
+ 
+-- 
+2.34.1
+

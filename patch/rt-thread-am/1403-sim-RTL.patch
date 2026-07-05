@@ -1,0 +1,50 @@
+From 24986fb543e3273326d36d3b808b373c10d56df6 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 16:28:58 +0800
+Subject: [PATCH 1403/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  16:28:58 up 54 min,  1 user,  load
+ average: 2.48, 1.45, 0.78
+
+---
+ npc/obj_dir/Vcustom_cpu__Dpi.h           |  2 ++
+ npc/obj_dir/Vcustom_cpu___024unit__0.cpp | 10 ++++++++++
+ 2 files changed, 12 insertions(+)
+
+diff --git a/npc/obj_dir/Vcustom_cpu__Dpi.h b/npc/obj_dir/Vcustom_cpu__Dpi.h
+index 77ffea0..962a228 100644
+--- a/npc/obj_dir/Vcustom_cpu__Dpi.h
++++ b/npc/obj_dir/Vcustom_cpu__Dpi.h
+@@ -22,6 +22,8 @@ extern "C" {
+     extern void pmem_write(int addr, int data, const svBitVecVal* mask);
+     // DPI import at /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/wb.v:4:30
+     extern void set_ebreak();
++    // DPI import at /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/vsrc/regfile.v:4:30
++    extern void set_gpr_ptr(const int* regs);
+ 
+ #ifdef __cplusplus
+ }
+diff --git a/npc/obj_dir/Vcustom_cpu___024unit__0.cpp b/npc/obj_dir/Vcustom_cpu___024unit__0.cpp
+index 5043260..9245606 100644
+--- a/npc/obj_dir/Vcustom_cpu___024unit__0.cpp
++++ b/npc/obj_dir/Vcustom_cpu___024unit__0.cpp
+@@ -30,6 +30,16 @@ void Vcustom_cpu___024unit____Vdpiimwrap_pmem_write_TOP____024unit(IData/*31:0*/
+     pmem_write(addr__Vcvt, data__Vcvt, mask__Vcvt);
+ }
+ 
++extern "C" void set_gpr_ptr(const int* regs);
++
++void Vcustom_cpu___024unit____Vdpiimwrap_set_gpr_ptr_TOP____024unit(VlUnpacked<IData/*31:0*/, 32> regs) {
++    VL_DEBUG_IF(VL_DBG_MSGF("+        Vcustom_cpu___024unit____Vdpiimwrap_set_gpr_ptr_TOP____024unit\n"); );
++    // Body
++    int regs__Vcvt[32];
++    for (size_t regs__Vidx = 0; regs__Vidx < 32; ++regs__Vidx) regs__Vcvt[regs__Vidx] = (&regs[0])[regs__Vidx];
++    set_gpr_ptr(regs__Vcvt);
++}
++
+ extern "C" void set_ebreak();
+ 
+ void Vcustom_cpu___024unit____Vdpiimwrap_set_ebreak_TOP____024unit() {
+-- 
+2.34.1
+

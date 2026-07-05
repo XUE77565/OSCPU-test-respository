@@ -1,0 +1,44 @@
+From 5f0c35bf9e97b2c32b2ed1bc16416d4e14e7873a Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Tue, 26 May 2026 19:52:14 +0800
+Subject: [PATCH 0755/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-117-generic #117~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 22:17:46
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  19:52:14 up 8 min,  1 user,  load
+ average: 0.31, 0.29, 0.14
+
+---
+ nemu/src/cpu/cpu-exec.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/nemu/src/cpu/cpu-exec.c b/nemu/src/cpu/cpu-exec.c
+index 3612ada..8b492e0 100644
+--- a/nemu/src/cpu/cpu-exec.c
++++ b/nemu/src/cpu/cpu-exec.c
+@@ -52,6 +52,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
+ #endif
+ }
+ 
++//打印指令执行的日志到iringbuf中，并在assert_fail时打印出iringbuf中的内容
+ #ifdef CONFIG_ITRACE
+ #define IRINGBUF_SIZE 16
+ static char iringbuf[IRINGBUF_SIZE][128] = {0};
+@@ -101,7 +102,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
+   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
+       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst, ilen);
+-
++//将s->logbuf保存到iringbuf中
+   strncpy(iringbuf[iringbuf_ptr], s->logbuf, 128);
+   iringbuf_ptr = (iringbuf_ptr + 1) % IRINGBUF_SIZE;
+ #endif
+@@ -128,6 +129,7 @@ static void statistic() {
+ }
+ 
+ void assert_fail_msg() {
++  //如果asster_fail,打印出但不管前的ring
+ #ifdef CONFIG_ITRACE
+   print_iringbuf();
+ #endif
+-- 
+2.34.1
+

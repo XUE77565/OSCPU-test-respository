@@ -1,0 +1,109 @@
+From 629e352736c6f3a07a8ba92bed459e3833955d43 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 18 May 2026 18:18:01 +0800
+Subject: [PATCH 0281/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-111-generic #111~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 14 17:13:45
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  18:18:01 up 4 min,  1 user,  load
+ average: 0.40, 0.21, 0.10
+
+---
+ nemu/src/cpu/cpu-exec.c           |  9 +++++++--
+ nemu/src/isa/riscv32/inst.c       | 12 ++++++++++++
+ nemu/src/monitor/sdb/watchpoint.c |  5 ++++-
+ 3 files changed, 23 insertions(+), 3 deletions(-)
+
+diff --git a/nemu/src/cpu/cpu-exec.c b/nemu/src/cpu/cpu-exec.c
+index ba00c8d..523aca2 100644
+--- a/nemu/src/cpu/cpu-exec.c
++++ b/nemu/src/cpu/cpu-exec.c
+@@ -31,7 +31,7 @@ static uint64_t g_timer = 0; // unit: us
+ static bool g_print_step = false;
+ 
+ void device_update();
+-extern void check_watchpoints();
++extern bool check_watchpoints();
+ 
+ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
+ #ifdef CONFIG_ITRACE_COND
+@@ -43,7 +43,12 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
+ 
+ #ifdef CONFIG_WATCHPOINT
+   printf("Checking watchpoints...\n");
+-  check_watchpoints();
++  bool changed = false;
++  changed = check_watchpoints();
++  if(changed) {
++    printf("Watchpoint triggered. Current instruction: %s\n", _this->logbuf);
++    //nemu_state.state = NEMU_STOP;
++  }
+ #endif
+ }
+ 
+diff --git a/nemu/src/isa/riscv32/inst.c b/nemu/src/isa/riscv32/inst.c
+index d53df77..5776da5 100644
+--- a/nemu/src/isa/riscv32/inst.c
++++ b/nemu/src/isa/riscv32/inst.c
+@@ -73,9 +73,12 @@ static int decode_exec(Decode *s) {
+   INSTPAT("0000000 ????? ????? 011 ????? 01100 11", sltu   , R, R(rd) = (src1 < src2) ? 1 : 0);
+   INSTPAT("0000000 ????? ????? 100 ????? 01100 11", xor    , R, R(rd) = src1 ^ src2);
+   INSTPAT("0000000 ????? ????? 110 ????? 01100 11", or     , R, R(rd) = src1 | src2);
++  INSTPAT("0000000 ????? ????? 111 ????? 01100 11", and    , R, R(rd) = src1 & src2);
++  INSTPAT("0000000 ????? ????? 001 ????? 01100 11", sll    , R, R(rd) = (word_t)src1 << BITS(src2, 4, 0));
+ 
+   //TYPE-U
+   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(rd) = s->pc + imm);
++  INSTPAT("??????? ????? ????? ??? ????? 01101 11", lui    , U, R(rd) = imm);
+ 
+   //TYPE-I
+   INSTPAT("??????? ????? ????? 100 ????? 00000 11", lbu    , I, R(rd) = Mr(src1 + imm, 1));
+@@ -84,6 +87,12 @@ static int decode_exec(Decode *s) {
+   INSTPAT("??????? ????? ????? 010 ????? 00000 11", lw     , I, R(rd) = Mr(src1 + imm, 4));
+   INSTPAT("??????? ????? ????? 011 ????? 00100 11", sltiu  , I, R(rd) = (src1 < imm) ? 1 : 0);
+   INSTPAT("0100000 ????? ????? 101 ????? 00100 11", srai   , I, R(rd) = (sword_t)src1 >> BITS(imm, 4, 0));
++  INSTPAT("0000000 ????? ????? 101 ????? 00100 11", srli   , I, R(rd) = (word_t)src1 >> BITS(imm, 4, 0));
++  INSTPAT("0000000 ????? ????? 001 ????? 00100 11", slli   , I, R(rd) = (word_t)src1 << BITS(imm, 4, 0));
++  INSTPAT("??????? ????? ????? 111 ????? 00100 11", andi   , I, R(rd) = src1 & imm);
++  INSTPAT("??????? ????? ????? 100 ????? 00100 11", xori   , I, R(rd) = src1 ^ imm);
++
++
+   
+   //TYPE-S
+   INSTPAT("??????? ????? ????? 010 ????? 01000 11", sw     , S, Mw(src1 + imm, 4, src2));
+@@ -96,6 +105,9 @@ static int decode_exec(Decode *s) {
+   //TYPE-B
+   INSTPAT("??????? ????? ????? 000 ????? 11000 11", beq    , B, s->dnpc = (src1 == src2) ? s->pc + imm : s->snpc);
+   INSTPAT("??????? ????? ????? 001 ????? 11000 11", bne    , B, s->dnpc = (src1 != src2) ? s->pc + imm : s->snpc);
++  INSTPAT("??????? ????? ????? 101 ????? 11000 11", bge    , B, s->dnpc = (src1 >= src2) ? s->pc + imm : s->snpc);
++  INSTPAT("??????? ????? ????? 100 ????? 11000 11", blt    , B, s->dnpc = (src1 < src2) ? s->pc + imm : s->snpc);
++  INSTPAT("??????? ????? ????? 111 ????? 11000 11", bgeu   , B, s->dnpc = (src1 >= src2) ? s->pc + imm : s->snpc);
+ 
+   
+   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
+diff --git a/nemu/src/monitor/sdb/watchpoint.c b/nemu/src/monitor/sdb/watchpoint.c
+index 6df95c6..6b29439 100644
+--- a/nemu/src/monitor/sdb/watchpoint.c
++++ b/nemu/src/monitor/sdb/watchpoint.c
+@@ -87,7 +87,8 @@ bool delete_wp_by_no(int no) {
+ }
+ 
+ //检查监视点的值是否发生变化
+-void check_watchpoints() {
++bool check_watchpoints() {
++  bool changed = false;
+   WP *wp = NULL;
+   bool success;
+   for(wp = head; wp != NULL; wp = wp->next) {
+@@ -102,8 +103,10 @@ void check_watchpoints() {
+       printf("Old value = " FMT_WORD "\n", wp->old_value);
+       printf("New value = " FMT_WORD "\n", new_value);
+       wp->old_value = new_value;
++      changed = true;
+     }
+   }
++  return changed;
+ }
+ 
+ void wp_display() {
+-- 
+2.34.1
+

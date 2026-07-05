@@ -1,0 +1,28 @@
+From 941c0aa0b4e688b7e6e3e8f8cd72755b5de3669d Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 16:35:02 +0800
+Subject: [PATCH 1436/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  16:35:02 up  1:00,  1 user,  load
+ average: 0.02, 0.49, 0.56
+
+---
+ npc/vsrc/regfile.v | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/npc/vsrc/regfile.v b/npc/vsrc/regfile.v
+index 3ba0e78..12cbace 100644
+--- a/npc/vsrc/regfile.v
++++ b/npc/vsrc/regfile.v
+@@ -1,7 +1,7 @@
+ `include "define.v"
+ 
+ // DPI-C: 将寄存器数组指针传递给 C++ 环境, 用于 sim_get_reg / sim_print_regs
+-import "DPI-C" function void set_gpr_ptr(input int regs[32]);
++import "DPI-C" function void set_gpr_ptr(input bit[31:0] regs[32]);
+ 
+ module regfile(
+     input clk,
+-- 
+2.34.1
+

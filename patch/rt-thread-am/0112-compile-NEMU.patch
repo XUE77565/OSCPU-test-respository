@@ -1,0 +1,51 @@
+From 6265982a8903ba9db2e846a848c6470f905dd339 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Wed, 13 May 2026 17:29:34 +0800
+Subject: [PATCH 0112/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-111-generic #111~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 14 17:13:45
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  17:29:34 up 36 min,  1 user,  load
+ average: 0.60, 0.20, 0.10
+
+---
+ .gitignore                                | 1 +
+ abstract-machine/scripts/platform/nemu.mk | 2 +-
+ nemu/scripts/build.mk                     | 1 +
+ 3 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/.gitignore b/.gitignore
+index 149ad8a..6f853f6 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -15,3 +15,4 @@
+ =======
+ /nvboard
+ /fceux-am
++/am-kernels
+diff --git a/abstract-machine/scripts/platform/nemu.mk b/abstract-machine/scripts/platform/nemu.mk
+index c22d352..58a5896 100644
+--- a/abstract-machine/scripts/platform/nemu.mk
++++ b/abstract-machine/scripts/platform/nemu.mk
+@@ -19,7 +19,7 @@ MAINARGS_PLACEHOLDER = the_insert-arg_rule_in_Makefile_will_insert_mainargs_here
+ CFLAGS += -DMAINARGS_MAX_LEN=$(MAINARGS_MAX_LEN) -DMAINARGS_PLACEHOLDER=$(MAINARGS_PLACEHOLDER)
+ 
+ insert-arg: image
+-	@python $(AM_HOME)/tools/insert-arg.py $(IMAGE).bin $(MAINARGS_MAX_LEN) $(MAINARGS_PLACEHOLDER) "$(mainargs)"
++	@python3 $(AM_HOME)/tools/insert-arg.py $(IMAGE).bin $(MAINARGS_MAX_LEN) $(MAINARGS_PLACEHOLDER) "$(mainargs)"
+ 
+ image: image-dep
+ 	@$(OBJDUMP) -d $(IMAGE).elf > $(IMAGE).txt
+diff --git a/nemu/scripts/build.mk b/nemu/scripts/build.mk
+index c75e73e..6a9779c 100644
+--- a/nemu/scripts/build.mk
++++ b/nemu/scripts/build.mk
+@@ -22,6 +22,7 @@ CXX := g++
+ endif
+ LD := $(CXX)
+ INCLUDES = $(addprefix -I, $(INC_PATH))
++#生成与处理文件，进行宏展开
+ CFLAGS  := -O2 -save-temps=obj -MMD -Wall -Werror $(INCLUDES) $(CFLAGS)
+ LDFLAGS := -O2 $(LDFLAGS)
+ 
+-- 
+2.34.1
+

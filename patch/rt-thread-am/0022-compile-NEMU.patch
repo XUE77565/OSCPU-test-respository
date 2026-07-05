@@ -1,0 +1,26 @@
+From f0c0a31f13b1e882f9536744e124b8d126936d67 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Wed, 15 Apr 2026 19:19:00 +0800
+Subject: [PATCH 0022/1487] > compile NEMU ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-107-generic #107~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Wed Mar 18 23:40:43
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  19:19:00 up  2:23,  1 user,  load
+ average: 0.32, 0.12, 0.03
+
+---
+ nemu/src/utils/state.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/nemu/src/utils/state.c b/nemu/src/utils/state.c
+index 5f0e476..3118f91 100644
+--- a/nemu/src/utils/state.c
++++ b/nemu/src/utils/state.c
+@@ -20,5 +20,6 @@ NEMUState nemu_state = { .state = NEMU_STOP };
+ int is_exit_status_bad() {
+   int good = (nemu_state.state == NEMU_END && nemu_state.halt_ret == 0) ||
+     (nemu_state.state == NEMU_QUIT);
++  printf("[NEMU good] = %d\n", good);
+   return !good;
+ }
+-- 
+2.34.1
+

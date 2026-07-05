@@ -1,0 +1,28 @@
+From 0ecd605abe8ad229cbbd884cf636387016f18517 Mon Sep 17 00:00:00 2001
+From: tracer-ysyx <tracer@ysyx.org>
+Date: Mon, 8 Jun 2026 17:07:59 +0800
+Subject: [PATCH 1469/1487] > sim RTL ysyx_22040000 xyzabc Linux xyzabc
+ 6.8.0-124-generic #124~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 21:05:19
+ UTC  x86_64 x86_64 x86_64 GNU/Linux  17:07:59 up  1:33,  1 user,  load
+ average: 0.61, 0.31, 0.31
+
+---
+ npc/csrc/main.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/npc/csrc/main.cpp b/npc/csrc/main.cpp
+index baf540d..58680c5 100644
+--- a/npc/csrc/main.cpp
++++ b/npc/csrc/main.cpp
+@@ -244,7 +244,7 @@ void sim_exec(uint64_t n) {
+       inst_cnt++;
+       npc_state.nr_inst++;
+       if(ITRACE){
+-        printf("0x%08x: Instruction retired, \n
++        printf("0x%08x: Instruction retired, \
+               Instruction: %lu\n", sim_get_pc(), sim_get_inst());
+       }
+     }
+-- 
+2.34.1
+
