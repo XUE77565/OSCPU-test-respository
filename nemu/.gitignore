@@ -9,4 +9,5 @@
 !README.md
 !Kconfig
 include/config
-include/generated
+!include/generated
+!.config
