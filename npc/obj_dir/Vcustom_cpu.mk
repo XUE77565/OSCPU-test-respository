@@ -4,7 +4,7 @@
 # Execute this makefile from the object directory:
 #    make -f Vcustom_cpu.mk
 
-default: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/build/npc
+default: /home/xyzabc/Desktop/OSCPU-test-respository/npc/build/npc
 
 ### Constants...
 # Perl executable (from $PERL, defaults to 'perl' if not set)
@@ -37,7 +37,7 @@ VM_PREFIX = Vcustom_cpu
 VM_MODPREFIX = Vcustom_cpu
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-  -I/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/include -g -O2 -DNPC_HOME=\"/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc\" \
+  -I/home/xyzabc/Desktop/OSCPU-test-respository/npc/csrc/include -g -O2 -DNPC_HOME=\"/home/xyzabc/Desktop/OSCPU-test-respository/npc\" \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
@@ -67,21 +67,21 @@ include $(VERILATOR_ROOT)/include/verilated.mk
 ### Executable rules... (from --exe)
 VPATH += $(VM_USER_DIR)
 
-main.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/main.cpp 
+main.o: /home/xyzabc/Desktop/OSCPU-test-respository/npc/csrc/main.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
-difftest.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/difftest.cpp 
+difftest.o: /home/xyzabc/Desktop/OSCPU-test-respository/npc/csrc/sdb/difftest.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
-expr.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/expr.cpp 
+expr.o: /home/xyzabc/Desktop/OSCPU-test-respository/npc/csrc/sdb/expr.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
-expreval.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/expreval.cpp 
+expreval.o: /home/xyzabc/Desktop/OSCPU-test-respository/npc/csrc/sdb/expreval.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
-sdb.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/sdb.cpp 
+sdb.o: /home/xyzabc/Desktop/OSCPU-test-respository/npc/csrc/sdb/sdb.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
-watchpoint.o: /home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/csrc/sdb/watchpoint.cpp 
+watchpoint.o: /home/xyzabc/Desktop/OSCPU-test-respository/npc/csrc/sdb/watchpoint.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 
 ### Link rules... (from --exe)
-/home/xueyizhou/Desktop/ysyx/UCAS-COURSE-OpenXiangshan/npc/build/npc: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a
+/home/xyzabc/Desktop/OSCPU-test-respository/npc/build/npc: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a
 	$(LINK) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) $(LIBS) $(SC_LIBS) -o $@
 
 # Verilated -*- Makefile -*-
