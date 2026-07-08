@@ -1,5 +1,13 @@
 #!/bin/bash
 
+echo "if this is the first time you run this script"
+echo "Please enter the nemu/ and 'make menuconfig' and turn on the device and turn off the trace"
+echo "Please enter the nemu/ and 'make menuconfig' and turn on the device and turn off the trace"
+echo "Please enter the nemu/ and 'make menuconfig' and turn on the device and turn off the trace"
+echo "Please enter the nemu/ and 'make menuconfig' and turn on the device and turn off the trace"
+echo "Please enter the nemu/ and 'make menuconfig' and turn on the device and turn off the trace"
+echo "Please enter the nemu/ and 'make menuconfig' and turn on the device and turn off the trace"
+
 # 如果发生错误，立即退出脚本
 set -e
 # 开启 pipefail：如果管道流中后续命令（如 awk）报错返回 1，则整个管道流视为报错 1，从而触发 set -e 退出
