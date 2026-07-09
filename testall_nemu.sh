@@ -1,19 +1,28 @@
 #!/bin/bash
 
-echo "if this is the first time you run this script"
-echo "Please enter the nemu/ and 'make menuconfig' and turn on the device and turn off the trace"
-echo "Please enter the nemu/ and 'make menuconfig' and turn on the device and turn off the trace"
-echo "Please enter the nemu/ and 'make menuconfig' and turn on the device and turn off the trace"
-echo "Please enter the nemu/ and 'make menuconfig' and turn on the device and turn off the trace"
-echo "Please enter the nemu/ and 'make menuconfig' and turn on the device and turn off the trace"
-echo "Please enter the nemu/ and 'make menuconfig' and turn on the device and turn off the trace"
-
 # 如果发生错误，立即退出脚本
 set -e
 # 开启 pipefail：如果管道流中后续命令（如 awk）报错返回 1，则整个管道流视为报错 1，从而触发 set -e 退出
 set -o pipefail
 
-cd am-kernels/tests/cpu-tests
+# 定位仓库根目录；NEMU_HOME 未在 ~/.bashrc 导出时这里兜底设置
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export NEMU_HOME="${NEMU_HOME:-$SCRIPT_DIR/nemu}"
+
+# —— 自动完成 clone 后的首次配置，替代手动 `cd nemu && make menuconfig` ——
+# 原理：nemu/.config 与 include/generated/autoconf.h 已随仓库提交，clone 后即存在；
+# 但 nemu/include/config/auto.conf 被 .gitignore 忽略，clone 后缺失。而 NEMU 的 Makefile
+# 正是通过 -include auto.conf 读取 CONFIG_ISA / CONFIG_DEVICE / CC 等构建变量，缺失时
+# GUEST_ISA 等全为空、构建必坏。`make menuconfig` 能修复，本质只是它结尾跑了一次
+# `conf --syncconfig`，按 .config 重新生成 auto.conf 等派生文件。这里直接非交互地编译
+# conf 工具并执行 syncconfig，幂等：仅当 auto.conf 缺失或比 .config 旧时才跑。
+AUTO_CONF="$NEMU_HOME/include/config/auto.conf"
+if [ ! -f "$AUTO_CONF" ] || [ "$NEMU_HOME/.config" -nt "$AUTO_CONF" ]; then
+  echo "==> Initializing NEMU config (regenerating auto.conf from .config)..."
+  ( cd "$NEMU_HOME" && make -s -C tools/kconfig NAME=conf && ./tools/kconfig/build/conf -s --syncconfig Kconfig )
+fi
+
+cd "$SCRIPT_DIR/am-kernels/tests/cpu-tests"
 
 # 遍历 tests 目录下的所有 .c 文件
 for file in tests/*.c; do
