@@ -5,21 +5,33 @@ set -e
 # 开启 pipefail：如果管道流中后续命令（如 awk）报错返回 1，则整个管道流视为报错 1，从而触发 set -e 退出
 set -o pipefail
 
-# 定位仓库根目录；NEMU_HOME 未在 ~/.bashrc 导出时这里兜底设置
+# 定位仓库根目录。NEMU_HOME 强制指向【本仓库自带】的 nemu，而不是沿用 ~/.bashrc 里
+# 导出的那个 —— 否则在新 clone 出来的目录里跑本脚本，会去 build 别处（如 ~/Desktop）
+# 的旧 nemu，出现 "fixdep: not found" 或配置对不上等诡异错误。本脚本的语义就是
+# "测试本仓库的 nemu"，所以无视外部 NEMU_HOME。（该 export 只影响本脚本子进程，
+# 不改你交互式 shell 的 NEMU_HOME。）
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export NEMU_HOME="${NEMU_HOME:-$SCRIPT_DIR/nemu}"
+export NEMU_HOME="$SCRIPT_DIR/nemu"
 
-# —— 自动完成 clone 后的首次配置，替代手动 `cd nemu && make menuconfig` ——
-# 原理：nemu/.config 与 include/generated/autoconf.h 已随仓库提交，clone 后即存在；
-# 但 nemu/include/config/auto.conf 被 .gitignore 忽略，clone 后缺失。而 NEMU 的 Makefile
-# 正是通过 -include auto.conf 读取 CONFIG_ISA / CONFIG_DEVICE / CC 等构建变量，缺失时
-# GUEST_ISA 等全为空、构建必坏。`make menuconfig` 能修复，本质只是它结尾跑了一次
-# `conf --syncconfig`，按 .config 重新生成 auto.conf 等派生文件。这里直接非交互地编译
-# conf 工具并执行 syncconfig，幂等：仅当 auto.conf 缺失或比 .config 旧时才跑。
+# —— 自动完成 clone 后的首次配置，彻底替代手动 `cd nemu && make menuconfig` ——
+# 全新 clone 后缺两样东西（都被 .gitignore 忽略，不随仓库提交）：
+#   1) nemu/include/config/auto.conf —— NEMU 的 Makefile 通过 -include 它读取
+#      CONFIG_ISA / CONFIG_DEVICE / CC 等构建变量，缺失则 GUEST_ISA 等全空、构建必坏。
+#   2) nemu/tools/{kconfig,fixdep}/build/ 下的宿主工具 conf 与 fixdep —— NEMU 编译每个
+#      .o 都会调用 fixdep，但普通 `make` 不会自动编它（build.mk 的 %.o 规则没把 fixdep
+#      列为先决条件），只有 menuconfig / *defconfig 目标会把它编出来。所以 clone 后
+#      第一次 `make` 必报 "fixdep: not found"。
+# 手动 `make menuconfig` 之所以能"修好"，是因为它一次性把 conf + fixdep 都编了，结尾还
+# 跑了一次 `conf --syncconfig` 按 .config 重新生成 auto.conf（产出的 auto.conf 与
+# menuconfig 逐字节一致）。这里等价地、非交互地做完这三件事：先确保 conf / fixdep
+# 存在（缺了才编），再仅当 auto.conf 缺失或比 .config 旧时跑一次 syncconfig（幂等）。
+( cd "$NEMU_HOME" \
+  && { [ -x tools/kconfig/build/conf ]  || make -s -C tools/kconfig NAME=conf; } \
+  && { [ -x tools/fixdep/build/fixdep ] || make -s -C tools/fixdep; } )
 AUTO_CONF="$NEMU_HOME/include/config/auto.conf"
 if [ ! -f "$AUTO_CONF" ] || [ "$NEMU_HOME/.config" -nt "$AUTO_CONF" ]; then
   echo "==> Initializing NEMU config (regenerating auto.conf from .config)..."
-  ( cd "$NEMU_HOME" && make -s -C tools/kconfig NAME=conf && ./tools/kconfig/build/conf -s --syncconfig Kconfig )
+  ( cd "$NEMU_HOME" && ./tools/kconfig/build/conf -s --syncconfig Kconfig )
 fi
 
 cd "$SCRIPT_DIR/am-kernels/tests/cpu-tests"
